@@ -1,0 +1,297 @@
+!/input,c:\ansys\test-line,txt
+finish
+/clear,start
+/NOPR
+
+!-タイトル--------------------------------------------------
+/TITLE,TEST
+
+!-総合プリプロセッサ----------------------------------------
+/PREP7
+
+
+!-基本定義--------------------------------------------------
+ANTYPE,STATIC        ! 静解析
+ET,1,SOLID185       ! 試験片ALとCFRPにSOLID185を使用
+
+/NOPR                !構造解析
+KEYW,PR_SET,1   
+KEYW,PR_STRUC,1 
+KEYW,PR_THERM,0 
+KEYW,PR_FLUID,0 
+KEYW,PR_ELMAG,0 
+KEYW,MAGNOD,0   
+KEYW,MAGEDG,0   
+KEYW,MAGHFE,0   
+KEYW,MAGELC,0   
+KEYW,PR_MULTI,0 
+KEYW,PR_CFD,0   
+/GO 
+
+!-パラメータ定義--------------------------------------------
+X1	=	120E-3
+Y1	=	25E-3
+Z1	=	5E-3
+Y2	=	8E-3
+Z2      =       3E-3
+Y3      =       10E-3
+
+
+DIV1=2E-3  !分割数1
+DIV2=0.4E-3 !分割数2
+DIV3=0.4E-3
+DIV4=0.2E-3
+DIV5=0.2E-3
+
+DISTANCE=-2.5E-3 !N?
+
+
+!-材料物性定義----------------------------------------------
+!>>>>>材料1>>>>>>>
+Aee1 = 60.9E9!1方向弾性率
+Aee2 = 3.97E9  !2方向弾性率
+Aee3 = 3.97E9  !3方向弾性率
+Anu12 = 0.42 !zx,zy方向ポアソン比
+
+Anu21 = 0.066 !xz,yz方向ポアソン比
+
+!Anu21 = 0.16 !xy,yx方向ポアソン比
+
+Ag23 = 2.27E9 !2-3方向せん断弾性率
+Ag12 = 2.13E9 !2-3方向せん断弾性率
+
+AsuA = -100E9 !引張強度(繊維平行方向)
+AsuZ = 701E6 !引張強度(繊維平行方向)
+AsuX = 19E6 !引張強度(繊維垂直方向)
+AsuY = 19E6 !引張強度(繊維垂直レイアップ方向)
+SendanXYZ = 90.4E6 !せん断許容応力
+
+!MITUDO1=  1260  !質量密度
+
+
+
+MP,EX,1,Aee2        ! 材料1:CFRTP
+MP,EY,1,Aee3  
+MP,EZ,1,Aee1 
+ 
+!MP,PRXY,1,Anu21
+!MP,PRYZ,1,Anu21
+!MP,PRXZ,1,Anu21
+
+MP,NUXY,1,Anu21
+MP,NUYZ,1,Anu12
+MP,NUXZ,1,Anu12
+
+
+MP,GXY,1,Ag12
+MP,GYZ,1,Ag23
+MP,GXZ,1,Ag23
+
+!MP,DENS,1,MITUDO1
+
+
+
+
+
+!>>>>>材料2>>>>>>>
+Bee1 = 72.6E9!全方向弾性率
+
+Bnu12 = 0.33 !全方向ポアソン比
+
+Bg12 = 26E9   !全方向せん断弾性率
+
+!MITUDO2= 2790   !質量密度
+
+     
+MP,EX,2,Bee1        ! 材料2:AL
+MP,EY,2,Bee1  
+MP,EZ,2,Bee1  
+MP,PRXY,2,Bnu12
+MP,PRYZ,2,Bnu12
+MP,PRXZ,2,Bnu12
+MP,GXY,2,Bg12
+MP,GYZ,2,Bg12
+MP,GXZ,2,Bg12
+
+!MP,DENS,2,MITUDO2
+
+
+
+!-損傷モデル定義------------------------------------------
+
+tb,dmgi,1,,4,1			! 損傷発生の基準則を指定
+tbdata,1,2,2,2,2			! 最大応力則の指定
+
+tb,fcli,1,1,20,1			! 損傷発生の閾値を指定
+tbdata,1,AsuX,AsuA,AsuY,AsuA,AsuZ,AsuA! 応力指定
+tbdata,7,SendanXYZ,SendanXYZ,SendanXYZ
+
+
+tb,dmge,1,1,4,1			! 損傷発生時の剛性減少率を指定
+tbdata,1,1,1,1,1	! 損傷発生時の剛性減少率を指定
+
+
+
+
+
+
+
+
+!-キーポイント定義------------------------------------------
+K	,	1	,	0	,	0	,	0
+K	,	2	,	0	,	Y3	,	0
+K	,	3	,	X1	,	Y3	,	0
+K	,	4	,	X1	,	0	,	0
+K	,	5	,	0	,	0	,	Z1
+K	,	6	,	0	,	Y3	,	Z1
+K	,	7	,	X1	,	Y3	,	Z1
+K	,	8	,	X1	,	0	,	Z1
+K       ,       9       ,       0       ,    (Y3-Y2)/2  ,       (Z1-Z2)/2
+K       ,      10       ,       0       ,  (Y3-Y2)/2+Y2 ,       (Z1-Z2)/2
+K       ,      11       ,       X1      ,  (Y3-Y2)/2+Y2 ,       (Z1-Z2)/2
+K       ,      12       ,       X1      ,  (Y3-Y2)/2    ,       (Z1-Z2)/2
+K       ,      13       ,       0       ,    (Y3-Y2)/2  ,       (Z1-Z2)/2+Z2
+K       ,      14       ,       0       , (Y3-Y2)/2+Y2  ,       (Z1-Z2)/2+Z2
+K       ,      15       ,       X1      ,  (Y3-Y2)/2+Y2 ,       (Z1-Z2)/2+Z2
+K       ,      16       ,       X1      ,  (Y3-Y2)/2    ,       (Z1-Z2)/2+Z2
+
+ 
+!-ヴォリューム構築------------------------------------------------------
+
+!---試験片--------------------------------------------
+
+V	,	1	,	2	,	3	,	4	,	5	,	6	,	7	,	8
+ALLSEL
+CM,SOTO,VOLU
+
+V	,	9	,	10	,	11	,	12	,	13	,	14	,	15	,	16
+ALLSEL
+CMSEL,U,SOTO
+CM,UCHI,VOLU
+
+ALLSEL
+VSBV,SOTO,UCHI,SEPO,DELETE,KEEP
+ALLSEL
+VGLUE,ALL
+
+!-メッシュ分割--------------------------------------------------
+
+ALLSEL
+AESIZE,ALL,DIV1
+
+ALLSEL
+
+!-試験片外側メッシュ--------------------------------------------
+CMSEL,U,UCHI
+TYPE,1                             !要素1
+MAT,1                             !材料1
+VSWEEP,ALL
+MOPT,DEFA
+CM,SOTO,VOLU
+ALLSEL
+
+!-試験片内側メッシュ--------------------------------------------
+CMSEL,S,UCHI
+TYPE,1                             !要素1
+MAT,2                             !材料2
+MSHAPE,0,3D
+MSHKEY,1
+VMESH,ALL
+MOPT,DEFA
+
+!-境界条件指定--------------------------------------------------
+ALLSEL
+
+ASEL,S,LOC,X,X1 !グリップ固定
+NSLA,S,1 
+D,ALL,UZ,0
+D,ALL,UX,0
+D,ALL,UY,0
+
+ASEL,S,LOC,Y,0 !グリップ固定
+NSLA,S,1 
+D,ALL,UY,0
+
+ASEL,S,LOC,X,0 !荷重負荷面カップリング
+NSLA,S,1
+CP,NEXT,UX,ALL
+
+*GET,NNUM,NODE,,NUM,MIN !最小の節点選択
+D,NNUM,UX,-1E-3 !節点引張距離
+
+
+
+
+ALLSEL !節点全選択
+
+!-解析------------------------------------------------------
+FINISH  
+/POST1
+
+  
+FINISH  
+/SOLU
+
+
+
+NSUBST,100,1000,100 ! データベースとファイルの書き込み制御の結果アイテム
+TIME,1
+
+OUTRES,ERASE
+
+!OUTRES,ALL,ALL  
+OUTRES,NSOL,1    !節点の自由度の解
+OUTRES,ESOL,1    !次の要素ソリューションアイテムをすべて有効または無効にする
+OUTRES,RSOL,1    !節点反応荷重
+OUTRES,NLOAD,1    !要素の節点、入力拘束、および力の荷重（POST1コマンドのPRRFOR、NFORCE、FSUMでも使用され、反力の荷重を計算します）。
+OUTRES,MISC,1    !エレメントのその他のデータ（ETABLEコマンドのSMISCおよびNMISCアイテム）
+
+
+SAVE
+SOLVE   
+
+
+
+FINISH  
+
+
+/POST26
+
+RFORCE, 2, NNUM, F, X, FX
+prvar,2, !変数2をリストに表示
+
+
+
+
+
+
+!-XYせん断応力コンター表示-----------------------------------------------------
+/POST1  
+SET,LAST
+
+
+WPLANE, 1, 0, 0, Z1/2, 0, Y3, Z1/2, X1, 0, Z1/2
+/CPLANE, 1
+/TYPE,1,8
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
