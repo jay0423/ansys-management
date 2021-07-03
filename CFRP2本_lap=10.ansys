@@ -1,6 +1,27 @@
 ! CFRP２本で引張試験
 ! 各CFRP長さは65mm
 ! 継手長さが10mm
+! 以下警告が未解決
+
+!  *** WARNING ***                         CP =     148.953   TIME= 16:22:11
+!  Structural elements without mid nodes usually produce much more         
+!  accurate results in quad or brick shape.                                
+
+!  *** WARNING ***                         CP =     149.109   TIME= 16:22:22
+!  Volume 1 is being meshed entirely with SOLID185 tetrahedra, which can  be much less accurate than bricks.  Use quadratic (10-node) tetrahedra  
+!  if available.                                                           
+
+!  *** WARNING ***                         CP =     149.188   TIME= 16:22:22
+!  Volume 4 is being meshed entirely with SOLID185 tetrahedra, which can be much less accurate than bricks.  Use quadratic (10-node) tetrahedra  
+!  if available.                                                           
+
+!  *** WARNING ***                         CP =     154.594   TIME= 16:23:09
+!  Meshes made up of 10 percent or more of SOLID185 tetrahedra are not recommended.                                                            
+
+!  *** WARNING ***                         CP =     154.594   TIME= 16:23:09
+!  Previous testing revealed that 121 of the 5043 selected elements        
+!  violate shape warning limits.  To review warning messages, please see the output or error file, or issue the CHECK command.                   
+
 
 
 !/input,c:\ansys\test-line,txt
