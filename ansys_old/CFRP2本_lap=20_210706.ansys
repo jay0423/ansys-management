@@ -297,7 +297,10 @@ CMSEL,U,UCHI
 CMSEL,U,CFRP
 TYPE,1                             !要素1
 MAT,1                             !材料1
-VSWEEP,ALL
+MSHAPE,1,3D
+MSHKEY,0
+VMESH,ALL
+! VSWEEP,ALL
 MOPT,DEFA
 CM,SOTO,VOLU
 ALLSEL
@@ -306,15 +309,17 @@ ALLSEL
 CMSEL,S,CFRP
 TYPE,1                             !要素1
 MAT,3                             !材料2
-! MSHAPE,1,3D
-! MSHKEY,0
-! VMESH,ALL
-VSWEEP,ALL
+MSHAPE,0,3D
+MSHKEY,1
+VMESH,ALL
+! VSWEEP,ALL
 MOPT,DEFA
 CM,CFRP,VOLU
 
 !-試験片内側メッシュ--------------------------------------------
-CMSEL,S,UCHI
+ALLSEL
+CMSEL,U,SOTO
+! CMSEL,S,UCHI
 TYPE,1                             !要素1
 MAT,2                             !材料2
 MSHAPE,1,3D
