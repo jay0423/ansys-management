@@ -67,8 +67,8 @@ Y4 = 2E-3 !CFRP1の初期位置
 Y5 = 6E-3 !CFRP2の初期位置
 Y_CFRP = 2E-3 !CFRPの横長さ
 
-DIV1=2E-3  !分割数1
-DIV2=0.4E-3 !分割数2
+DIV1=2E-3  !PLA, epoxy
+DIV2=0.5E-3 !分割数2 CFRP
 DIV3=0.4E-3
 DIV4=0.2E-3
 DIV5=0.2E-3
@@ -287,12 +287,29 @@ VGLUE,ALL
 
 !-メッシュ分割--------------------------------------------------
 
+CMSEL,S,CFRP
+AESIZE,ALL,DIV2
+
+ALLSEL
+
+!-試験片CFRPメッシュ--------------------------------------------
+CMSEL,S,CFRP
+TYPE,1                             !要素1
+MAT,3                             !材料2
+MSHAPE,0,3D
+MSHKEY,1
+VMESH,ALL
+MOPT,DEFA
+! VSWEEP,ALL
+! MOPT,DEFA
+CM,CFRP,VOLU
+
+
+!-試験片外側メッシュ--------------------------------------------
 ALLSEL
 AESIZE,ALL,DIV1
 
 ALLSEL
-
-!-試験片外側メッシュ--------------------------------------------
 CMSEL,U,UCHI
 CMSEL,U,CFRP
 TYPE,1                             !要素1
@@ -302,30 +319,18 @@ MOPT,DEFA
 CM,SOTO,VOLU
 ALLSEL
 
+
 !-試験片内側メッシュ--------------------------------------------
+
 CMSEL,S,UCHI
 TYPE,1                             !要素1
 MAT,2                             !材料2
 MSHAPE,1,3D
 MSHKEY,0
 VMESH,ALL
-MOPT,DEFA
 ! VSWEEP,ALL
-! MOPT,DEFA
+MOPT,DEFA
 CM,UCHI,VOLU
-ALLSEL
-
-!-試験片CFRPメッシュ--------------------------------------------
-CMSEL,S,CFRP
-TYPE,1                             !要素1
-MAT,3                             !材料2
-MSHAPE,1,3D
-MSHKEY,0
-VMESH,ALL
-MOPT,DEFA
-! VSWEEP,ALL
-! MOPT,DEFA
-CM,CFRP,VOLU
 
 !-境界条件指定--------------------------------------------------
 ALLSEL

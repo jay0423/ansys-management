@@ -252,16 +252,45 @@ CM,UCHI,VOLU
 
 !-メッシュ分割--------------------------------------------------
 
+! ALLSEL
+! ! CMSEL,U,CFRP
+! AESIZE,ALL,DIV1
+
+CMSEL,S,CFRP
+AESIZE,ALL,DIV2
+
 ALLSEL
-! CMSEL,U,CFRP
+
+!-試験片CFRPメッシュ--------------------------------------------
+CMSEL,S,CFRP
+TYPE,1                             !要素1
+MAT,3                             !材料2
+MSHAPE,0,3D
+MSHKEY,1
+VMESH,ALL
+MOPT,DEFA
+! VSWEEP,ALL
+! MOPT,DEFA
+CM,CFRP,VOLU
+
+
+!-試験片内側メッシュ--------------------------------------------
+ALLSEL
 AESIZE,ALL,DIV1
 
-! CMSEL,S,CFRP
-! AESIZE,ALL,DIV2
-
-ALLSEL
+CMSEL,S,UCHI
+TYPE,1                             !要素1
+MAT,2                             !材料2
+! MSHAPE,1,3D
+! MSHKEY,0
+! VMESH,ALL
+VSWEEP,ALL
+MOPT,DEFA
+CM,UCHI,VOLU
 
 !-試験片外側メッシュ--------------------------------------------
+
+ALLSEL
 CMSEL,U,UCHI
 CMSEL,U,CFRP
 TYPE,1                             !要素1
@@ -274,30 +303,6 @@ MOPT,DEFA
 CM,SOTO,VOLU
 ALLSEL
 
-!-試験片内側メッシュ--------------------------------------------
-CMSEL,S,UCHI
-TYPE,1                             !要素1
-MAT,2                             !材料2
-! MSHAPE,1,3D
-! MSHKEY,0
-! VMESH,ALL
-VSWEEP,ALL
-MOPT,DEFA
-CM,UCHI,VOLU
-ALLSEL
-
-!-試験片CFRPメッシュ--------------------------------------------
-CMSEL,S,CFRP
-AESIZE,ALL,DIV2
-TYPE,1                             !要素1
-MAT,3                             !材料2
-MSHAPE,0,3D
-MSHKEY,1
-VMESH,ALL
-MOPT,DEFA
-! VSWEEP,ALL
-! MOPT,DEFA
-CM,CFRP,VOLU
 
 !-境界条件指定--------------------------------------------------
 ALLSEL

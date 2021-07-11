@@ -13,6 +13,11 @@
 !   NUXY = 0.33 NUYZ = 0.33 NUXZ = 0.33                                    
 !   GXY = 9.E+09 GYZ = 4.E+09 GXZ = 9.E+09.   
 
+! CFRPを１本のみ埋め込んだ試験片
+! CFRPの物性を変更した．以下のエラーによりCFRPのポアソン比を低くしなければならなくなった．
+! ポアソン比を1.5に設定するとうまくいったが，本来は3.3程度であるため，引張強度にも問題があることが考えられる．
+
+
 
 !/input,c:\ansys\test-line,txt
 finish
@@ -28,7 +33,7 @@ finish
 
 !-基本定義--------------------------------------------------
 ANTYPE,STATIC        ! 静解析
-ET,1,SOLID185       ! 試験片ALとCFRPにSOLID185を使用
+ET,1,SOLID186       ! 試験片ALとCFRPにSOLID185を使用
 
 /NOPR                !構造解析
 KEYW,PR_SET,1   
@@ -45,7 +50,7 @@ KEYW,PR_CFD,0
 /GO 
 
 !-パラメータ定義--------------------------------------------
-X1	=	120E-3
+X1	=	100E-3
 ! Y1	=	25E-3
 Z1	=	5E-3
 Y2	=	8E-3
@@ -54,8 +59,8 @@ Z2      =       3E-3
 Y4 = 2E-3
 Z3 = 2E-3
 
-DIV1=2E-3  !分割数1
-DIV2=0.4E-3 !分割数2
+DIV1=2.0E-3  !分割数1 エポキシ樹脂・PLA
+DIV2=0.5E-3 !分割数2 CFRP
 DIV3=0.4E-3
 DIV4=0.2E-3
 DIV5=0.2E-3
@@ -117,8 +122,8 @@ Cee1 = 54E9!1方向弾性率
 Cee2 = 6E9  !2方向弾性率
 Cee3 = 6E9  !3方向弾性率
 
-Cnu12 = 0.15 !zx,zy方向ポアソン比
-Cnu21 = 0.15 !xz,yz方向ポアソン比
+Cnu12 = 0.20 !zx,zy方向ポアソン比
+Cnu21 = 0.1 !xz,yz方向ポアソン比
 !Cnu21 = 0.16 !xy,yx方向ポアソン比
 
 Cg23 = 9E9 !2-3方向せん断弾性率
@@ -157,16 +162,16 @@ MP,GXZ,3,Cg23
 
 !-損傷モデル定義------------------------------------------
 
-tb,dmgi,1,,4,1			! 損傷発生の基準則を指定
-tbdata,1,2,2,2,2			! 最大応力則の指定
+! tb,dmgi,1,,4,1			! 損傷発生の基準則を指定
+! tbdata,1,2,2,2,2			! 最大応力則の指定
 
-tb,fcli,1,1,20,1			! 損傷発生の閾値を指定
-tbdata,1,AsuX,AsuA,AsuY,AsuA,AsuZ,AsuA! 応力指定
-tbdata,7,SendanXYZ,SendanXYZ,SendanXYZ
+! tb,fcli,1,1,20,1			! 損傷発生の閾値を指定
+! tbdata,1,AsuX,AsuA,AsuY,AsuA,AsuZ,AsuA! 応力指定
+! tbdata,7,SendanXYZ,SendanXYZ,SendanXYZ
 
 
-tb,dmge,1,1,4,1			! 損傷発生時の剛性減少率を指定
-tbdata,1,1,1,1,1	! 損傷発生時の剛性減少率を指定
+! tb,dmge,1,1,4,1			! 損傷発生時の剛性減少率を指定
+! tbdata,1,1,1,1,1	! 損傷発生時の剛性減少率を指定
 
 
 
@@ -247,8 +252,8 @@ CM,UCHI,VOLU
 
 ! VSEL,S,LOC,X,0,X1
 
-ALLSEL
-VGLUE,ALL
+! ALLSEL
+! VGLUE,ALL
 
 ! !-CF部のローカル座標定義--------------------------------------------------
 
@@ -262,32 +267,13 @@ VGLUE,ALL
 
 !-メッシュ分割--------------------------------------------------
 
-ALLSEL
-AESIZE,ALL,DIV1
+! ALLSEL
+! ! CMSEL,U,CFRP
+! AESIZE,ALL,DIV1
 
-ALLSEL
+CMSEL,S,CFRP
+AESIZE,ALL,DIV2
 
-!-試験片外側メッシュ--------------------------------------------
-CMSEL,U,UCHI
-CMSEL,U,CFRP
-TYPE,1                             !要素1
-MAT,1                             !材料1
-VSWEEP,ALL
-MOPT,DEFA
-CM,SOTO,VOLU
-ALLSEL
-
-!-試験片内側メッシュ--------------------------------------------
-CMSEL,S,UCHI
-TYPE,1                             !要素1
-MAT,2                             !材料2
-! MSHAPE,0,3D
-! MSHKEY,1
-! VMESH,ALL
-! MOPT,DEFA
-VSWEEP,ALL
-MOPT,DEFA
-CM,UCHI,VOLU
 ALLSEL
 
 !-試験片CFRPメッシュ--------------------------------------------
@@ -301,6 +287,37 @@ MOPT,DEFA
 ! VSWEEP,ALL
 ! MOPT,DEFA
 CM,CFRP,VOLU
+
+
+!-試験片内側メッシュ--------------------------------------------
+ALLSEL
+AESIZE,ALL,DIV1
+
+CMSEL,S,UCHI
+TYPE,1                             !要素1
+MAT,2                             !材料2
+! MSHAPE,1,3D
+! MSHKEY,0
+! VMESH,ALL
+VSWEEP,ALL
+MOPT,DEFA
+CM,UCHI,VOLU
+
+!-試験片外側メッシュ--------------------------------------------
+
+ALLSEL
+CMSEL,U,UCHI
+CMSEL,U,CFRP
+TYPE,1                             !要素1
+MAT,1                             !材料1
+! MSHAPE,0,3D
+! MSHKEY,1
+! VMESH,ALL
+VSWEEP,ALL
+MOPT,DEFA
+CM,SOTO,VOLU
+ALLSEL
+
 
 !-境界条件指定--------------------------------------------------
 ALLSEL
@@ -376,25 +393,6 @@ SET,LAST
 WPLANE, 1, 0, 0, Z1/2, 0, Y3, Z1/2, X1, 0, Z1/2
 /CPLANE, 1
 /TYPE,1,8
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
