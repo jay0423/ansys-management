@@ -44,6 +44,9 @@ df["strain"] = df.loc[:,"TIME"] * SPEED / LENGTH # 歪みの追加
 df["FX"] = df.loc[:,"FX"] * (-1) # 荷重の変換
 df["stress"] = df.loc[:,"FX"] / CROSS_SECTIONAL_AREA # 応力の追加
 
+# 最大応力の算出
+max_stress = max(df["stress"])
+
 #EXCELファイルへ書き出し
 df.to_excel("../stress_strain_excel/stress_strain_{}.xlsx".format(FILE_NAME), index=False)
 
@@ -54,6 +57,8 @@ sheet = book['Sheet1']
 # セルへ書き込む
 sheet['F1'] = '詳細'
 sheet['G1'] = DETAIL
+sheet['F2'] = '最大応力'
+sheet['G2'] = max_stress
 # 保存する
 book.save("../stress_strain_excel/stress_strain_{}.xlsx".format(FILE_NAME))
 
