@@ -10,13 +10,13 @@ import sys
 import openpyxl
 
 
-SPEED = 0.001 #[m/s]
-LENGTH = 0.12 #[m]
+SPEED = 0.001 #試験速度[m/s]
+LENGTH = 0.12 #試験片長さ[m]
 CROSS_SECTIONAL_AREA = 48.60 #[mm2]
 FILE_NAME = input("csvファイル名を入力：")
 FILE_NAME = FILE_NAME.replace(".csv","")
 DETAIL = input("ファイルの詳細：")
-print(DETAIL)
+
 
 # dataframeの整理
 try:
@@ -40,18 +40,15 @@ df.loc[:,"TIME"] = df.loc[:,"TIME"].map(clean)
 df.loc[:,"FX"] = df.loc[:,"FX"].map(clean)
 df = df.dropna(how="any")
 
-# 歪みの追加
-df["strain"] = df.loc[:,"TIME"] * SPEED / LENGTH
-# 荷重の変換
-df["FX"] = df.loc[:,"FX"] * (-1)
-# 応力の追加
-df["stress"] = df.loc[:,"FX"] / CROSS_SECTIONAL_AREA
+df["strain"] = df.loc[:,"TIME"] * SPEED / LENGTH # 歪みの追加
+df["FX"] = df.loc[:,"FX"] * (-1) # 荷重の変換
+df["stress"] = df.loc[:,"FX"] / CROSS_SECTIONAL_AREA # 応力の追加
 
 #EXCELファイルへ書き出し
 df.to_excel("../stress_strain_excel/stress_strain_{}.xlsx".format(FILE_NAME), index=False)
 
 
-# 詳細を記載する．
+# エクセルファイルへ詳細を記載する．
 book = openpyxl.load_workbook("../stress_strain_excel/stress_strain_{}.xlsx".format(FILE_NAME))
 sheet = book['Sheet1']
 # セルへ書き込む
@@ -60,4 +57,9 @@ sheet['G1'] = DETAIL
 # 保存する
 book.save("../stress_strain_excel/stress_strain_{}.xlsx".format(FILE_NAME))
 
-# print(df)
+
+# 記録ファイルへの記載
+path = "../stress_strain_excel/file_details.txt"
+with open(path, mode="a") as f:
+    f.write("\nstress_strain_{}.xlsx    {}".format(FILE_NAME, DETAIL))
+
