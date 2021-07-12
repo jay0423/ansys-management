@@ -7,12 +7,16 @@ TIMEとFXの列から歪みと応力を算出し，エクセルファイルで�
 import pandas as pd
 import numpy as np
 import sys
+import openpyxl
+
 
 SPEED = 0.001 #[m/s]
 LENGTH = 0.12 #[m]
 CROSS_SECTIONAL_AREA = 48.60 #[mm2]
 FILE_NAME = input("csvファイル名を入力：")
 FILE_NAME = FILE_NAME.replace(".csv","")
+DETAIL = input("ファイルの詳細：")
+print(DETAIL)
 
 # dataframeの整理
 try:
@@ -43,8 +47,17 @@ df["FX"] = df.loc[:,"FX"] * (-1)
 # 応力の追加
 df["stress"] = df.loc[:,"FX"] / CROSS_SECTIONAL_AREA
 
-
 #EXCELファイルへ書き出し
 df.to_excel("../stress_strain_excel/stress_strain_{}.xlsx".format(FILE_NAME), index=False)
 
-print(df)
+
+# 詳細を記載する．
+book = openpyxl.load_workbook("../stress_strain_excel/stress_strain_{}.xlsx".format(FILE_NAME))
+sheet = book['Sheet1']
+# セルへ書き込む
+sheet['F1'] = '詳細'
+sheet['G1'] = DETAIL
+# 保存する
+book.save("../stress_strain_excel/stress_strain_{}.xlsx".format(FILE_NAME))
+
+# print(df)
