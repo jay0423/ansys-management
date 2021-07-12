@@ -2,6 +2,7 @@
 ! 各CFRP長さは65mm
 ! 継手長さが10mm
 ! 以下警告が未解決
+! 2366
 
 !  *** WARNING ***                         CP =     148.953   TIME= 16:22:11
 !  Structural elements without mid nodes usually produce much more         
@@ -85,6 +86,9 @@ Anu12 = 0.3 !全方向ポアソン比
 
 Ag12 = 26E9   !全方向せん断弾性率
 
+AsuA = -20E6 !圧縮強度
+AsuXYZ = 35.1E6 !引張強度
+SendanXYZ_1 = 20E6 !せん断許容応力
 !MITUDO2= 2790   !質量密度
 
      
@@ -108,6 +112,10 @@ Bee1 = 2E9!全方向弾性率
 Bnu12 = 0.39 !全方向ポアソン比
 
 Bg12 = 26E9   !全方向せん断弾性率
+
+BsuA = -200E6 !圧縮強度
+BsuXYZ = 11.2E6 !引張強度
+SendanXYZ_2= 10E6 !せん断許容応力
 
 !MITUDO2= 2790   !質量密度
 
@@ -137,13 +145,13 @@ Cnu21 = 0.15 !xz,yz方向ポアソン比
 Cg23 = 9E9 !2-3方向せん断弾性率
 Cg12 = 4E9 !2-3方向せん断弾性率
 
-CsuA = -100E9 !引張強度(繊維平行方向)
+CsuA = -100E9 !圧縮強度
 CsuX = 701E6 !引張強度(繊維平行方向)
 CsuZ = 19E6 !引張強度(繊維垂直方向)
 CsuY = 19E6 !引張強度(繊維垂直レイアップ方向)
 SendanXYZ = 90.4E6 !せん断許容応力
 
-MITUDO1=  1260  !質量密度
+! MITUDO1=  1260  !質量密度
 
 
 
@@ -170,21 +178,43 @@ MP,GXZ,3,Cg23
 
 !-損傷モデル定義------------------------------------------
 
+!>>>>>材料1>>>>>>>
+! PLA
 TB,DMGI,1,,4,1			! 損傷発生の基準則を指定
 TBDATA,1,2,2,2,2			! 最大応力則の指定
 
 TB,FCLI,1,1,20,1			! 損傷発生の閾値を指定
-TBDATA,1,CsuX,CsuA,CsuY,CsuA,CsuZ,CsuA! 応力指定
-TBDATA,7,SendanXYZ,SendanXYZ,SendanXYZ
-
+TBDATA,1,AsuXYZ,AsuA,AsuXYZ,AsuA,AsuXYZ,AsuA! 応力指定
+TBDATA,7,SendanXYZ_1,SendanXYZ_1,SendanXYZ_1
 
 TB,DMGE,1,1,4,1			! 損傷発生時の剛性減少率を指定
 TBDATA,1,1,1,1,1	! 損傷発生時の剛性減少率を指定
 
 
+!>>>>>材料2>>>>>>>
+! epoxy
+TB,DMGI,2,,4,1			! 損傷発生の基準則を指定
+TBDATA,1,2,2,2,2			! 最大応力則の指定
+
+TB,FCLI,2,1,20,1			! 損傷発生の閾値を指定
+TBDATA,1,BsuXYZ,BsuA,BsuXYZ,BsuA,BsuXYZ,BsuA! 応力指定
+TBDATA,7,SendanXYZ_2,SendanXYZ_2,SendanXYZ_2
+
+TB,DMGE,2,1,4,1			! 損傷発生時の剛性減少率を指定
+TBDATA,1,1,1,1,1	! 損傷発生時の剛性減少率を指定
 
 
+!>>>>>材料3>>>>>>>
+! CFRP
+TB,DMGI,3,,4,1			! 損傷発生の基準則を指定
+TBDATA,1,2,2,2,2			! 最大応力則の指定
 
+TB,FCLI,3,1,20,1			! 損傷発生の閾値を指定
+TBDATA,1,CsuX,CsuA,CsuY,CsuA,CsuZ,CsuA! 応力指定
+TBDATA,7,SendanXYZ,SendanXYZ,SendanXYZ
+
+TB,DMGE,3,1,4,1			! 損傷発生時の剛性減少率を指定
+TBDATA,1,1,1,1,1	! 損傷発生時の剛性減少率を指定
 
 
 
