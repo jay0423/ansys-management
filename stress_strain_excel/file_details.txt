@@ -3,3 +3,4 @@
 ファイル名    詳細
 stress_strain_lap=20_210711.xlsx    CFRPの継ぎ手長さが20mmで，CFRPのメッシュを0.5mmと小さくした．
 stress_strain_lap=10_high_mesh.xlsx    継ぎ手長さが10mmの，CFRP部のメッシュを細かく分割した．
+stress_strain_CFRP1_sonshou.xlsx    CFRP1本．損傷モデル解析を行った．

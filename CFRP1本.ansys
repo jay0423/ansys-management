@@ -129,13 +129,13 @@ Cnu21 = 0.1 !xz,yz方向ポアソン比
 Cg23 = 9E9 !2-3方向せん断弾性率
 Cg12 = 4E9 !2-3方向せん断弾性率
 
-! CsuA = -100E9 !引張強度(繊維平行方向)
-! CsuX = 701E6 !引張強度(繊維平行方向)
-! CsuZ = 19E6 !引張強度(繊維垂直方向)
-! CsuY = 19E6 !引張強度(繊維垂直レイアップ方向)
-! SendanXYZ = 90.4E6 !せん断許容応力
+CsuA = -100E9 !引張強度(繊維平行方向)
+CsuX = 701E6 !引張強度(繊維平行方向)
+CsuZ = 19E6 !引張強度(繊維垂直方向)
+CsuY = 19E6 !引張強度(繊維垂直レイアップ方向)
+SendanXYZ = 90.4E6 !せん断許容応力
 
-!MITUDO1=  1260  !質量密度
+MITUDO1=  1260  !質量密度
 
 
 
@@ -162,16 +162,16 @@ MP,GXZ,3,Cg23
 
 !-損傷モデル定義------------------------------------------
 
-! tb,dmgi,1,,4,1			! 損傷発生の基準則を指定
-! tbdata,1,2,2,2,2			! 最大応力則の指定
+TB,DMGI,1,,4,1  ! 損傷発生の基準則を指定
+TBDATA,1,2,2,2,2	! 最大応力則の指定
 
-! tb,fcli,1,1,20,1			! 損傷発生の閾値を指定
-! tbdata,1,AsuX,AsuA,AsuY,AsuA,AsuZ,AsuA! 応力指定
-! tbdata,7,SendanXYZ,SendanXYZ,SendanXYZ
+TB,FCLI,1,1,20,1	! 損傷発生の閾値を指定
+TBDATA,1,CsuX,CsuA,CsuY,CsuA,CsuZ,CsuA! 応力指定
+TBDATA,7,SendanXYZ,SendanXYZ,SendanXYZ
 
 
-! tb,dmge,1,1,4,1			! 損傷発生時の剛性減少率を指定
-! tbdata,1,1,1,1,1	! 損傷発生時の剛性減少率を指定
+TB,DMGE,1,1,4,1		! 損傷発生時の剛性減少率を指定
+TBDATA,1,1,1,1,1	! 損傷発生時の剛性減少率を指定
 
 
 
@@ -378,7 +378,7 @@ FINISH
 /POST26
 
 RFORCE, 2, NNUM, F, X, FX
-prvar,2, !変数2をリストに表示
+PRVAR,2, !変数2をリストに表示
 
 
 
