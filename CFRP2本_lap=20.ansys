@@ -137,9 +137,9 @@ Cee1 = 54E9!1方向弾性率
 Cee2 = 6E9  !2方向弾性率
 Cee3 = 6E9  !3方向弾性率
 
-Cnu12 = 0.15 !zx,zy方向ポアソン比
-Cnu21 = 0.15 !xz,yz方向ポアソン比
-!Cnu21 = 0.16 !xy,yx方向ポアソン比
+Cnu12 = 0.30 !zx,zy方向ポアソン比
+Cnu13 = 0.30 !xz,yz方向ポアソン比
+Cnu23 = 0.35 !xy,yx方向ポアソン比
 
 Cg23 = 9E9 !2-3方向せん断弾性率
 Cg12 = 4E9 !2-3方向せん断弾性率
@@ -158,13 +158,13 @@ MP,EX,3,Cee1        ! 材料1:CFRTP
 MP,EY,3,Cee3  
 MP,EZ,3,Cee2 
  
-!MP,PRXY,3,Cnu21
-!MP,PRYZ,3,Cnu21
-!MP,PRXZ,3,Cnu21
+MP,PRXY,3,Cnu12
+MP,PRYZ,3,Cnu23
+MP,PRXZ,3,Cnu13
 
-MP,NUXY,3,Cnu12
-MP,NUYZ,3,Cnu21
-MP,NUXZ,3,Cnu12
+! MP,NUXY,3,Cnu12
+! MP,NUYZ,3,Cnu21
+! MP,NUXZ,3,Cnu12
 
 
 MP,GXY,3,Cg23
