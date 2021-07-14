@@ -7,3 +7,4 @@ stress_strain_CFRP1_sonshou.xlsx    CFRP1本．損傷モデル解析を行った
 stress_strain_lap=10_1.xlsx    CFRP2本継ぎ手長さが10，各損傷パラメータを入力して試験を行った．
 stress_strain_CFRP1_1.xlsx    CFRP1本で，損傷モデルを追加して解析を行った結果．
 stress_strain_CFRP2_lap=20_1.xlsx    継ぎ手長さが20mmで，損傷モデルを追加した．
+stress_strain_lap=20_gap=10.xlsx    継ぎ手間の距離を10mmに設定して解析を行った．
