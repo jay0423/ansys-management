@@ -348,6 +348,255 @@ CM,SOTO,VOLU
 ALLSEL
 
 
+
+!接触要素--------------------------------------------
+c1  = 1E6    !法線方向の接触応力と等価の最大値
+c2  = 0.7E3   !法線方向分離のための臨界破壊エネルギー
+c3  = 2.42E6   !接線方向の接触応力と等価の最大値
+c4  = 0.7E3   !接線方向滑りのための臨界破壊エネルギー
+c5 = 1E-3
+c6 =  1   !法線方向の圧縮力が生じているときに接戦方向に剥離するか
+kslope = 1.3E9  !接触剛性FKN
+pinb= 2E-4
+pinb2= 2E-4
+
+ET,3,TARGE170       ! 接触要素ターゲット面
+ET,4,CONTA174       ! 接触要素コンタクト面
+ET,5,TARGE170       ! 接触要素ターゲット面
+ET,6,CONTA174       ! 接触要素コンタクト面
+ET,7,TARGE170       ! 接触要素ターゲット面
+ET,8,CONTA177       ! 接触要素コンタクト面
+ET,9,TARGE170       ! 接触要素ターゲット面
+ET,10,CONTA177       ! 接触要素コンタクト面
+KEYOPT,CONT,12,5       ! 接触面の挙動()
+KEYOPT,CONT,7,1        !要素レベルの時間増分制御/影響制約
+!KEYOPT,CONT,4,1       !接触検出ポイントの場所
+KEYOPT,CONT,5,3      !自動CNOFでギャップを埋める/浸透を減らす
+KEYOPT,CONT,10,1      !接触剛性の更新
+KEYOPT,CONT,9,1       !自動CNOFでギャップを埋める/浸透を減らす
+
+KEYOPT,8,3,2       ! 接触面の挙動()
+KEYOPT,10,3,2       ! 接触面の挙動()
+
+
+R,3,,,-kslope,,,-pinb         ! リアルコンスタンス定義  
+R,4,,,-kslope,,,-pinb2        ! リアルコンスタンス定義   
+R,5,,,-kslope,,,-pinb2        ! リアルコンスタンス定義   
+R,6,,,-kslope,,,-pinb2        ! リアルコンスタンス定義 
+
+R,7,,,-kslope,,,-pinb         ! リアルコンスタンス定義  
+R,8,,,-kslope,,,-pinb2        ! リアルコンスタンス定義
+
+R,9,,,-kslope,,,-pinb2        ! リアルコンスタンス定義
+
+TB,CZM,3,1,1,CBDE   ! 粘着材料の定義
+TBDATA,1,c1,c2,c3,c4,c5,c6
+
+TB,CZM,4,1,1,CBDE   ! 粘着材料の定義
+TBDATA,1,c1,c2,c3,c4,c5,c6
+
+TB,CZM,5,1,1,CBDE   ! 粘着材料の定義
+TBDATA,1,c1,c2,c3,c4,c5,c6
+
+
+TB,CZM,6,1,1,CBDE   ! 粘着材料の定義
+TBDATA,1,c1,c2,c3,c4,c5,c6
+
+
+TB,CZM,7,1,1,CBDE   ! 粘着材料の定義
+TBDATA,1,c1,c2,c3,c4,c5,c6
+
+TB,CZM,8,1,1,CBDE   ! 粘着材料の定義
+TBDATA,1,c1,c2,c3,c4,c5,c6
+
+!接触要素の生成---------------------------------------------
+ALLSEL
+
+TYPE,1
+MAT,1
+REAL,1
+ESEL,S,MAT,,1
+NSLE, S, ALL
+NSEL,R,LOC,Z,0,L_J
+NSEL,R,LOC,Y,H_AL
+ESURF   ! 接触要素の生成(ターゲット面
+
+ALLSEL
+
+TYPE,4
+MAT,3
+REAL,3
+ESEL,S,MAT,,2
+NSLE, S, ALL
+NSEL,R,LOC,Z,0,L_J
+NSEL,R,LOC,Y,H_AL
+CM, CONTA21, NODE
+ESURF   ! 接触要素の生成(コンタクト面
+
+ALLSEL
+ESEL,S,MAT,,2
+NSLE, S, ALL
+NSEL,R,LOC,X,0
+NSEL, R, LOC, Z, L_J/2-PIN_D/2+DIV4, L_J/2+PIN_D/2-DIV4
+CM, CONTA1, NODE
+
+
+ALLSEL
+TYPE,6
+MAT,4
+REAL,4
+ESEL,S,MAT,,2
+NSLE, S, ALL
+NSEL, R, LOC, X, 0, PIN_D/2
+NSEL, R, LOC, Y, H_AL, H_AL+H_CF
+NSEL, R, LOC, Z, L_J/2-PIN_D/2, L_J/2+PIN_D/2
+CMSEL,U,CONTA1 !コンポーネント選択解除
+CM, CONTA11, NODE
+ESURF   ! 接触要素の生成(コンタクト面
+
+
+ALLSEL
+
+TYPE,5
+MAT,4
+REAL,4
+ESEL,S,MAT,,1
+NSLE, S, ALL
+NSEL, R, LOC, X, 0, PIN_D/2
+NSEL, R, LOC, Y, H_AL, H_AL+H_CF
+NSEL, R, LOC, Z, L_J/2-PIN_D/2, L_J/2+PIN_D/2
+CM, CONTA12, NODE
+
+ESURF   ! 接触要素の生成(ターゲット面
+
+
+
+ALLSEL
+
+TYPE,4
+MAT,7
+REAL,7
+ESEL,S,MAT,,1
+NSLE, S, ALL
+NSEL,R,LOC,Z,0,L_J
+NSEL,R,LOC,Y,H_AL
+ESURF   ! 接触要素の生成(ターゲット面
+
+ALLSEL
+
+TYPE,3
+MAT,7
+REAL,7
+ESEL,S,MAT,,2
+NSLE, S, ALL
+NSEL,R,LOC,Z,0,L_J
+NSEL,R,LOC,Y,H_AL
+CM, CONTA21, NODE
+ESURF   ! 接触要素の生成(コンタクト面
+
+ALLSEL
+ESEL,S,MAT,,2
+NSLE, S, ALL
+NSEL,R,LOC,X,0
+NSEL, R, LOC, Z, L_J/2-PIN_D/2+DIV4, L_J/2+PIN_D/2-DIV4
+CM, CONTA1, NODE
+
+
+ALLSEL
+TYPE,5
+MAT,8
+REAL,8
+ESEL,S,MAT,,2
+NSLE, S, ALL
+NSEL, R, LOC, X, 0, PIN_D/2
+NSEL, R, LOC, Y, H_AL, H_AL+H_CF
+NSEL, R, LOC, Z, L_J/2-PIN_D/2, L_J/2+PIN_D/2
+CMSEL,U,CONTA1 !コンポーネント選択解除
+CM, CONTA11, NODE
+ESURF   ! 接触要素の生成(コンタクト面
+
+
+ALLSEL
+
+TYPE,6
+MAT,8
+REAL,8
+ESEL,S,MAT,,1
+NSLE, S, ALL
+NSEL, R, LOC, X, 0, PIN_D/2
+NSEL, R, LOC, Y, H_AL, H_AL+H_CF
+NSEL, R, LOC, Z, L_J/2-PIN_D/2, L_J/2+PIN_D/2
+CM, CONTA12, NODE
+
+ESURF   ! 接触要素の生成(ターゲット面
+
+
+
+ALLSEL
+TYPE,8
+MAT,5
+REAL,5
+ESEL,S,MAT,,1
+CMSEL,S,CONTA12 !コンポーネント選択
+NSEL, R, LOC, Y, H_AL
+!NSEL, R, LOC, X, 0
+!NSEL, R, LOC, Z, L_J/2-PIN_D/2
+
+ESURF   ! 接触要素の生成(コンタクト面
+
+
+ALLSEL
+TYPE,7
+MAT,5
+REAL,5
+ESEL,S,MAT,,2
+CMSEL,S,CONTA21 !コンポーネント選択
+ESURF   ! 接触要素の生成(ターゲット面
+
+ALLSEL
+TYPE,10
+MAT,6
+REAL,6
+ESEL,S,MAT,,1
+CMSEL,S,CONTA12 !コンポーネント選択
+NSEL, R, LOC, Y, H_AL+H_CF
+!NSEL, R, LOC, X, 0
+!NSEL, R, LOC, Z, L_J/2-PIN_D/2
+ESURF   ! 接触要素の生成(コンタクト面
+
+
+ALLSEL
+TYPE,9
+MAT,6
+REAL,6
+ESEL,S,MAT,,2
+CMSEL,S,CONTA11 !コンポーネント選択
+ESURF   ! 接触要素の生成(ターゲット面
+
+
+
+ALLSEL
+TYPE,8
+MAT,5
+REAL,9
+ESEL,S,MAT,,1
+
+NSEL, R, LOC, Y, H_AL
+NSEL, R, LOC, X, W_CF/2
+NSEL, R, LOC, Z, 0,L_J
+
+ESURF   ! 接触要素の生成(コンタクト面
+
+
+ALLSEL
+TYPE,7
+MAT,5
+REAL,9
+ESEL,S,MAT,,2
+CMSEL,S,CONTA21 !コンポーネント選択
+ESURF   ! 接触要素の生成(ターゲット面
+
+
 !-境界条件指定--------------------------------------------------
 ALLSEL
 
