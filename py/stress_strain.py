@@ -5,7 +5,6 @@ TIMEとFXの列から歪みと応力を算出し，エクセルファイルで�
 
 
 import pandas as pd
-import numpy as np
 import sys
 import openpyxl as px
 
