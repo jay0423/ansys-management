@@ -10,3 +10,4 @@ stress_strain_CFRP2_lap=20_1.xlsx    継ぎ手長さが20mmで，損傷モデル
 stress_strain_lap=20_gap=10.xlsx    継ぎ手間の距離を10mmに設定して解析を行った．
 stress_strain_lap=20_gap=05.xlsx    C間の距離が0.5mmの解析結果
 stress_strain_lap=20_gap=05_p.xlsx    gap=0.5mmでポアソン比を修正して引張試験を行った．
+stress_strain_lap=20_gap=2_2.xlsx    メッシュを細かく分割して解析を行なった
