@@ -1,5 +1,6 @@
 ! CFRPを傘のような形状にして解析を行う
 ! Z方向には埋め込まれていない
+! 最初の部分のみに斜め方向にCFRPが埋め込まれている．
 
 !/input,c:\ansys\test-line,txt
 finish

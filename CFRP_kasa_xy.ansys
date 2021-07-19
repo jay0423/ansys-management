@@ -50,6 +50,7 @@ K_h = 0.8E-3 ! CFRPの傘の幅
 K_a = K_h/SIN(K_sita) !CFRP傘の角度θの幅
 K_b = K_h/COS(K_sita) !CFRP傘の角度θの幅2
 
+K_s = 21.9E-3 !CFRPの間隔
 alpha = 0.1E-3
 
 DIV1=2.0E-3  !分割数1 エポキシ樹脂・PLA
@@ -249,6 +250,62 @@ K       ,      38       ,       K_x    ,    P_y - (P_y - E_y)/2 - alpha   ,     
 K       ,      39       ,       K_x    ,    P_y - (P_y - E_y)/2 - K_b - alpha ,  (Z1-CF_z)/2 + (CF_z-K_h)/2 + K_h
 K       ,      40       ,       K_a    ,    (P_y - CF_y)/2 + CF_y  ,       (Z1-CF_z)/2 + (CF_z-K_h)/2 + K_h
 
+! CFRPの傘部分2
+K       ,      41       ,       K_s      ,    (P_y - CF_y)/2  ,       (Z1-CF_z)/2 + (CF_z-K_h)/2
+K       ,      42       ,       K_a+K_s    ,    (P_y - CF_y)/2  ,       (Z1-CF_z)/2 + (CF_z-K_h)/2
+K       ,      43       ,       K_x+K_s    ,    (P_y - E_y)/2 + K_b + alpha ,  (Z1-CF_z)/2 + (CF_z-K_h)/2
+K       ,      44       ,       K_x+K_s    ,    (P_y - E_y)/2 + alpha   ,       (Z1-CF_z)/2 + (CF_z-K_h)/2
+K       ,      45       ,       0+K_s      ,    (P_y - CF_y)/2  ,       (Z1-CF_z)/2 + (CF_z-K_h)/2 + K_h
+K       ,      46       ,       K_a+K_s    ,    (P_y - CF_y)/2  ,       (Z1-CF_z)/2 + (CF_z-K_h)/2 + K_h
+K       ,      47       ,       K_x+K_s    ,    (P_y - E_y)/2 + K_b + alpha ,  (Z1-CF_z)/2 + (CF_z-K_h)/2 + K_h
+K       ,      48       ,       K_x+K_s    ,    (P_y - E_y)/2 + alpha   ,      (Z1-CF_z)/2 + (CF_z-K_h)/2 + K_h
+
+K       ,      49       ,       0+K_s      ,    (P_y - CF_y)/2 + CF_y  ,       (Z1-CF_z)/2 + (CF_z-K_h)/2
+K       ,      50       ,       K_x+K_s    ,    P_y - (P_y - E_y)/2 - alpha   ,       (Z1-CF_z)/2 + (CF_z-K_h)/2
+K       ,      51       ,       K_x+K_s    ,    P_y - (P_y - E_y)/2 - K_b - alpha ,  (Z1-CF_z)/2 + (CF_z-K_h)/2
+K       ,      52       ,       K_a+K_s    ,    (P_y - CF_y)/2 + CF_y  ,       (Z1-CF_z)/2 + (CF_z-K_h)/2
+K       ,      53       ,       0+K_s      ,    (P_y - CF_y)/2 + CF_y  ,       (Z1-CF_z)/2 + (CF_z-K_h)/2 + K_h
+K       ,      54       ,       K_x+K_s    ,    P_y - (P_y - E_y)/2 - alpha   ,      (Z1-CF_z)/2 + (CF_z-K_h)/2 + K_h
+K       ,      55       ,       K_x +K_s   ,    P_y - (P_y - E_y)/2 - K_b - alpha ,  (Z1-CF_z)/2 + (CF_z-K_h)/2 + K_h
+K       ,      56       ,       K_a +K_s   ,    (P_y - CF_y)/2 + CF_y  ,       (Z1-CF_z)/2 + (CF_z-K_h)/2 + K_h
+
+! CFRPの傘部分3
+K       ,      57       ,       K_s*2      ,    (P_y - CF_y)/2  ,       (Z1-CF_z)/2 + (CF_z-K_h)/2
+K       ,      58       ,       K_a+K_s*2    ,    (P_y - CF_y)/2  ,       (Z1-CF_z)/2 + (CF_z-K_h)/2
+K       ,      59       ,       K_x+K_s*2    ,    (P_y - E_y)/2 + K_b + alpha ,  (Z1-CF_z)/2 + (CF_z-K_h)/2
+K       ,      60       ,       K_x+K_s*2    ,    (P_y - E_y)/2 + alpha   ,       (Z1-CF_z)/2 + (CF_z-K_h)/2
+K       ,      61       ,       0+K_s*2      ,    (P_y - CF_y)/2  ,       (Z1-CF_z)/2 + (CF_z-K_h)/2 + K_h
+K       ,      62       ,       K_a+K_s*2    ,    (P_y - CF_y)/2  ,       (Z1-CF_z)/2 + (CF_z-K_h)/2 + K_h
+K       ,      63       ,       K_x+K_s*2    ,    (P_y - E_y)/2 + K_b + alpha ,  (Z1-CF_z)/2 + (CF_z-K_h)/2 + K_h
+K       ,      64       ,       K_x+K_s*2    ,    (P_y - E_y)/2 + alpha   ,      (Z1-CF_z)/2 + (CF_z-K_h)/2 + K_h
+
+K       ,      65       ,       0+K_s*2      ,    (P_y - CF_y)/2 + CF_y  ,       (Z1-CF_z)/2 + (CF_z-K_h)/2
+K       ,      66       ,       K_x+K_s*2    ,    P_y - (P_y - E_y)/2 - alpha   ,       (Z1-CF_z)/2 + (CF_z-K_h)/2
+K       ,      67       ,       K_x+K_s*2    ,    P_y - (P_y - E_y)/2 - K_b - alpha ,  (Z1-CF_z)/2 + (CF_z-K_h)/2
+K       ,      68       ,       K_a+K_s*2    ,    (P_y - CF_y)/2 + CF_y  ,       (Z1-CF_z)/2 + (CF_z-K_h)/2
+K       ,      69       ,       0+K_s*2      ,    (P_y - CF_y)/2 + CF_y  ,       (Z1-CF_z)/2 + (CF_z-K_h)/2 + K_h
+K       ,      70       ,       K_x+K_s*2    ,    P_y - (P_y - E_y)/2 - alpha   ,      (Z1-CF_z)/2 + (CF_z-K_h)/2 + K_h
+K       ,      71       ,       K_x +K_s*2   ,    P_y - (P_y - E_y)/2 - K_b - alpha ,  (Z1-CF_z)/2 + (CF_z-K_h)/2 + K_h
+K       ,      72       ,       K_a +K_s*2   ,    (P_y - CF_y)/2 + CF_y  ,       (Z1-CF_z)/2 + (CF_z-K_h)/2 + K_h
+
+! CFRPの傘部分4
+K       ,      73       ,       K_s*3      ,    (P_y - CF_y)/2  ,       (Z1-CF_z)/2 + (CF_z-K_h)/2
+K       ,      74       ,       K_a+K_s*3    ,    (P_y - CF_y)/2  ,       (Z1-CF_z)/2 + (CF_z-K_h)/2
+K       ,      75       ,       K_x+K_s*3    ,    (P_y - E_y)/2 + K_b + alpha ,  (Z1-CF_z)/2 + (CF_z-K_h)/2
+K       ,      76       ,       K_x+K_s*3    ,    (P_y - E_y)/2 + alpha   ,       (Z1-CF_z)/2 + (CF_z-K_h)/2
+K       ,      77       ,       0+K_s*3      ,    (P_y - CF_y)/2  ,       (Z1-CF_z)/2 + (CF_z-K_h)/2 + K_h
+K       ,      78       ,       K_a+K_s*3    ,    (P_y - CF_y)/2  ,       (Z1-CF_z)/2 + (CF_z-K_h)/2 + K_h
+K       ,      79       ,       K_x+K_s*3    ,    (P_y - E_y)/2 + K_b + alpha ,  (Z1-CF_z)/2 + (CF_z-K_h)/2 + K_h
+K       ,      80       ,       K_x+K_s*3    ,    (P_y - E_y)/2 + alpha   ,      (Z1-CF_z)/2 + (CF_z-K_h)/2 + K_h
+
+K       ,      81       ,       0+K_s*3      ,    (P_y - CF_y)/2 + CF_y  ,       (Z1-CF_z)/2 + (CF_z-K_h)/2
+K       ,      82       ,       K_x+K_s*3    ,    P_y - (P_y - E_y)/2 - alpha   ,       (Z1-CF_z)/2 + (CF_z-K_h)/2
+K       ,      83       ,       K_x+K_s*3    ,    P_y - (P_y - E_y)/2 - K_b - alpha ,  (Z1-CF_z)/2 + (CF_z-K_h)/2
+K       ,      84       ,       K_a+K_s*3    ,    (P_y - CF_y)/2 + CF_y  ,       (Z1-CF_z)/2 + (CF_z-K_h)/2
+K       ,      85       ,       0+K_s*3      ,    (P_y - CF_y)/2 + CF_y  ,       (Z1-CF_z)/2 + (CF_z-K_h)/2 + K_h
+K       ,      86       ,       K_x+K_s*3    ,    P_y - (P_y - E_y)/2 - alpha   ,      (Z1-CF_z)/2 + (CF_z-K_h)/2 + K_h
+K       ,      87       ,       K_x +K_s*3   ,    P_y - (P_y - E_y)/2 - K_b - alpha ,  (Z1-CF_z)/2 + (CF_z-K_h)/2 + K_h
+K       ,      88       ,       K_a +K_s*3   ,    (P_y - CF_y)/2 + CF_y  ,       (Z1-CF_z)/2 + (CF_z-K_h)/2 + K_h
 
 
 !-ヴォリューム構築------------------------------------------------------
@@ -269,13 +326,19 @@ CM,SOTO,VOLU
 V	,	17	,	18	,	19	,	20	,	21	,	22	,	23	,	24
 V	,	25	,	26	,	27	,	28	,	29	,	30	,	31	,	32
 V	,	33	,	34	,	35	,	36	,	37	,	38	,	39	,	40
+V	,	41	,	42	,	43	,	44	,	45	,	46	,	47	,	48
+V	,	49	,	50	,	51	,	52	,	53	,	54	,	55	,	56
+V	,	57	,	58	,	59	,	60	,	61	,	62	,	63	,	64
+V	,	65	,	66	,	67	,	68	,	69	,	70	,	71	,	72
+V	,	73	,	74	,	75	,	76	,	77	,	78	,	79	,	80
+V	,	81	,	82	,	83	,	84	,	85	,	86	,	87	,	88
 
 ALLSEL
 VOVLAP,ALL !重なり部分を削除
-VSEL,S,VOLU,,4,5
+VSEL,S,VOLU,,4,11
 CM,CFRP_K,VOLU
 
-VSEL,S,VOLU,,6,6
+VSEL,S,VOLU,,12,12
 CM,CFRP,VOLU
 
 ALLSEL
@@ -324,7 +387,10 @@ CM,CFRP_K,VOLU
 CMSEL,S,CFRP
 TYPE,1                             !要素1
 MAT,3                             !材料2
-VSWEEP,ALL
+! VSWEEP,ALL
+MSHAPE,1,3D
+MSHKEY,O
+VMESH,ALL
 MOPT,DEFA
 CM,CFRP,VOLU
 
