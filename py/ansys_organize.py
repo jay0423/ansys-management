@@ -74,18 +74,18 @@ class ANSYS:
         chart=px.chart.ScatterChart()
 
         # y,xデータの範囲を選択
-        x = px.chart.Reference(book["Sheet1"] ,min_col=3 ,max_col=3 ,min_row=2 ,max_row=self.MAX_ROW+1)
-        y = px.chart.Reference(book["Sheet1"] ,min_col=4 ,max_col=4 ,min_row=2 ,max_row=self.MAX_ROW+1)
+        x = px.chart.Reference(self.book["Sheet1"] ,min_col=3 ,max_col=3 ,min_row=2 ,max_row=self.MAX_ROW+1)
+        y = px.chart.Reference(self.book["Sheet1"] ,min_col=4 ,max_col=4 ,min_row=2 ,max_row=self.MAX_ROW+1)
 
         #系列変数seriesをy,xを指定して定義する
         series = px.chart.Series(y, x)
         #散布図として定義したchartへデータを指定したseries変数を渡す
         chart.series.append(series)
         #A6セルにグラフを表示
-        book["Sheet1"].add_chart(chart,"F5")
+        self.book["Sheet1"].add_chart(chart,"F5")
 
         # 保存する
-        book.save("../stress_strain_excel/stress_strain_{}.xlsx".format(self.FILE_NAME))
+        self.book.save("../stress_strain_excel/stress_strain_{}.xlsx".format(self.FILE_NAME))
 
 
     def write_txt(self):
