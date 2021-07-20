@@ -13,3 +13,6 @@ stress_strain_lap=20_gap=05_p.xlsx    gap=0.5mmでポアソン比を修正して
 stress_strain_lap=20_gap=2_2.xlsx    メッシュを細かく分割して解析を行なった
 stress_strain_kasa_xy1.xlsx    斜め方向に一つだけ埋め込まれている形で解析を行った
 stress_strain_kasa_xy1.2.xlsx    傘形状を4つ埋め込ん行なった
+stress_strain_lap=10_gap=2.xlsx    lap=10 gap=2での解析
+stress_strain_lap=10_gap=2.xlsx    lap=10,gap=2
+stress_strain_lap=10_gap=3.xlsx    lap=10,gap=3
