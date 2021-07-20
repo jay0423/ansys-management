@@ -17,3 +17,4 @@ stress_strain_lap=10_gap=2.xlsx    lap=10 gap=2での解析
 stress_strain_lap=10_gap=2.xlsx    lap=10,gap=2
 stress_strain_lap=10_gap=3.xlsx    lap=10,gap=3
 stress_strain_lap=10_gap=1.xlsx    lap=1-,gap=1
+stress_strain_lap=10_gap=05.xlsx    lap=1-,gap=0.5
