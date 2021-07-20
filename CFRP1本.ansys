@@ -344,12 +344,10 @@ pinb2= 2E-4
 
 ET,3,TARGE170       ! 接触要素ターゲット面
 ET,4,CONTA174       ! 接触要素コンタクト面
+
 ET,5,TARGE170       ! 接触要素ターゲット面
 ET,6,CONTA174       ! 接触要素コンタクト面
-ET,7,TARGE170       ! 接触要素ターゲット面
-ET,8,CONTA177       ! 接触要素コンタクト面
-ET,9,TARGE170       ! 接触要素ターゲット面
-ET,10,CONTA177       ! 接触要素コンタクト面
+
 KEYOPT,CONT,12,5       ! 接触面の挙動()
 KEYOPT,CONT,7,1        !要素レベルの時間増分制御/影響制約
 !KEYOPT,CONT,4,1       !接触検出ポイントの場所
@@ -363,13 +361,10 @@ KEYOPT,10,3,2       ! 接触面の挙動()
 
 R,3,,,-kslope,,,-pinb         ! リアルコンスタンス定義  
 R,4,,,-kslope,,,-pinb2        ! リアルコンスタンス定義   
+
 R,5,,,-kslope,,,-pinb2        ! リアルコンスタンス定義   
 R,6,,,-kslope,,,-pinb2        ! リアルコンスタンス定義 
 
-R,7,,,-kslope,,,-pinb         ! リアルコンスタンス定義  
-R,8,,,-kslope,,,-pinb2        ! リアルコンスタンス定義
-
-R,9,,,-kslope,,,-pinb2        ! リアルコンスタンス定義
 
 TB,CZM,3,1,1,CBDE   ! 粘着材料の定義
 TBDATA,3,c3,c4,c5
@@ -377,24 +372,18 @@ TBDATA,3,c3,c4,c5
 TB,CZM,4,1,1,CBDE   ! 粘着材料の定義
 TBDATA,1,c1,c2,c3,c4,c5,c6
 
+
 TB,CZM,5,1,1,CBDE   ! 粘着材料の定義
 TBDATA,1,c1,c2,c3,c4,c5,c6
-
 
 TB,CZM,6,1,1,CBDE   ! 粘着材料の定義
 TBDATA,1,c1,c2,c3,c4,c5,c6
 
 
-TB,CZM,7,1,1,CBDE   ! 粘着材料の定義
-TBDATA,1,c1,c2,c3,c4,c5,c6
-
-TB,CZM,8,1,1,CBDE   ! 粘着材料の定義
-TBDATA,1,c1,c2,c3,c4,c5,c6
-
 !接触要素の生成---------------------------------------------
 ALLSEL
 
-TYPE,1
+TYPE,3
 MAT,1
 REAL,1
 ESEL,S,MAT,,1
