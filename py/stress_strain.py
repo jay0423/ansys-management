@@ -71,6 +71,9 @@ y = px.chart.Reference(book["Sheet1"] ,min_col=4 ,max_col=4 ,min_row=2 ,max_row=
 series = px.chart.Series(y, x)
 #散布図として定義したchartへデータを指定したseries変数を渡す
 chart.series.append(series)
+chart.title = FILE_NAME
+chart.x_axis.title = 'Strain [-]'
+chart.y_axis.title = 'Stress [MPa]'
 #A6セルにグラフを表示
 book["Sheet1"].add_chart(chart,"F5")
 
