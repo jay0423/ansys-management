@@ -32,3 +32,4 @@ stress_strain_lap=20_gap=0.25_2.xlsx    lap=20,gap=0.25,引張距が2mm
 stress_strain_lap=20_gap=0.25_3.xlsx    lap=20,gap=0.25,引張距離は3mm
 stress_strain_lap=20_gap=0.25_3.2.xlsx    lap=20,gap=0.25,引張距離3mm，時間3s
 stress_strain_lap=20_gap=0.5.xlsx    lap=20, gap=0.5
+stress_strain_lap=20_gap=1.5_3.xlsx    lap=20, gap=1.5, 3
