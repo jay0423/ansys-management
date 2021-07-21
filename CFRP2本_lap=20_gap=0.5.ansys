@@ -51,8 +51,8 @@ DIV3=0.4E-3
 DIV4=0.2E-3
 DIV5=0.2E-3
 
-DISTANCE=-2.5E-3 !N?
-
+DISTANCE=-3E-3
+TIME1 = 3
 
 !-材料物性定義----------------------------------------------
 !>>>>>材料1>>>>>>>
@@ -417,7 +417,7 @@ NSLA,S,1
 CP,NEXT,UX,ALL
 
 *GET,NNUM,NODE,,NUM,MIN !最小の節点選択
-D,NNUM,UX,-1E-3 !節点引張距離
+D,NNUM,UX,DISTANCE !節点引張距離
 
 
 
@@ -435,7 +435,7 @@ FINISH
 
 
 NSUBST,100,1000,100 ! データベースとファイルの書き込み制御の結果アイテム
-TIME,1
+TIME,TIME1
 
 OUTRES,ERASE
 

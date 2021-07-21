@@ -10,28 +10,14 @@ import sys
 import openpyxl as px
 
 # 入力値
-FILE_NAME = input("csvファイル名を入力：")
-FILE_NAME = FILE_NAME.replace(".csv","")
+FILE_NAME = input("指定excelファイル名を入力：")
+FILE_NAME = FILE_NAME.replace(".xlsx","")
 try:
     df = pd.read_csv("../csv/{}.csv".format(FILE_NAME))
 except:
     print("そのファイルは存在しません．")
     sys.exit()
 DETAIL = input("ファイルの詳細：")
-if DETAIL == "":
-    DETAIL = FILE_NAME.replace("_", ", ")
-try:
-    SPEED = float(input("試験速度[m/s]："))
-except:
-    SPEED = 0.001 #試験速度[m/s]
-try:
-    LENGTH = float(input("試験片長さ[m]："))
-except:
-    LENGTH = 0.12 #試験片長さ[m]
-try:
-    CROSS_SECTIONAL_AREA = float(input("断面積[mm2]："))
-except:
-    CROSS_SECTIONAL_AREA = 48.60 #[mm2]
 
 
 # dataframeの整理

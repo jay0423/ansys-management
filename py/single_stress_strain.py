@@ -21,11 +21,11 @@ DETAIL = input("ファイルの詳細：")
 if DETAIL == "":
     DETAIL = FILE_NAME.replace("_", ", ")
 try:
-    SPEED = float(input("試験速度[m/s]："))
+    SPEED = float(input("試験速度[mm/s]：")) / 1000
 except:
     SPEED = 0.001 #試験速度[m/s]
 try:
-    LENGTH = float(input("試験片長さ[m]："))
+    LENGTH = float(input("試験片長さ[mm]：")) / 1000
 except:
     LENGTH = 0.12 #試験片長さ[m]
 try:
