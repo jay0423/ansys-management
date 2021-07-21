@@ -40,9 +40,10 @@ Z2 = 3E-3 !エポキシ部の厚さ
 
 X2 = 70E-3 !CFRP長さ
 Z3 = 2E-3 !CFRPの厚さ
-Y4 = 1.5E-3 !CFRP1の初期位置
-Y5 = 6.5E-3 !CFRP2の初期位置
 Y_CFRP = 2E-3 !CFRPの横長さ
+CF_gap = 3E-3
+Y4 = Y3/2 - CF_gap/2 - Y_CFRP !CFRP1の初期位置
+Y5 = Y3/2 + CF_gap/2 !CFRP2の初期位置
 
 DIV1=2E-3  !分割数1
 DIV2=0.5E-3 !分割数2
