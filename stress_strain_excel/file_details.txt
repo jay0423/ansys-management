@@ -22,3 +22,4 @@ stress_strain_lap=20_gap=3.xlsx    lap=20.gap=3
 stress_strain_lap=20_gap=1.xlsx    lap=20,gap=1
 stress_strain_lap=20_gap=0.5.xlsx    lap=20.gap=0.5
 stress_strain_lap=20_gap=2_2.xlsx    lap=20,gap=2
+stress_strain_lap=10_gap=0.25.xlsx    lap=10,gap=0.25
