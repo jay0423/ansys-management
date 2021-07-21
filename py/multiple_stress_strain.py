@@ -1,6 +1,12 @@
 """
-../csv/に格納されたansysで解析実行後の出力ファイルを整理する．
+../csv/に格納されたansysで解析実行後の出力ファイルを複数整理し，一つのエクセルファイルにまとめる．
 TIMEとFXの列から歪みと応力を算出し，エクセルファイルで書き出す．
+
+1. ../excel/base.xlsxをその場でコピー＆ペースト
+2. base copy.xlsx ファイルを任意のファイル名に変更する．（例：lap=10.xlsx）
+3. ファイル（lap=10.xlsx）を開き，csvファイル名や試験速度，詳細などを入力し保存する．
+4. multiple_stress_strain.pyを実行し，誘導に従って入力する．
+5. 同ファイルへ引張強さやヤング率，グラフなどが出力される．
 """
 
 
@@ -10,118 +16,122 @@ import sys
 import openpyxl as px
 
 # 入力値
-FILE_NAME = input("指定excelファイル名を入力：")
-FILE_NAME = FILE_NAME.replace(".xlsx","")
+EXCEL_FILE_NAME = input("指定excelファイル名を入力：")
+EXCEL_FILE_NAME = EXCEL_FILE_NAME.replace(".xlsx","")
 try:
-    df = pd.read_csv("../csv/{}.csv".format(FILE_NAME))
+    excel_df = pd.read_excel("../excel/{}.xlsx".format(EXCEL_FILE_NAME))
 except:
     print("そのファイルは存在しません．")
     sys.exit()
-DETAIL = input("ファイルの詳細：")
-if DETAIL == "":
-    DETAIL = FILE_NAME.replace("_", ", ")
-try:
-    SPEED = float(input("試験速度[m/s]："))
-except:
-    SPEED = 0.001 #試験速度[m/s]
-try:
-    LENGTH = float(input("試験片長さ[m]："))
-except:
-    LENGTH = 0.12 #試験片長さ[m]
-try:
-    CROSS_SECTIONAL_AREA = float(input("断面積[mm2]："))
-except:
-    CROSS_SECTIONAL_AREA = 48.60 #[mm2]
+EXCEL_DETAIL = input("ファイルの詳細：")
+
+FILE_NAME_LIST = list(excel_df["file_name"]) #CSVファイル
+N = len(FILE_NAME_LIST)
+SPEED_LIST = list(excel_df["speed[mm/s]"].fillna(1)/1000) # 引張速度
+LENGTH_LIST = list(excel_df["length[mm]"].fillna(120)/1000) # 試験片長さ（歪み算出用）
+CROSS_SECTIONAL_AREA_LIST = list(excel_df["cross_section_area[mm2]"].fillna(50)) #面積（応力算出用）
+DETAIL_LIST = list(excel_df["detail"].fillna(""))
 
 
-# dataframeの整理
-df = df.iloc[:,0].apply(lambda x: pd.Series(x.split()))
-df = df.iloc[2:,:2]
-df.columns = ["TIME", "FX"]
+for (i, FILE_NAME, SPEED, LENGTH, CROSS_SECTIONAL_AREA, DETAIL) in zip(range(N), FILE_NAME_LIST, SPEED_LIST, LENGTH_LIST, CROSS_SECTIONAL_AREA_LIST, DETAIL_LIST):
 
-# 数値の文字型を小数型に変換し，文字をnanに変換し削除する．
-def clean(x): # map用の関数を定義
+    # csvファイルの取得
     try:
-        return float(x)
+        FILE_NAME = FILE_NAME.replace(".csv","")
+        df = pd.read_csv("../csv/{}.csv".format(FILE_NAME))
     except:
-        return None
-df.loc[:,"TIME"] = df.loc[:,"TIME"].map(clean)
-df.loc[:,"FX"] = df.loc[:,"FX"].map(clean)
-df = df.dropna(how="any")
+        print("Failed: {}.csv".format(FILE_NAME))
+        continue
 
-df["strain"] = df.loc[:,"TIME"] * SPEED / LENGTH # 歪みの追加
-df["FX"] = df.loc[:,"FX"] * (-1) # 荷重の変換
-df["stress"] = df.loc[:,"FX"] / CROSS_SECTIONAL_AREA # 応力の追加
-MAX_ROW = len(df)
+    # dataframeの整理
+    df = df.iloc[:,0].apply(lambda x: pd.Series(x.split()))
+    df = df.iloc[2:,:2]
+    df.columns = ["TIME", "FX"]
 
-# ヤング率の算出
-x_ = df["strain"][:int((MAX_ROW-1)*0.2)]
-y_ = df["stress"][:int((MAX_ROW-1)*0.2)]
-a, b = np.polyfit(x_,y_,1)
-print("ヤング率： {}".format(a))
+    # 数値の文字型を小数型に変換し，文字をnanに変換し削除する．
+    def clean(x): # map用の関数を定義
+        try:
+            return float(x)
+        except:
+            return None
+    df.loc[:,"TIME"] = df.loc[:,"TIME"].map(clean)
+    df.loc[:,"FX"] = df.loc[:,"FX"].map(clean)
+    df = df.dropna(how="any")
 
-# 最大応力の算出
-max_stress = max(df["stress"])
+    df["strain"] = df.loc[:,"TIME"] * SPEED / LENGTH # 歪みの追加
+    df["FX"] = df.loc[:,"FX"] * (-1) # 荷重の変換
+    df["stress"] = df.loc[:,"FX"] / CROSS_SECTIONAL_AREA # 応力の追加
+    MAX_ROW = len(df)
 
-#EXCELファイルへ書き出し
-df.to_excel("../excel/single/ss_{}.xlsx".format(FILE_NAME), index=False)
+    # ヤング率の算出
+    x_ = df["strain"][:int((MAX_ROW-1)*0.1)]
+    y_ = df["stress"][:int((MAX_ROW-1)*0.1)]
+    a, b = np.polyfit(x_,y_,1)
+    # print("ヤング率： {}".format(a))
 
-
-# エクセルファイルへ詳細を記載する．
-book = px.load_workbook("../excel/single/ss_{}.xlsx".format(FILE_NAME))
-sheet = book['Sheet1']
-# セルへ書き込む
-sheet['F1'] = '詳細'
-sheet['G1'] = DETAIL
-sheet['F2'] = '最大応力'
-sheet['G2'] = max_stress
-sheet['F3'] = 'ヤング率'
-sheet['G3'] = a
+    # 最大応力の算出
+    max_stress = max(df["stress"])
 
 
-# 散布図の追加
-# 散布図をグラフ変数:chartとして定義
-chart=px.chart.ScatterChart()
-
-# y,xデータの範囲を選択
-x = px.chart.Reference(book["Sheet1"] ,min_col=3 ,max_col=3 ,min_row=2 ,max_row=MAX_ROW+1)
-y = px.chart.Reference(book["Sheet1"] ,min_col=4 ,max_col=4 ,min_row=2 ,max_row=MAX_ROW+1)
-
-#系列変数seriesをy,xを指定して定義する
-series = px.chart.Series(y, x)
-#散布図として定義したchartへデータを指定したseries変数を渡す
-chart.series.append(series)
-chart.title = FILE_NAME
-chart.x_axis.title = 'Strain [-]'
-chart.y_axis.title = 'Stress [MPa]'
-#A6セルにグラフを表示
-book["Sheet1"].add_chart(chart,"F5")
+    # エクセルファイルへ詳細を記載する．
+    with pd.ExcelWriter("../excel/{}.xlsx".format(EXCEL_FILE_NAME), engine="openpyxl", mode='a') as writer:
+        df.to_excel(writer, sheet_name=FILE_NAME, index=False)
+    book = px.load_workbook("../excel/{}.xlsx".format(EXCEL_FILE_NAME))
+    sheet = book[FILE_NAME]
+    # セルへ書き込む
+    sheet['F1'] = '詳細'
+    sheet['G1'] = DETAIL
+    sheet['F2'] = '最大応力'
+    sheet['G2'] = max_stress
+    sheet['F3'] = 'ヤング率'
+    sheet['G3'] = a
 
 
-# ヤング率用散布図の追加
-# 散布図をグラフ変数:chartとして定義
-chart2=px.chart.ScatterChart()
+    # 散布図の追加
+    # 散布図をグラフ変数:chartとして定義
+    chart=px.chart.ScatterChart()
 
-# y,xデータの範囲を選択
-x = px.chart.Reference(book["Sheet1"] ,min_col=3 ,max_col=3 ,min_row=2 ,max_row=int((MAX_ROW-1)*0.2))
-y = px.chart.Reference(book["Sheet1"] ,min_col=4 ,max_col=4 ,min_row=2 ,max_row=int((MAX_ROW-1)*0.2))
+    # y,xデータの範囲を選択
+    x = px.chart.Reference(book[FILE_NAME] ,min_col=3 ,max_col=3 ,min_row=2 ,max_row=MAX_ROW+1)
+    y = px.chart.Reference(book[FILE_NAME] ,min_col=4 ,max_col=4 ,min_row=2 ,max_row=MAX_ROW+1)
 
-#系列変数seriesをy,xを指定して定義する
-series = px.chart.Series(y, x)
-#散布図として定義したchartへデータを指定したseries変数を渡す
-chart2.series.append(series)
-chart2.x_axis.title = 'Strain [-]'
-chart2.y_axis.title = 'Stress [MPa]'
-#A6セルにグラフを表示
-book["Sheet1"].add_chart(chart2,"F22")
+    #系列変数seriesをy,xを指定して定義する
+    series = px.chart.Series(y, x)
+    #散布図として定義したchartへデータを指定したseries変数を渡す
+    chart.series.append(series)
+    chart.title = FILE_NAME
+    chart.x_axis.title = 'Strain [-]'
+    chart.y_axis.title = 'Stress [MPa]'
+    #A6セルにグラフを表示
+    book[FILE_NAME].add_chart(chart,"F5")
 
-# 保存する
-book.save("../excel/single/ss_{}.xlsx".format(FILE_NAME))
+
+    # ヤング率用散布図の追加
+    # 散布図をグラフ変数:chartとして定義
+    chart2=px.chart.ScatterChart()
+
+    # y,xデータの範囲を選択
+    x = px.chart.Reference(book[FILE_NAME] ,min_col=3 ,max_col=3 ,min_row=2 ,max_row=int((MAX_ROW-1)*0.1))
+    y = px.chart.Reference(book[FILE_NAME] ,min_col=4 ,max_col=4 ,min_row=2 ,max_row=int((MAX_ROW-1)*0.1))
+
+    #系列変数seriesをy,xを指定して定義する
+    series = px.chart.Series(y, x)
+    #散布図として定義したchartへデータを指定したseries変数を渡す
+    chart2.series.append(series)
+    chart.title = "10%"
+    chart2.x_axis.title = 'Strain [-]'
+    chart2.y_axis.title = 'Stress [MPa]'
+    #A6セルにグラフを表示
+    book[FILE_NAME].add_chart(chart2,"F17")
+
+    print("Success: {}.csv".format(FILE_NAME))
+    # 保存する
+    book.save("../excel/{}.xlsx".format(EXCEL_FILE_NAME))
 
 
 
 # 記録テキストファイルへの記載
-path = "../excel/single/file_details.txt"
+path = "../excel/file_details.txt"
 with open(path, mode="a") as f:
-    f.write("\nstress_strain_{}.xlsx    {}".format(FILE_NAME, DETAIL))
+    f.write("\nstress_strain_{}.xlsx    {}".format(EXCEL_FILE_NAME, EXCEL_DETAIL))
 
