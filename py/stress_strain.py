@@ -1,5 +1,5 @@
 """
-./.csv/に格納されたansysで解析実行後の出力ファイルを整理する．
+../csv/に格納されたansysで解析実行後の出力ファイルを整理する．
 TIMEとFXの列から歪みと応力を算出し，エクセルファイルで書き出す．
 """
 
@@ -64,11 +64,11 @@ print("ヤング率： {}".format(a))
 max_stress = max(df["stress"])
 
 #EXCELファイルへ書き出し
-df.to_excel("../stress_strain_excel/stress_strain_{}.xlsx".format(FILE_NAME), index=False)
+df.to_excel("../excel/single/ss_{}.xlsx".format(FILE_NAME), index=False)
 
 
 # エクセルファイルへ詳細を記載する．
-book = px.load_workbook("../stress_strain_excel/stress_strain_{}.xlsx".format(FILE_NAME))
+book = px.load_workbook("../excel/single/ss_{}.xlsx".format(FILE_NAME))
 sheet = book['Sheet1']
 # セルへ書き込む
 sheet['F1'] = '詳細'
@@ -116,12 +116,12 @@ chart2.y_axis.title = 'Stress [MPa]'
 book["Sheet1"].add_chart(chart2,"F22")
 
 # 保存する
-book.save("../stress_strain_excel/stress_strain_{}.xlsx".format(FILE_NAME))
+book.save("../excel/single/ss_{}.xlsx".format(FILE_NAME))
 
 
 
-# 記録ファイルへの記載
-path = "../stress_strain_excel/file_details.txt"
+# 記録テキストファイルへの記載
+path = "../excel/single/file_details.txt"
 with open(path, mode="a") as f:
     f.write("\nstress_strain_{}.xlsx    {}".format(FILE_NAME, DETAIL))
 
