@@ -18,6 +18,20 @@ except:
     print("そのファイルは存在しません．")
     sys.exit()
 DETAIL = input("ファイルの詳細：")
+if DETAIL == "":
+    DETAIL = FILE_NAME.replace("_", ", ")
+try:
+    SPEED = float(input("試験速度[m/s]："))
+except:
+    SPEED = 0.001 #試験速度[m/s]
+try:
+    LENGTH = float(input("試験片長さ[m]："))
+except:
+    LENGTH = 0.12 #試験片長さ[m]
+try:
+    CROSS_SECTIONAL_AREA = float(input("断面積[mm2]："))
+except:
+    CROSS_SECTIONAL_AREA = 48.60 #[mm2]
 
 
 # dataframeの整理
