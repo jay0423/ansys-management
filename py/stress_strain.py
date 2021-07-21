@@ -5,13 +5,11 @@ TIMEとFXの列から歪みと応力を算出し，エクセルファイルで�
 
 
 import pandas as pd
+import numpy as np
 import sys
 import openpyxl as px
 
-
-SPEED = 0.001 #試験速度[m/s]
-LENGTH = 0.12 #試験片長さ[m]
-CROSS_SECTIONAL_AREA = 48.60 #[mm2]
+# 入力値
 FILE_NAME = input("csvファイル名を入力：")
 FILE_NAME = FILE_NAME.replace(".csv","")
 try:
@@ -20,6 +18,20 @@ except:
     print("そのファイルは存在しません．")
     sys.exit()
 DETAIL = input("ファイルの詳細：")
+if DETAIL == "":
+    DETAIL = FILE_NAME.replace("_", ", ")
+try:
+    SPEED = float(input("試験速度[m/s]："))
+except:
+    SPEED = 0.001 #試験速度[m/s]
+try:
+    LENGTH = float(input("試験片長さ[m]："))
+except:
+    LENGTH = 0.12 #試験片長さ[m]
+try:
+    CROSS_SECTIONAL_AREA = float(input("断面積[mm2]："))
+except:
+    CROSS_SECTIONAL_AREA = 48.60 #[mm2]
 
 
 # dataframeの整理
@@ -42,6 +54,12 @@ df["FX"] = df.loc[:,"FX"] * (-1) # 荷重の変換
 df["stress"] = df.loc[:,"FX"] / CROSS_SECTIONAL_AREA # 応力の追加
 MAX_ROW = len(df)
 
+# ヤング率の算出
+x_ = df["strain"][:int((MAX_ROW-1)*0.2)]
+y_ = df["stress"][:int((MAX_ROW-1)*0.2)]
+a, b = np.polyfit(x_,y_,1)
+print("ヤング率： {}".format(a))
+
 # 最大応力の算出
 max_stress = max(df["stress"])
 
@@ -57,6 +75,8 @@ sheet['F1'] = '詳細'
 sheet['G1'] = DETAIL
 sheet['F2'] = '最大応力'
 sheet['G2'] = max_stress
+sheet['F3'] = 'ヤング率'
+sheet['G3'] = a
 
 
 # 散布図の追加
@@ -76,6 +96,24 @@ chart.x_axis.title = 'Strain [-]'
 chart.y_axis.title = 'Stress [MPa]'
 #A6セルにグラフを表示
 book["Sheet1"].add_chart(chart,"F5")
+
+
+# ヤング率用散布図の追加
+# 散布図をグラフ変数:chartとして定義
+chart2=px.chart.ScatterChart()
+
+# y,xデータの範囲を選択
+x = px.chart.Reference(book["Sheet1"] ,min_col=3 ,max_col=3 ,min_row=2 ,max_row=int((MAX_ROW-1)*0.2))
+y = px.chart.Reference(book["Sheet1"] ,min_col=4 ,max_col=4 ,min_row=2 ,max_row=int((MAX_ROW-1)*0.2))
+
+#系列変数seriesをy,xを指定して定義する
+series = px.chart.Series(y, x)
+#散布図として定義したchartへデータを指定したseries変数を渡す
+chart2.series.append(series)
+chart2.x_axis.title = 'Strain [-]'
+chart2.y_axis.title = 'Stress [MPa]'
+#A6セルにグラフを表示
+book["Sheet1"].add_chart(chart2,"F22")
 
 # 保存する
 book.save("../stress_strain_excel/stress_strain_{}.xlsx".format(FILE_NAME))
