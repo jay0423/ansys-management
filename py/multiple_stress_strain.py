@@ -36,18 +36,18 @@ DETAIL_LIST = list(excel_df["detail"].fillna(""))
 
 for (i, FILE_NAME, NEW, SPEED, LENGTH, CROSS_SECTIONAL_AREA, DETAIL) in zip(range(N), FILE_NAME_LIST, NEW_LIST, SPEED_LIST, LENGTH_LIST, CROSS_SECTIONAL_AREA_LIST, DETAIL_LIST):
 
+    # 新たに追加するか判定
+    if NEW == 1:
+        print("Already added: {}.csv".format(FILE_NAME))
+        continue
+
+
     # csvファイルの取得
     try:
         FILE_NAME = FILE_NAME.replace(".csv","")
         df = pd.read_csv("../csv/{}.csv".format(FILE_NAME))
     except:
         print("Failed: {}.csv".format(FILE_NAME))
-        continue
-
-
-    # 新たに追加するか判定
-    if NEW == 1:
-        print("Already added: {}.csv".format(FILE_NAME))
         continue
 
 
