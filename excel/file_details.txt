@@ -2,3 +2,4 @@
 
 ファイル名    詳細
 stress_strain_lap=10.xlsx    継ぎ手長さが10mmの結果
+stress_strain_lap=10.xlsx    lap=10への追加

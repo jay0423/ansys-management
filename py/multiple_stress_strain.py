@@ -1,5 +1,5 @@
 """
-../csv/に格納されたansysで解析実行後の出力ファイルを複数整理し，一つのエクセルファイルにまとめる．
+../csv/に格納されたansysで解析実行後の出力csvファイルから，エクセルファイルにまとめる．
 TIMEとFXの列から歪みと応力を算出し，エクセルファイルで書き出す．
 
 1. ../excel/base.xlsxをその場でコピー＆ペースト
@@ -27,13 +27,14 @@ EXCEL_DETAIL = input("ファイルの詳細：")
 
 FILE_NAME_LIST = list(excel_df["file_name"]) #CSVファイル
 N = len(FILE_NAME_LIST)
+NEW_LIST = list(excel_df["new"].fillna(0)) # 新たに追加するか．0:新たに追加, 1:今回は追加しない
 SPEED_LIST = list(excel_df["speed[mm/s]"].fillna(1)/1000) # 引張速度
 LENGTH_LIST = list(excel_df["length[mm]"].fillna(120)/1000) # 試験片長さ（歪み算出用）
 CROSS_SECTIONAL_AREA_LIST = list(excel_df["cross_section_area[mm2]"].fillna(50)) #面積（応力算出用）
 DETAIL_LIST = list(excel_df["detail"].fillna(""))
 
 
-for (i, FILE_NAME, SPEED, LENGTH, CROSS_SECTIONAL_AREA, DETAIL) in zip(range(N), FILE_NAME_LIST, SPEED_LIST, LENGTH_LIST, CROSS_SECTIONAL_AREA_LIST, DETAIL_LIST):
+for (i, FILE_NAME, NEW, SPEED, LENGTH, CROSS_SECTIONAL_AREA, DETAIL) in zip(range(N), FILE_NAME_LIST, NEW_LIST, SPEED_LIST, LENGTH_LIST, CROSS_SECTIONAL_AREA_LIST, DETAIL_LIST):
 
     # csvファイルの取得
     try:
@@ -42,6 +43,13 @@ for (i, FILE_NAME, SPEED, LENGTH, CROSS_SECTIONAL_AREA, DETAIL) in zip(range(N),
     except:
         print("Failed: {}.csv".format(FILE_NAME))
         continue
+
+
+    # 新たに追加するか判定
+    if NEW == 1:
+        print("Already added: {}.csv".format(FILE_NAME))
+        continue
+
 
     # dataframeの整理
     df = df.iloc[:,0].apply(lambda x: pd.Series(x.split()))
