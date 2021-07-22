@@ -34,6 +34,10 @@ CROSS_SECTIONAL_AREA_LIST = list(excel_df["cross_section_area[mm2]"].fillna(50))
 DETAIL_LIST = list(excel_df["detail"].fillna(""))
 
 
+tensile_strength_list = []
+young_modulus_list = []
+
+
 for (i, FILE_NAME, NEW, SPEED, LENGTH, CROSS_SECTIONAL_AREA, DETAIL) in zip(range(N), FILE_NAME_LIST, NEW_LIST, SPEED_LIST, LENGTH_LIST, CROSS_SECTIONAL_AREA_LIST, DETAIL_LIST):
 
     # 新たに追加するか判定
@@ -76,9 +80,11 @@ for (i, FILE_NAME, NEW, SPEED, LENGTH, CROSS_SECTIONAL_AREA, DETAIL) in zip(rang
     y_ = df["stress"][:int((MAX_ROW-1)*0.1)]
     a, b = np.polyfit(x_,y_,1)
     # print("ヤング率： {}".format(a))
+    young_modulus_list.append(a)
 
     # 最大応力の算出
     max_stress = max(df["stress"])
+    tensile_strength_list.append(max_stress)
 
 
     # エクセルファイルへ詳細を記載する．
@@ -135,6 +141,15 @@ for (i, FILE_NAME, NEW, SPEED, LENGTH, CROSS_SECTIONAL_AREA, DETAIL) in zip(rang
     print("Success: {}.csv".format(FILE_NAME))
     # 保存する
     book.save("../excel/{}.xlsx".format(EXCEL_FILE_NAME))
+
+
+# まとめの追加 現状初回のみに対応している．
+df = pd.DataFrame()
+df["tensile_strength"] = tensile_strength_list
+df["young's_modulus"] = young_modulus_list
+# エクセルファイルへ詳細を記載する．
+with pd.ExcelWriter("../excel/{}.xlsx".format(EXCEL_FILE_NAME), engine="openpyxl", mode='a') as writer:
+    df.to_excel(writer, sheet_name="まとめ", index=False)
 
 
 
