@@ -3,3 +3,5 @@
 ファイル名    詳細
 stress_strain_lap=10.xlsx    継ぎ手長さが10mmの結果
 stress_strain_lap=10.xlsx    lap=10への追加
+stress_strain_lap=20_d=3.xlsx    lap=20で，引張距離が3mm
+stress_strain_lap=20_d=3.xlsx    lap=20で，引張距離が3mm

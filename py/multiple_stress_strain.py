@@ -126,7 +126,7 @@ for (i, FILE_NAME, NEW, SPEED, LENGTH, CROSS_SECTIONAL_AREA, DETAIL) in zip(rang
     series = px.chart.Series(y, x)
     #散布図として定義したchartへデータを指定したseries変数を渡す
     chart2.series.append(series)
-    chart.title = "10%"
+    chart2.title = "10%"
     chart2.x_axis.title = 'Strain [-]'
     chart2.y_axis.title = 'Stress [MPa]'
     #A6セルにグラフを表示
