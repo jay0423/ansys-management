@@ -35,3 +35,4 @@ stress_strain_lap=20_gap=0.5.xlsx    lap=20, gap=0.5
 stress_strain_lap=20_gap=1.5_3.xlsx    lap=20, gap=1.5, 3
 stress_strain_lap=10_gap=2.xlsx    
 stress_strain_lap=10_gap=2.xlsx    頑張った
+stress_strain_lap=20_gap=2_sendan.xlsx    エ許容剪断応力を大きくして解析を行った．
