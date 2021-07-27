@@ -38,8 +38,8 @@ Z1	=	5E-3
 Y2	=	8E-3
 Y3      =       10E-3
 Z2      =       3E-3
-Y4 = 2E-3
-Z3 = 2E-3
+Y4 = 1E-3 ! CFRPの厚さ
+Z3 = Y4
 
 DIV1=2.0E-3  !分割数1 エポキシ樹脂・PLA
 DIV2=0.5E-3 !分割数2 CFRP
@@ -302,8 +302,6 @@ CM,CFRP,VOLU
 
 
 !-試験片内側メッシュ--------------------------------------------
-ALLSEL
-AESIZE,ALL,DIV1
 
 CMSEL,S,UCHI
 TYPE,1                             !要素1
@@ -316,6 +314,8 @@ MOPT,DEFA
 CM,UCHI,VOLU
 
 !-試験片外側メッシュ--------------------------------------------
+ALLSEL
+AESIZE,ALL,DIV1
 
 ALLSEL
 CMSEL,U,UCHI
