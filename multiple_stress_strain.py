@@ -19,7 +19,7 @@ import openpyxl as px
 EXCEL_FILE_NAME = input("指定excelファイル名を入力：")
 EXCEL_FILE_NAME = EXCEL_FILE_NAME.replace(".xlsx","")
 try:
-    excel_df = pd.read_excel("../excel/{}.xlsx".format(EXCEL_FILE_NAME))
+    excel_df = pd.read_excel("{}.xlsx".format(EXCEL_FILE_NAME))
 except:
     print("そのファイルは存在しません．")
     sys.exit()
@@ -88,7 +88,7 @@ for (i, FILE_NAME, NEW, SPEED, LENGTH, CROSS_SECTIONAL_AREA, DETAIL) in zip(rang
 
 
     # エクセルファイルへ詳細を記載する．
-    with pd.ExcelWriter("../excel/{}.xlsx".format(EXCEL_FILE_NAME), engine="openpyxl", mode='a') as writer:
+    with pd.ExcelWriter("{}.xlsx".format(EXCEL_FILE_NAME), engine="openpyxl", mode='a') as writer:
         df.to_excel(writer, sheet_name=FILE_NAME, index=False)
     book = px.load_workbook("../excel/{}.xlsx".format(EXCEL_FILE_NAME))
     sheet = book[FILE_NAME]
@@ -148,13 +148,13 @@ df = pd.DataFrame()
 df["tensile_strength"] = tensile_strength_list
 df["young's_modulus"] = young_modulus_list
 # エクセルファイルへ詳細を記載する．
-with pd.ExcelWriter("../excel/{}.xlsx".format(EXCEL_FILE_NAME), engine="openpyxl", mode='a') as writer:
+with pd.ExcelWriter("{}.xlsx".format(EXCEL_FILE_NAME), engine="openpyxl", mode='a') as writer:
     df.to_excel(writer, sheet_name="まとめ", index=False)
 
 
 
-# 記録テキストファイルへの記載
-path = "../excel/file_details.txt"
-with open(path, mode="a") as f:
-    f.write("\nstress_strain_{}.xlsx    {}".format(EXCEL_FILE_NAME, EXCEL_DETAIL))
+# # 記録テキストファイルへの記載
+# path = "../excel/file_details.txt"
+# with open(path, mode="a") as f:
+#     f.write("\nstress_strain_{}.xlsx    {}".format(EXCEL_FILE_NAME, EXCEL_DETAIL))
 

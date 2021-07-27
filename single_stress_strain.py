@@ -13,7 +13,7 @@ import openpyxl as px
 FILE_NAME = input("csvファイル名を入力：")
 FILE_NAME = FILE_NAME.replace(".csv","")
 try:
-    df = pd.read_csv("../csv/{}.csv".format(FILE_NAME))
+    df = pd.read_csv("{}.csv".format(FILE_NAME))
 except:
     print("そのファイルは存在しません．")
     sys.exit()
@@ -64,11 +64,11 @@ print("ヤング率： {}".format(a))
 max_stress = max(df["stress"])
 
 #EXCELファイルへ書き出し
-df.to_excel("../excel/single/ss_{}.xlsx".format(FILE_NAME), index=False)
+df.to_excel("{}.xlsx".format(FILE_NAME), index=False)
 
 
 # エクセルファイルへ詳細を記載する．
-book = px.load_workbook("../excel/single/ss_{}.xlsx".format(FILE_NAME))
+book = px.load_workbook("{}.xlsx".format(FILE_NAME))
 sheet = book['Sheet1']
 # セルへ書き込む
 sheet['F1'] = '詳細'
@@ -116,12 +116,12 @@ chart2.y_axis.title = 'Stress [MPa]'
 book["Sheet1"].add_chart(chart2,"F22")
 
 # 保存する
-book.save("../excel/single/ss_{}.xlsx".format(FILE_NAME))
+book.save("{}.xlsx".format(FILE_NAME))
 
 
 
-# 記録テキストファイルへの記載
-path = "../excel/single/file_details.txt"
-with open(path, mode="a") as f:
-    f.write("\nstress_strain_{}.xlsx    {}".format(FILE_NAME, DETAIL))
+# # 記録テキストファイルへの記載
+# path = "../excel/single/file_details.txt"
+# with open(path, mode="a") as f:
+#     f.write("\nstress_strain_{}.xlsx    {}".format(FILE_NAME, DETAIL))
 
