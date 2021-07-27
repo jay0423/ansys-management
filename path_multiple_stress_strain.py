@@ -22,19 +22,19 @@ path_df = path_df[path_df["finished"] == ""]
 path_s = path_df.iloc[0,:]
 if len(path_df) > 1: # 複数入力されている時
     while True:
-        print("選択肢が複数あります．")
+        print("\n＜＜＜　pathの選択肢が複数あります．　＞＞＞")
         for i, p in enumerate(path_df["output_file_name"]):
             print("{}： {}".format(i, p))
         try:
-            path_num = int(input("選択してください．："))
+            path_num = int(input("\n選択してください．："))
             break
         except:
-            print("数値を入力してください．")
+            print("\n数値を入力してください．\n")
             continue
     try:
         path_s = path_df.iloc[path_num,:]
     except:
-        print("初めからやり直してください．")
+        print("初めからやり直してください．\n")
         sys.exit()
 
 # 入力値
