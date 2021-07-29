@@ -3,8 +3,11 @@ path.xlsxで指定されているpath以降にあるcsvファイルをまとめ�
 TIMEとFXの列から歪みと応力を算出し，エクセルファイルで書き出す．
 
 1. ./path.xlsxにpathなどの情報を追加する．
-4. path_multiple_stress_strain.pyを実行し，誘導に従って入力する．
-5. path先へ引張強さやヤング率，グラフなどが出力される．
+2. path_multiple_stress_strain.pyを実行し，誘導に従って入力する．
+3. path先へ引張強さやヤング率，グラフなどが出力される．
+
+*注意点
+結果と関係のないcsvファイルがpathに混ざっている時，エラーが起きてしまう．
 """
 
 

@@ -1,6 +1,3 @@
-! CFRP２本で引張試験,各CFRP長さは70mm,継手長さが20mm，継ぎ手間の距離が2mm
-
-
 !/input,c:\ansys\test-line,txt
 finish
 /clear,start
