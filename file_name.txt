@@ -1,0 +1,8 @@
+ファイル名のルール
+・フォルダ名の頭文字を繋げて作成する．
+exp.)
+CFRP2本/thickness=2.0/gap=2.0/　の結果csvファイル場合　→　C2_l10_th2.0_g2.0.csv
+C2 ： CFRP2本
+l10 ： lap=10
+th2.0 ： thickness=2.0
+g2.0 ： gap=2.0
