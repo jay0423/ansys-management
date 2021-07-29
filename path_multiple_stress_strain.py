@@ -42,20 +42,20 @@ if len(path_df) > 1: # 複数入力されている時
 
 # 入力値
 FIRST_PATH = path_s["path"]
+KEY_WORD_LIST = path_s["key_word"].replace(" ", "").split(",") # csvファイルのキーワード
 if FIRST_PATH[-1] == "/":
     FIRST_PATH = FIRST_PATH[:-1]
 FILE_NAME_LIST = csv_path.get_list(FIRST_PATH) #CSVファイルリスト
+FILE_NAME_LIST = [FILE_NAME for FILE_NAME in FILE_NAME_LIST for KEY_WORD in KEY_WORD_LIST if KEY_WORD in FILE_NAME] # KEY_WORDが含まれるファイル名だけ抽出
 FILE_NAME_LIST = sorted(FILE_NAME_LIST) # 並び替え．まだ不完全
-
 EXCEL_FILE_NAME = path_s["output_file_name"] # 出力ファイル名
 EXCEL_FILE_NAME = EXCEL_FILE_NAME.replace(".xlsx","")
 EXCEL_FILE_NAME = "{}/{}.xlsx".format(FIRST_PATH,EXCEL_FILE_NAME) # 出力先のpathをくっつける
-
 SPEED = float(path_s["speed[mm/s]"])/1000 # 引張速度
 LENGTH = float(path_s["length[mm]"]/1000) # 試験片長さ（歪み算出用）
 CROSS_SECTIONAL_AREA = path_s["cross_section_area[mm2]"] # 断面積（応力算出用）
 
-# ファイルの作成
+# 出力エクセルファイルの作成
 path_df.to_excel(EXCEL_FILE_NAME, index=False)
 
 
