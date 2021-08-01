@@ -19,10 +19,14 @@ import csv_path
 
 
 # path.xlsxから情報を取得
-path_df = pd.read_excel("path.xlsx")
-path_df = path_df.fillna("")
-path_df = path_df[path_df["finished"] == ""]
-path_s = path_df.iloc[0,:]
+try:
+    path_df = pd.read_excel("path.xlsx")
+    path_df = path_df.fillna("")
+    path_df = path_df[path_df["finished"] == ""]
+    path_s = path_df.iloc[0,:]
+except:
+    print("path.xlsxで指定されていません．")
+    sys.exit()
 if len(path_df) > 1: # 複数入力されている時
     while True:
         print("\n＜＜＜　pathの選択肢が複数あります．　＞＞＞")
@@ -67,7 +71,11 @@ young_modulus_list = []
 for FILE_NAME in FILE_NAME_LIST:
 
     # csvファイルの取得
-    df = pd.read_csv(FILE_NAME)
+    try:
+        df = pd.read_csv(FILE_NAME)
+    except:
+        print("Failed: {}.csv".format(FILE_NAME))
+        continue
 
     # dataframeの整理
     df = df.iloc[:,0].apply(lambda x: pd.Series(x.split()))
@@ -152,7 +160,7 @@ for FILE_NAME in FILE_NAME_LIST:
     #A6セルにグラフを表示
     book[sheet_name].add_chart(chart2,"F23")
 
-    print("Success: {}.csv".format(sheet_name))
+    print("Success: {}.csv".format(FILE_NAME))
     # 保存する
     book.save(EXCEL_FILE_NAME)
 
