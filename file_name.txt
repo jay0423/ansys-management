@@ -6,3 +6,5 @@ C2 ： CFRP2本
 l10 ： lap=10
 th2.0 ： thickness=2.0
 g2.0 ： gap=2.0
+d1.0 ： div=1.0
+t2 ： time_distance=2

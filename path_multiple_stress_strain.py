@@ -6,8 +6,6 @@ TIMEとFXの列から歪みと応力を算出し，エクセルファイルで�
 2. path_multiple_stress_strain.pyを実行し，誘導に従って入力する．
 3. path先へ引張強さやヤング率，グラフなどが出力される．
 
-*注意点
-結果と関係のないcsvファイルがpathに混ざっている時，エラーが起きてしまう．
 """
 
 
@@ -23,26 +21,30 @@ try:
     path_df = pd.read_excel("path.xlsx")
     path_df = path_df.fillna("")
     path_df = path_df[path_df["finished"] == ""]
+    path_df.reset_index(inplace=True, drop=True)
     path_s = path_df.iloc[0,:]
 except:
     print("path.xlsxで指定されていません．")
     sys.exit()
 if len(path_df) > 1: # 複数入力されている時
     while True:
-        print("\n＜＜＜　pathの選択肢が複数あります．　＞＞＞")
+        print("\n＜＜　pathの選択肢が複数あります．　＞＞")
         for i, p in enumerate(path_df["output_file_name"]):
             print("{}： {}".format(i, p))
         try:
-            path_num = int(input("\n選択してください．："))
+            path_num = int(input("\n数字で選択してください："))
             break
         except:
-            print("\n数値を入力してください．\n")
+            print("\n不明な入力\n")
             continue
     try:
-        path_s = path_df.iloc[path_num,:]
+        path_df = path_df[path_df.index == path_num]
     except:
         print("初めからやり直してください．\n")
         sys.exit()
+
+path_s = path_df.iloc[0,:]
+
 
 # 入力値
 FIRST_PATH = path_s["path"]
