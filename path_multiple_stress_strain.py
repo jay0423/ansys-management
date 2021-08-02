@@ -49,10 +49,13 @@ path_s = path_df.iloc[0,:]
 # 入力値
 FIRST_PATH = path_s["path"]
 KEY_WORD_LIST = path_s["key_word"].replace(" ", "").split(",") # csvファイルのキーワード
+REMOVE_WORD_LIST = path_s["remove_word"].replace(" ", "").split(",") # 除外のキーワード
 if FIRST_PATH[-1] == "/":
     FIRST_PATH = FIRST_PATH[:-1]
 FILE_NAME_LIST = csv_path.get_list(FIRST_PATH) #CSVファイルリスト
 FILE_NAME_LIST = [FILE_NAME for FILE_NAME in FILE_NAME_LIST for KEY_WORD in KEY_WORD_LIST if KEY_WORD in FILE_NAME] # KEY_WORDが含まれるファイル名だけ抽出
+if REMOVE_WORD_LIST != ['']:
+    FILE_NAME_LIST = [FILE_NAME for FILE_NAME in FILE_NAME_LIST for REMOVE_WORD in REMOVE_WORD_LIST if REMOVE_WORD not in FILE_NAME] # KEY_WORDが含まれるファイル名だけ抽出
 FILE_NAME_LIST = sorted(FILE_NAME_LIST) # 並び替え．まだ不完全
 EXCEL_FILE_NAME = path_s["output_file_name"] # 出力ファイル名
 EXCEL_FILE_NAME = EXCEL_FILE_NAME.replace(".xlsx","")
@@ -63,8 +66,6 @@ CROSS_SECTIONAL_AREA = path_s["cross_section_area[mm2]"] # 断面積（応力算
 
 # 出力エクセルファイルの作成
 path_df.to_excel(EXCEL_FILE_NAME, index=False)
-
-
 
 sheet_name_list = []
 tensile_strength_list = []
