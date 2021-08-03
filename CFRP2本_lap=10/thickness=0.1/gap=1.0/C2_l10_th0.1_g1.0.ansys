@@ -36,9 +36,9 @@ Y3 = 10E-3 !PLA横の長さ
 Z2 = 3E-3 !エポキシ部の厚さ
 
 X2 = 65E-3 !CFRP長さ
-Z3 = 2E-3 !CFRPの厚さ
+Z3 = 0.1E-3 !CFRPの厚さ
 Y_CFRP = Z3 !CFRPの横長さ
-CF_gap = 2E-3
+CF_gap = 1E-3
 Y4 = Y3/2 - CF_gap/2 - Y_CFRP !CFRP1の初期位置
 Y5 = Y3/2 + CF_gap/2 !CFRP2の初期位置
 
