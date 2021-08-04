@@ -35,10 +35,10 @@ Y2 = 8E-3 !エポキシ部の長さ
 Y3 = 10E-3 !PLA横の長さ
 Z2 = 3E-3 !エポキシ部の厚さ
 
-X2 = 70E-3 !CFRP長さ
-Z3 = 0.5E-3 !CFRPの厚さ
+X2 = 75E-3 !CFRP長さ
+Z3 = 1E-3 !CFRPの厚さ
 Y_CFRP = Z3 !CFRPの横長さ
-CF_gap = 2.0E-3
+CF_gap = 2E-3
 Y4 = Y3/2 - CF_gap/2 - Y_CFRP !CFRP1の初期位置
 Y5 = Y3/2 + CF_gap/2 !CFRP2の初期位置
 
@@ -471,5 +471,4 @@ SET,LAST
 WPLANE, 1, 0, 0, Z1/2, 0, Y3, Z1/2, X1, 0, Z1/2
 /CPLANE, 1
 /TYPE,1,8
-
 
