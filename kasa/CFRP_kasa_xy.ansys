@@ -15,7 +15,7 @@ finish
 
 !-基本定義--------------------------------------------------
 ANTYPE,STATIC        ! 静解析
-ET,1,SOLID186       ! 試験片ALとCFRPにSOLID185を使用
+ET,1,SOLID185       ! 試験片ALとCFRPにSOLID185を使用
 
 /NOPR                !構造解析
 KEYW,PR_SET,1   
