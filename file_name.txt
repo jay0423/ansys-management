@@ -1,10 +1,13 @@
 ファイル名のルール
 ・フォルダ名の頭文字を繋げて作成する．
+
 exp.)
-CFRP2本/thickness=2.0/gap=2.0/　の結果csvファイル場合　→　C2_l10_th2.0_g2.0.csv
-C2 ： CFRP2本
-l10 ： lap=10
-th2.0 ： thickness=2.0
-g2.0 ： gap=2.0
-d1.0 ： div=1.0
-t2 ： time_distance=2
+CFRP2本/thickness=2.0/gap=2.0/ の結果csvファイル場合 → C2_l10_th2.0_g2.0.csv
+
+C2 ： CFRP2本 ｜ 行うシミュレーションの略名
+l10 ： lap=10 ｜ 重ね継ぎ手長さ[mm]
+th2.0 ： thickness=2.0 ｜ CFRPの太さ[mm]
+g2.0 ： gap=2.0 ｜ CFRP間の距離[mm]
+d1.0 ： div=1.0 ｜ 分割数E-3[mm]（１要素あたりの長さ）
+t2 ： time_distance=2 ｜ 引張距離[mm]と引張時間[s]
+s186 ： solid186
