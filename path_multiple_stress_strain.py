@@ -60,6 +60,11 @@ FILE_NAME_LIST = sorted(FILE_NAME_LIST) # 並び替え．まだ不完全
 EXCEL_FILE_NAME = path_s["output_file_name"] # 出力ファイル名
 EXCEL_FILE_NAME = EXCEL_FILE_NAME.replace(".xlsx","")
 EXCEL_FILE_NAME = "{}/{}.xlsx".format(FIRST_PATH,EXCEL_FILE_NAME) # 出力先のpathをくっつける
+POSITIVE_NEGATIVE = int(path_s["plus"]) # プラスマイナス
+if POSITIVE_NEGATIVE == 0:
+    POSITIVE_NEGATIVE = 1
+else:
+    POSITIVE_NEGATIVE = -1
 SPEED = float(path_s["speed[mm/s]"])/1000 # 引張速度
 LENGTH = float(path_s["length[mm]"]/1000) # 試験片長さ（歪み算出用）
 CROSS_SECTIONAL_AREA = path_s["cross_section_area[mm2]"] # 断面積（応力算出用）
@@ -96,7 +101,7 @@ for FILE_NAME in FILE_NAME_LIST:
     df = df.dropna(how="any")
 
     df["strain"] = df.loc[:,"TIME"] * SPEED / LENGTH # 歪みの追加
-    df["FX"] = df.loc[:,"FX"] * (-1) # 荷重の変換
+    df["FX"] = df.loc[:,"FX"] * POSITIVE_NEGATIVE # 荷重の変換
     df["stress"] = df.loc[:,"FX"] / CROSS_SECTIONAL_AREA # 応力の追加
     MAX_ROW = len(df)
     
