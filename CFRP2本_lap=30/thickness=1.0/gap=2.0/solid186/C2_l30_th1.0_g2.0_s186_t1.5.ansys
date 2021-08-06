@@ -36,7 +36,7 @@ Y3 = 10E-3 !PLA横の長さ
 Z2 = 3E-3 !エポキシ部の厚さ
 
 X2 = 75E-3 !CFRP長さ
-Z3 = 0.5E-3 !CFRPの厚さ
+Z3 = 1E-3 !CFRPの厚さ
 Y_CFRP = Z3 !CFRPの横長さ
 CF_gap = 2E-3
 Y4 = Y3/2 - CF_gap/2 - Y_CFRP !CFRP1の初期位置
@@ -48,8 +48,8 @@ DIV3=0.4E-3
 DIV4=0.2E-3
 DIV5=0.2E-3
 
-DISTANCE=-3E-3
-TIME1 = 3
+DISTANCE=-1.5E-3
+TIME1 = 1.5
 
 
 !-材料物性定義----------------------------------------------
