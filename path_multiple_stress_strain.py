@@ -82,7 +82,7 @@ for FILE_NAME in FILE_NAME_LIST:
     try:
         df = pd.read_csv(FILE_NAME)
     except:
-        print("Failed: {}.csv".format(FILE_NAME))
+        print("Failed: {}".format(FILE_NAME))
         continue
 
     # dataframeの整理
@@ -168,7 +168,7 @@ for FILE_NAME in FILE_NAME_LIST:
     #A6セルにグラフを表示
     book[sheet_name].add_chart(chart2,"F23")
 
-    print("Success: {}.csv".format(FILE_NAME))
+    print("Success: {}".format(FILE_NAME))
     # 保存する
     book.save(EXCEL_FILE_NAME)
 
