@@ -1,14 +1,24 @@
 import os
 import sys
-import pandas as pd
 
 import settings
 import get_path
 
 
+
 class Refresh:
+    """
+    ルールに乗っ取り，ファイル名を自動で修正する．
+    setting.pyのABBREVIATIONでディレクトリ名の略称名称を定義し，それに従ってファイル名を決定する．
+
+    ファイル名のルール
+    ・フォルダ名の頭文字（settings.py）を繋げて作成する．
+    exp.
+    CFRP2本/thickness=2.0/gap=2.0/ のcsvファイルの場合 -> C2_l10_th2.0_g2.0.csv
+    """
 
     ABBREVIATION = settings.ABBREVIATION
+
 
     def __init__(self, first_path, kind="ansys"):
         self.first_path = first_path
@@ -68,8 +78,20 @@ class Refresh:
 
 
 
+class MakeFiles:
 
-if __name__ == '__main__':
+
+    DIR_STRUCTURE = settings.DIR_STRUCTURE
+
+    def __init__(self) -> None:
+        pass
+
+    
+
+
+
+
+def refresh():
     print("\n!!!　必ず事前にgitでコミットしておいてください　!!!")
     completion = input("完了: 0, 未完了: 1　：")
     if completion != "0":
@@ -84,7 +106,7 @@ if __name__ == '__main__':
     else:
         first_path += "/"
 
-
+    # 拡張子の選択
     kind = input("ansys: 0, csv: 1　：")
     if kind == "0":
         kind = "ansys"
@@ -97,3 +119,8 @@ if __name__ == '__main__':
 
     a = Refresh(first_path, kind)
     a.refresh()
+
+
+
+if __name__ == '__main__':
+    refresh()
