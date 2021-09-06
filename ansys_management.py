@@ -29,14 +29,16 @@ class Refresh:
             new_file_name = ""
             for path in pre_path[1:-1]: # 最初のパスとファイル名を省いたものをループで回している．
                 try:
-                    new_file_name += "_" + self.ABBREVIATION[path.split("=")[0]] + path.split("=")[-1] # 略称からファイル名を取得する．
+                    if "=" in path: # 名前に=が含まれていない場合
+                        new_file_name += "_" + self.ABBREVIATION[path.split("=")[0]] + path.split("=")[-1] # 略称からファイル名を取得する．
+                    else:
+                        new_file_name += "_" + self.ABBREVIATION[path] # 略称からファイル名を取得する．
                 except:
                     print("ディレクトリ名がまちがえています．やり直してください．")
-                    print(path)
+                    print("/".join(pre_path))
                     sys.exit()
             new_file_name = "/".join(pre_path[:-1]) + "/" + new_file_name[1:] + ".{}".format(self.kind)
             post_path_list.append(new_file_name)
-
         return post_path_list
 
 
@@ -51,23 +53,38 @@ class Refresh:
         
         for pre_path, post_path in zip(pre_path_list, post_path_list):
             if pre_path != post_path:
-                os.rename(pre_path, post_path)
                 print("変更前：", pre_path)
                 print("変更後：", post_path)
-                print("\n")
+                print()
+        a = input("実行:0，中断:1　：")
+        if a != "0":
+            print("初めからやり直してください．")
+            sys.exit()
+
+        for pre_path, post_path in zip(pre_path_list, post_path_list):
+            if pre_path != post_path:
+                print(pre_path, post_path)
+                os.rename(pre_path, post_path)
 
 
 
 
 if __name__ == '__main__':
-    print("本プログラムを実行する際，必ず事前にgitでコミットしておいてください．")
+    print("\n!!!　必ず事前にgitでコミットしておいてください　!!!")
     completion = input("完了: 0, 未完了: 1　：")
     if completion != "0":
         print("やり直してください．")
         sys.exit()
 
+    # ファーストパスの選択
+    first_path = input("ファーストパス　1, 2：")
+    if first_path != "1" and first_path != "2":
+        print("やり直してください．")
+        sys.exit()
+    else:
+        first_path += "/"
 
-    first_path = "1/"
+
     kind = input("ansys: 0, csv: 1　：")
     if kind == "0":
         kind = "ansys"
