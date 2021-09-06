@@ -1,3 +1,7 @@
+"""
+ディレクトリを自動的に作成する．
+"""
+
 import os
 import sys
 
@@ -12,7 +16,7 @@ dir_list = [new_dir_path + mother_name + son for son in son_name]
 print("\n以下のフォルダを作成します．")
 for dir in dir_list:
     print(dir)
-a = input("実行：0，中断：1　：")
+a = input("実行:0，中断:1　：")
 if a != "0":
     print("初めからやり直してください．")
     sys.exit()
