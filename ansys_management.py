@@ -29,14 +29,16 @@ class Refresh:
             new_file_name = ""
             for path in pre_path[1:-1]: # 最初のパスとファイル名を省いたものをループで回している．
                 try:
-                    new_file_name += "_" + self.ABBREVIATION[path.split("=")[0]] + path.split("=")[-1] # 略称からファイル名を取得する．
+                    if "=" in path: # 名前に=が含まれていない場合
+                        new_file_name += "_" + self.ABBREVIATION[path.split("=")[0]] + path.split("=")[-1] # 略称からファイル名を取得する．
+                    else:
+                        new_file_name += "_" + self.ABBREVIATION[path] # 略称からファイル名を取得する．
                 except:
                     print("ディレクトリ名がまちがえています．やり直してください．")
-                    print(path)
+                    print("/".join(pre_path))
                     sys.exit()
             new_file_name = "/".join(pre_path[:-1]) + "/" + new_file_name[1:] + ".{}".format(self.kind)
             post_path_list.append(new_file_name)
-
         return post_path_list
 
 
@@ -54,7 +56,8 @@ class Refresh:
                 os.rename(pre_path, post_path)
                 print("変更前：", pre_path)
                 print("変更後：", post_path)
-                print("\n")
+
+
 
 
 
@@ -66,8 +69,15 @@ if __name__ == '__main__':
         print("やり直してください．")
         sys.exit()
 
+    # ファーストパスの選択
+    first_path = input("ファーストパス　1, 2：")
+    if first_path != "1" and first_path != "2":
+        print("やり直してください．")
+        sys.exit()
+    else:
+        first_path += "/"
 
-    first_path = "1/"
+
     kind = input("ansys: 0, csv: 1　：")
     if kind == "0":
         kind = "ansys"
