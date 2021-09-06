@@ -63,8 +63,8 @@ class Refresh:
 
         for pre_path, post_path in zip(pre_path_list, post_path_list):
             if pre_path != post_path:
-                print(pre_path, post_path)
                 os.rename(pre_path, post_path)
+        print("\n完了．")
 
 
 
