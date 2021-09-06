@@ -67,7 +67,7 @@ if __name__ == '__main__':
         sys.exit()
 
 
-    first_path = "2/"
+    first_path = "1/"
     kind = input("ansys: 0, csv: 1　：")
     if kind == "0":
         kind = "ansys"
