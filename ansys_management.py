@@ -18,16 +18,20 @@ class Refresh:
     """
 
     ABBREVIATION = settings.ABBREVIATION
+    OMISSION = settings.OMISSION
 
 
     def __init__(self, first_path, kind="ansys"):
         self.first_path = first_path
         self.kind = kind
+        self.omission = True # ファイル無視をするかの選択
 
 
     def get_pre_path(self):
         # 変更前のパスを取得し，変更後のパスを作成する．
         pre_path_list = get_path.get_list(self.first_path, kind=self.kind) #ファイルリスト
+        if self.omission:
+            pre_path_list = [pre_path for pre_path in pre_path_list if pre_path.split("/")[-1] not in self.OMISSION] # 除外ファイルをなくす処理
         return pre_path_list
 
 
@@ -86,12 +90,45 @@ class MakeFiles:
     def __init__(self) -> None:
         pass
 
-    
+
+    def write(self):
+        # base.ansysの変数部分に値を入力したファイルを出力する．
+        path = "2/CFRP2_lap=20/base.ansys"
+        with open(path) as f:
+            s = f.read()
+            print(type(s))
+            print(s)
+
+
+    def make_dir(self, dir_list):
+        # ディレクトリを自動的に生成する．
+        # new_dir_path = input("フォルダを作成するパスを入力：")
+        # if new_dir_path[-1] != "/":
+        #     new_dir_path = new_dir_path + "/"
+        # mother_name = input("フォルダの代表名を入力：")
+        # son_name = input("数値を入力(カンマ','で分ける)：").replace(" ", "").replace("　", "").replace("，", ",").split(",")
+        # dir_list = [new_dir_path + mother_name + son for son in son_name]
+
+        for dir in dir_list:
+            os.mkdir(dir)
+
+
+    def get_file_names(self):
+        # 指定パスにファイルを自動生成する．
+        first_path = "2/"
+        kind = "ansys"
+        a = Refresh(first_path, kind)
+        # ディレクトリ名の従ってファイル名を更新する．
+        pre_path_list = a.get_pre_path()
+        post_path_list = a.get_post_path(pre_path_list)
+        print(post_path_list)
+        return post_path_list
 
 
 
 
-def refresh():
+
+def refresh_main():
     print("\n!!!　必ず事前にgitでコミットしておいてください　!!!")
     completion = input("完了: 0, 未完了: 1　：")
     if completion != "0":
@@ -121,6 +158,19 @@ def refresh():
     a.refresh()
 
 
+def make_files_main():
+    a = MakeFiles()
+    a.get_file_names()
+
+
+
 
 if __name__ == '__main__':
-    refresh()
+    a = input("refresh:0, make_files:1 選択：")
+    if a == "0":
+        refresh_main()
+    elif a == "1":
+        make_files_main()
+    else:
+        print("やり直してください．")
+        sys.exit()

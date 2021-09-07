@@ -1,5 +1,6 @@
 
-
+### Refresh
+# ディレクトリ名の略称の定義
 # 「=」がない場合はそのまま，ある場合は「=」より左側を入力
 ABBREVIATION = {
     'CFRP0': 'C0', # CFRPなし
@@ -21,6 +22,14 @@ ABBREVIATION = {
 }
 
 
+# ファイル名を変更しないファイルリスト
+OMISSION = [
+    'base.ansys'
+]
+
+
+
+### MakeFiles
 
 DIR_STRUCTURE = [
     {
