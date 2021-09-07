@@ -19,6 +19,9 @@ ABBREVIATION = {
     'cfrp_tensile': 'cfr', # CFRPの強度
     'epo_tensile': 'epo', # epoxyの強度
     'super': 'sup', # その他改良
+    'CFRP': 'CFRP',
+    'epoxy': 'epoxy',
+    'PLA': 'PLA',
 }
 
 
