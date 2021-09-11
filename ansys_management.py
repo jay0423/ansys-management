@@ -1,5 +1,6 @@
 import os
 import sys
+import pathlib
 
 import settings
 import get_path
@@ -25,6 +26,7 @@ class Refresh:
         self.first_path = first_path
         self.kind = kind
         self.omission = True # ファイル無視をするかの選択
+        self.only_word = ""
 
 
     def get_pre_path(self):
@@ -32,6 +34,8 @@ class Refresh:
         pre_path_list = get_path.get_list(self.first_path, kind=self.kind) #ファイルリスト
         if self.omission:
             pre_path_list = [pre_path for pre_path in pre_path_list if pre_path.split("/")[-1] not in self.OMISSION] # 除外ファイルをなくす処理
+        if self.only_word != "":
+            pre_path_list = [pre_path for pre_path in pre_path_list if pre_path.split("/")[-1] == self.only_word] # 
         return pre_path_list
 
 
@@ -79,6 +83,15 @@ class Refresh:
             if pre_path != post_path:
                 os.rename(pre_path, post_path)
         print("\n完了．")
+    
+
+    def refresh_force(self):
+        # ディレクトリ名の従ってファイル名を更新する．
+        pre_path_list = self.get_pre_path()
+        post_path_list = self.get_post_path(pre_path_list)
+        for pre_path, post_path in zip(pre_path_list, post_path_list):
+            if pre_path != post_path:
+                os.rename(pre_path, post_path)
 
 
 
@@ -100,6 +113,16 @@ class MakeFiles:
             print(s)
 
 
+    def make_path(self):
+        # DIR_STRUCTUREをもとにパスを作成する．
+        path_list = []
+        for dir_list in self.DIR_STRUCTURE:
+            for dir in dir_list:
+                path_list.append(dir[0])
+
+
+
+
     def make_dir(self, dir_list):
         # ディレクトリを自動的に生成する．
         # new_dir_path = input("フォルダを作成するパスを入力：")
@@ -111,6 +134,23 @@ class MakeFiles:
 
         for dir in dir_list:
             os.mkdir(dir)
+
+
+    def change_damy_file(self):
+        # damy_fileを変換する．
+        first_path = "2/"
+        kind = "ansys"
+        a = Refresh(first_path, kind)
+        a.only_word = "damy_file.{}".format(kind)
+        a.refresh_force()
+
+
+
+    def make_damy_files(self):
+        path = self.get_file_names()
+        path = "2/CFRP2_lap=20/thickness=1.5/a.ansys"
+        print(path[0])
+        pathlib.Path(path).touch()
 
 
     def get_file_names(self):
@@ -160,7 +200,7 @@ def refresh_main():
 
 def make_files_main():
     a = MakeFiles()
-    a.get_file_names()
+    a.make_files()
 
 
 
