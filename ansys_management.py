@@ -95,7 +95,6 @@ class Refresh:
 
 
 
-
 class MakeFiles:
 
 
@@ -154,7 +153,18 @@ class MakeFiles:
         pathlib.Path(path).touch()
 
 
-    
+    def get_file_names(self):
+        # 指定パスにファイルを自動生成する．
+        first_path = "2/"
+        kind = "ansys"
+        a = Refresh(first_path, kind)
+        # ディレクトリ名の従ってファイル名を更新する．
+        pre_path_list = a.get_pre_path()
+        post_path_list = a.get_post_path(pre_path_list)
+        print(post_path_list)
+        return post_path_list
+
+
 
 
 
