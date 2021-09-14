@@ -1,6 +1,7 @@
 import os
 import sys
 import pathlib
+import itertools
 
 import settings
 import get_path
@@ -94,21 +95,32 @@ class Refresh:
 
     def refresh_force(self):
         # ディレクトリ名の従ってファイル名を更新する．
-        pre_path_list = self.get_pre_path()
-        post_path_list = self.get_post_path(pre_path_list)
+        pre_path_list = []
+        post_path_list = []
+        for k in self.FILE_EXTENSION:
+            self.kind = k
+            pre_path_list_ = self.get_pre_path()
+            post_path_list_ = self.get_post_path(pre_path_list_)
+            pre_path_list += pre_path_list_
+            post_path_list += post_path_list_
         for pre_path, post_path in zip(pre_path_list, post_path_list):
             if pre_path != post_path:
                 os.rename(pre_path, post_path)
 
 
 
-class MakeFiles:
 
+class MakeFiles:
+    """
+    settings.pyのディレクトリ構造(DIR_STRUCTURE)を元に新たなファイルを作成する．
+    """
 
     DIR_STRUCTURE = settings.DIR_STRUCTURE
 
-    def __init__(self) -> None:
-        pass
+
+    def __init__(self):
+        self.kind = "ansys"
+        self.first_path = "2/"
 
 
     def write(self):
@@ -122,57 +134,57 @@ class MakeFiles:
 
     def make_path(self):
         # DIR_STRUCTUREをもとにパスを作成する．
+        first_path = self.first_path
+        dir_list_list = [dir_list[1] for dir_list in self.DIR_STRUCTURE[first_path]]
+        dir_name_list = [dir_list[0] for dir_list in self.DIR_STRUCTURE[first_path]]
+        product_list = list(itertools.product(*dir_list_list))
         path_list = []
-        for dir_list in self.DIR_STRUCTURE:
-            for dir in dir_list:
-                path_list.append(dir[0])
+        for product in product_list:
+            path = first_path
+            for dir_name, num in zip(dir_name_list, product):
+                path += dir_name + "=" + str(num) + "/"
+            path_list.append(path)
+        return path_list
 
 
-
-
-    def make_dir(self, dir_list):
+    def make_dir(self):
         # ディレクトリを自動的に生成する．
-        # new_dir_path = input("フォルダを作成するパスを入力：")
-        # if new_dir_path[-1] != "/":
-        #     new_dir_path = new_dir_path + "/"
-        # mother_name = input("フォルダの代表名を入力：")
-        # son_name = input("数値を入力(カンマ','で分ける)：").replace(" ", "").replace("　", "").replace("，", ",").split(",")
-        # dir_list = [new_dir_path + mother_name + son for son in son_name]
-
-        for dir in dir_list:
-            os.mkdir(dir)
-
-
-    def change_damy_file(self):
-        # damy_fileを変換する．
-        first_path = "2/"
-        kind = "ansys"
-        a = Refresh(first_path, kind)
-        a.only_word = "damy_file.{}".format(kind)
-        a.refresh_force()
-
+        path_list = self.make_path()
+        for path in path_list:
+            try:
+                os.mkdir(path)
+            except:
+                continue
 
 
     def make_damy_files(self):
-        path = self.get_file_names()
-        path = "2/CFRP2_lap=20/thickness=1.5/a.ansys"
-        print(path[0])
-        pathlib.Path(path).touch()
+        # ダミーファイルを作成する．
+        self.make_dir()
+        path_list = self.make_path()
+        for path in path_list:
+            try:
+                pathlib.Path(path + "damy_file.{}".format(self.kind)).touch()
+            except:
+                continue
 
 
-    def get_file_names(self):
-        # 指定パスにファイルを自動生成する．
-        first_path = "2/"
-        kind = "ansys"
-        a = Refresh(first_path, kind)
-        # ディレクトリ名の従ってファイル名を更新する．
-        pre_path_list = a.get_pre_path()
-        post_path_list = a.get_post_path(pre_path_list)
-        print(post_path_list)
-        return post_path_list
+    def change_damy_files(self):
+        # damy_fileを変換する．
+        a = Refresh(self.first_path)
+        a.only_word = "damy_file.{}".format(self.kind)
+        a.refresh_force()
+
+
+    def make_files(self):
+        self.make_damy_files()
+        self.change_damy_files()
 
 
 
+
+"""
+以下，実行用の関数
+"""
 
 
 def refresh_main():
@@ -190,24 +202,15 @@ def refresh_main():
     else:
         first_path += "/"
 
-    # # 拡張子の選択
-    # kind = input("ansys: 0, csv: 1　：")
-    # if kind == "0":
-    #     kind = "ansys"
-    # elif kind == "1":
-    #     kind = "csv"
-    # else:
-    #     print("やり直してください．")
-    #     sys.exit()
-    # print()
-
     a = Refresh(first_path)
     a.refresh()
 
 
+
+
 def make_files_main():
     a = MakeFiles()
-    a.make_files()
+    a.change_damy_files()
 
 
 

@@ -40,15 +40,10 @@ OMISSION = [
 
 ### MakeFiles
 
-DIR_STRUCTURE = [
-    [
-        ('CFRP2_lap=10', []),
-        ('thickness', [0.5, 1.0, 1.5, 2.0]),
-        ('gap', [0.5, 1.0, 2.0])
-    ], 
-    [
-        ('CFRP2_lap=20', []),
+DIR_STRUCTURE = {
+    '2/': [
+        ('CFRP2_lap', [10, 20]),
         ('thickness', [0.5, 1.0, 1.5, 2.0]),
         ('gap', [0.5, 1.0, 2.0])
     ]
-]
+}
