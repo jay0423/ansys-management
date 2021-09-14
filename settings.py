@@ -1,5 +1,11 @@
 
 ### Refresh
+# 対象のファイル拡張子
+FILE_EXTENSION = [
+    "ansys",
+    "csv"
+]
+
 # ディレクトリ名の略称の定義
 # 「=」がない場合はそのまま，ある場合は「=」より左側を入力
 ABBREVIATION = {

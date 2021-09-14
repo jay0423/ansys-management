@@ -20,11 +20,12 @@ class Refresh:
 
     ABBREVIATION = settings.ABBREVIATION
     OMISSION = settings.OMISSION
+    FILE_EXTENSION = settings.FILE_EXTENSION
 
 
-    def __init__(self, first_path, kind="ansys"):
+    def __init__(self, first_path):
         self.first_path = first_path
-        self.kind = kind
+        self.kind = ""
         self.omission = True # ファイル無視をするかの選択
         self.only_word = ""
 
@@ -62,8 +63,14 @@ class Refresh:
 
     def refresh(self):
         # ディレクトリ名の従ってファイル名を更新する．
-        pre_path_list = self.get_pre_path()
-        post_path_list = self.get_post_path(pre_path_list)
+        pre_path_list = []
+        post_path_list = []
+        for k in self.FILE_EXTENSION:
+            self.kind = k
+            pre_path_list_ = self.get_pre_path()
+            post_path_list_ = self.get_post_path(pre_path_list_)
+            pre_path_list += pre_path_list_
+            post_path_list += post_path_list_
 
         if pre_path_list == post_path_list:
             print("変更なし")
@@ -183,18 +190,18 @@ def refresh_main():
     else:
         first_path += "/"
 
-    # 拡張子の選択
-    kind = input("ansys: 0, csv: 1　：")
-    if kind == "0":
-        kind = "ansys"
-    elif kind == "1":
-        kind = "csv"
-    else:
-        print("やり直してください．")
-        sys.exit()
-    print()
+    # # 拡張子の選択
+    # kind = input("ansys: 0, csv: 1　：")
+    # if kind == "0":
+    #     kind = "ansys"
+    # elif kind == "1":
+    #     kind = "csv"
+    # else:
+    #     print("やり直してください．")
+    #     sys.exit()
+    # print()
 
-    a = Refresh(first_path, kind)
+    a = Refresh(first_path)
     a.refresh()
 
 
