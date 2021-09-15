@@ -2,6 +2,7 @@ import os
 import sys
 import pathlib
 import itertools
+import glob
 
 import settings
 import get_path
@@ -93,7 +94,7 @@ class Refresh:
         print("\n完了．")
     
 
-    def refresh_force(self):
+    def refresh_force(self, print_permissoin=False):
         # ディレクトリ名の従ってファイル名を更新する．
         pre_path_list = []
         post_path_list = []
@@ -105,6 +106,8 @@ class Refresh:
             post_path_list += post_path_list_
         for pre_path, post_path in zip(pre_path_list, post_path_list):
             if pre_path != post_path:
+                if print_permissoin:
+                    print(post_path)
                 os.rename(pre_path, post_path)
 
 
@@ -115,6 +118,7 @@ class MakeFiles:
     settings.pyのディレクトリ構造(DIR_STRUCTURE)を元に新たなファイルを作成する．
     """
 
+    FILE_EXTENSION = settings.FILE_EXTENSION
     DIR_STRUCTURE = settings.DIR_STRUCTURE
 
 
@@ -163,7 +167,14 @@ class MakeFiles:
         path_list = self.make_path()
         for path in path_list:
             try:
-                pathlib.Path(path + "damy_file.{}".format(self.kind)).touch()
+                make_permission = True
+                for files in glob.glob(path + "*"):
+                    if self.kind == os.path.splitext(files)[1][1:]:
+                        make_permission = False
+                if make_permission:
+                    pathlib.Path(path + "damy_file.{}".format(self.kind)).touch()
+                else:
+                    continue
             except:
                 continue
 
@@ -172,12 +183,14 @@ class MakeFiles:
         # damy_fileを変換する．
         a = Refresh(self.first_path)
         a.only_word = "damy_file.{}".format(self.kind)
-        a.refresh_force()
+        a.refresh_force(print_permissoin=True)
 
 
     def make_files(self):
-        self.make_damy_files()
-        self.change_damy_files()
+        for k in self.FILE_EXTENSION:
+            self.kind = k
+            self.make_damy_files()
+            self.change_damy_files()
 
 
 
@@ -210,7 +223,7 @@ def refresh_main():
 
 def make_files_main():
     a = MakeFiles()
-    a.change_damy_files()
+    a.make_files()
 
 
 
