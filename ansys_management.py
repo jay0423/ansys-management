@@ -1,3 +1,20 @@
+"""
+Refresh：ファイル名をルールにのっとり改名する．
+MakeFiles：settings.pyで設定されたディレクトリ構造で自動的に空ファイルを作成する．
+WriteAnsysFile：base.ansysファイルを元に自動的に変数を埋め込み，ファイルを自動作成する．
+
+Usage
+ターミナルにて
+ipython ansys_management.py
+を入力し，選択肢から実行したい機能の数字を選択することで実行する．
+
+Version
+python 3.8.8
+ipython 7.22.0
+"""
+
+
+
 import os
 import sys
 import pathlib
@@ -6,6 +23,7 @@ import glob
 
 import settings
 import get_path
+
 
 
 
@@ -113,6 +131,8 @@ class Refresh:
 
 
 
+
+
 class MakeFiles:
     """
     settings.pyのディレクトリ構造(DIR_STRUCTURE)を元に新たなファイルを作成する．
@@ -125,15 +145,8 @@ class MakeFiles:
     def __init__(self):
         self.kind = "ansys"
         self.first_path = "2/"
-
-
-    def write(self):
-        # base.ansysの変数部分に値を入力したファイルを出力する．
-        path = "2/CFRP2_lap=20/base.ansys"
-        with open(path) as f:
-            s = f.read()
-            print(type(s))
-            print(s)
+        self.all = True # パスを作成する際，全ての部分でパスを作成するのかを選択することができる．
+        self.make_file_all_path = True # 全てのファイルを作成する．
 
 
     def make_path(self):
@@ -151,9 +164,32 @@ class MakeFiles:
         return path_list
 
 
+    def make_path_all(self):
+        # 全てのパスを作成する
+        first_path = self.first_path
+        path_list_all = []
+        for i in range(len(self.DIR_STRUCTURE[first_path])):
+            dir_structure_list = self.DIR_STRUCTURE[first_path][:i+1]
+            dir_list_list = [dir_list[1] for dir_list in dir_structure_list]
+            dir_name_list = [dir_list[0] for dir_list in dir_structure_list]
+            product_list = list(itertools.product(*dir_list_list))
+            path_list = []
+            for product in product_list:
+                path = first_path
+                for dir_name, num in zip(dir_name_list, product):
+                    path += dir_name + "=" + str(num) + "/"
+                path_list.append(path)
+            path_list_all += path_list
+        return path_list_all
+
+
+
     def make_dir(self):
         # ディレクトリを自動的に生成する．
-        path_list = self.make_path()
+        if self.all:
+            path_list = self.make_path_all()
+        else:
+            path_list = self.make_path()
         for path in path_list:
             try:
                 os.mkdir(path)
@@ -164,13 +200,19 @@ class MakeFiles:
     def make_damy_files(self):
         # ダミーファイルを作成する．
         self.make_dir()
-        path_list = self.make_path()
+        if self.all:
+            path_list = self.make_path_all()
+        else:
+            path_list = self.make_path()
         for path in path_list:
             try:
                 make_permission = True
                 for files in glob.glob(path + "*"):
                     if self.kind == os.path.splitext(files)[1][1:]:
-                        make_permission = False
+                        make_permission = False # 既存ファイルがある場合にファイルを作成しなくなる．
+                    if self.make_file_all_path:
+                        if self.DIR_STRUCTURE[self.first_path][-1][0] != files.split("/")[-2].split("=")[0]:
+                            make_permission = False
                 if make_permission:
                     pathlib.Path(path + "damy_file.{}".format(self.kind)).touch()
                 else:
@@ -191,6 +233,27 @@ class MakeFiles:
             self.kind = k
             self.make_damy_files()
             self.change_damy_files()
+
+
+
+
+
+
+class WriteAnsysFile:
+
+    def __init__(self) -> None:
+        pass
+
+
+    def write(self):
+        # base.ansysの変数部分に値を入力したファイルを出力する．
+        path = "2/CFRP2_lap=20/base.ansys"
+        with open(path) as f:
+            s = f.read()
+            print(type(s))
+            print(s)
+
+
 
 
 
@@ -220,20 +283,33 @@ def refresh_main():
 
 
 
-
 def make_files_main():
     a = MakeFiles()
     a.make_files()
 
 
 
+def write_ansys_file_main():
+    a = WriteAnsysFile()
+    a.write()
+
+
+
+
+
+
 
 if __name__ == '__main__':
-    a = input("refresh:0, make_files:1 選択：")
+    print("\n0： refresh（ファイル名をルール通りに更新する．）")
+    print("1： make files（ファイルを自動的に作成する．）")
+    print("2： write ansys\n")
+    a = input("入力してください：")
     if a == "0":
         refresh_main()
     elif a == "1":
         make_files_main()
+    elif a == "2":
+        write_ansys_file_main()
     else:
         print("やり直してください．")
         sys.exit()

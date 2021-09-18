@@ -6,6 +6,8 @@ FILE_EXTENSION = [
     "csv"
 ]
 
+
+
 # ディレクトリ名の略称の定義
 # 「=」がない場合はそのまま，ある場合は「=」より左側を入力
 ABBREVIATION = {
@@ -31,6 +33,7 @@ ABBREVIATION = {
 }
 
 
+
 # ファイル名を変更しないファイルリスト
 OMISSION = [
     'base.ansys'
@@ -38,12 +41,17 @@ OMISSION = [
 
 
 
+
+
+
+
+
 ### MakeFiles
 
 DIR_STRUCTURE = {
     '2/': [
-        ('CFRP2_lap', [10, 20]),
-        ('thickness', [0.5, 1.0, 1.5, 2.0]),
+        ('CFRP2_lap', [10, 20, 30]),
+        ('thickness', [0.5, 1.0, 1.5, 2.0, 2.5]),
         ('gap', [0.5, 1.0, 2.0, 2.5])
     ]
 }
