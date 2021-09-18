@@ -239,19 +239,71 @@ class MakeFiles:
 
 
 
-class WriteAnsysFile:
-
-    def __init__(self) -> None:
-        pass
+class WriteAnsysFile(MakeFiles):
 
 
-    def write(self):
+    SEARCH_WORDS = list(settings.ABBREVIATION.keys())
+    BASE_PATH = settings.BASE_PATH
+    WRITE_EXTENSION = settings.WRITE_EXTENSION
+    DEFAOLUT_REPLACE_WORD_DICT = settings.DEFAOLUT_REPLACE_WORD_DICT
+
+
+    def replace_word(self, data_lines, replace_word_dict):
+        # 変換して返す
+        for search_key_word in self.SEARCH_WORDS:
+            search_word = "{% " + search_key_word + " %}"
+            for line in data_lines:
+                if search_word in line:
+                    try:
+                        new_line = line.replace(search_word, replace_word_dict[search_key_word])
+                    except:
+                        new_line = line.replace(search_word, self.DEFAOLUT_REPLACE_WORD_DICT[search_key_word])
+                    data_lines[data_lines.index(line)] = new_line
+        return data_lines
+
+
+    def get_replace_word_dict(self, path):
+        # パスから変換キーワードと数値を抽出し，辞書型を作成する．
+        replace_word_dict = dict([tuple(key_word.split("=")) for key_word in path.split("/")[:-1] if len(key_word.split("="))==2])
+        return replace_word_dict
+
+
+    def write(self, output_path):
         # base.ansysの変数部分に値を入力したファイルを出力する．
-        path = "2/CFRP2_lap=20/base.ansys"
-        with open(path) as f:
-            s = f.read()
-            print(type(s))
-            print(s)
+        with open(self.BASE_PATH) as f: # 読み取り
+            data_lines = f.readlines()
+        replace_word_dict = self.get_replace_word_dict(output_path)
+        data_lines = self.replace_word(data_lines=data_lines, replace_word_dict=replace_word_dict)
+        with open(output_path, mode="w") as f: # 書き込み
+            f.writelines(data_lines)
+
+
+    def make_damy_files(self):
+        # ダミーファイルを作成する．
+        self.make_dir()
+        if self.all:
+            path_list = self.make_path_all()
+        else:
+            path_list = self.make_path()
+        for path in path_list:
+            try:
+                make_permission = True
+                for files in glob.glob(path + "*"):
+                    if self.kind == os.path.splitext(files)[1][1:]:
+                        make_permission = False # 既存ファイルがある場合にファイルを作成しなくなる．
+                    if self.make_file_all_path:
+                        if self.DIR_STRUCTURE[self.first_path][-1][0] != files.split("/")[-2].split("=")[0]:
+                            make_permission = False
+                if make_permission:
+                    if self.kind == self.WRITE_EXTENSION: # 指定ファイルのみ
+                        pathlib.Path(path + "damy_file.{}".format(self.kind)).touch()
+                        self.write(output_path=path+"damy_file.{}".format(self.kind))
+                    else:
+                        pathlib.Path(path + "damy_file.{}".format(self.kind)).touch()
+                else:
+                    continue
+            except:
+                continue
 
 
 
@@ -291,7 +343,7 @@ def make_files_main():
 
 def write_ansys_file_main():
     a = WriteAnsysFile()
-    a.write()
+    a.make_files()
 
 
 
@@ -302,7 +354,7 @@ def write_ansys_file_main():
 if __name__ == '__main__':
     print("\n0： refresh（ファイル名をルール通りに更新する．）")
     print("1： make files（ファイルを自動的に作成する．）")
-    print("2： write ansys\n")
+    print("2： write ansys（ファイルを自動的に作成し，さらにansysファイルを自動的に穴埋めし自動生成する．）\n")
     a = input("入力してください：")
     if a == "0":
         refresh_main()
