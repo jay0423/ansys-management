@@ -42,6 +42,11 @@ class Refresh:
     ABBREVIATION = settings.ABBREVIATION
     OMISSION = settings.OMISSION
     FILE_EXTENSION = settings.FILE_EXTENSION
+    OS = settings.OS
+    if OS == "mac":
+        SLASH = "/"
+    elif OS == "windows":
+        SLASH = "\ ".replace(" ", "")
 
 
     def __init__(self, first_path):
@@ -55,15 +60,15 @@ class Refresh:
         # 変更前のパスを取得し，変更後のパスを作成する．
         pre_path_list = get_path.get_list(self.first_path, kind=self.kind) #ファイルリスト
         if self.omission:
-            pre_path_list = [pre_path for pre_path in pre_path_list if pre_path.split("/")[-1] not in self.OMISSION] # 除外ファイルをなくす処理
+            pre_path_list = [pre_path for pre_path in pre_path_list if pre_path.split(self.SLASH)[-1] not in self.OMISSION] # 除外ファイルをなくす処理
         if self.only_word != "":
-            pre_path_list = [pre_path for pre_path in pre_path_list if pre_path.split("/")[-1] == self.only_word] # 
+            pre_path_list = [pre_path for pre_path in pre_path_list if pre_path.split(self.SLASH)[-1] == self.only_word] # 
         return pre_path_list
 
 
     def get_post_path(self, pre_path_list):
         # 変更前のパスを受け取り，変更後のパスを作成する．
-        pre_path_list_list = [pre_path.split("/") for pre_path in pre_path_list]
+        pre_path_list_list = [pre_path.split(self.SLASH) for pre_path in pre_path_list]
         post_path_list = []
         for pre_path in pre_path_list_list:
             new_file_name = ""
@@ -77,7 +82,7 @@ class Refresh:
                     print("ディレクトリ名がまちがえています．やり直してください．")
                     print("/".join(pre_path))
                     sys.exit()
-            new_file_name = "/".join(pre_path[:-1]) + "/" + new_file_name[1:] + ".{}".format(self.kind)
+            new_file_name = self.SLASH.join(pre_path[:-1]) + self.SLASH + new_file_name[1:] + ".{}".format(self.kind)
             post_path_list.append(new_file_name)
         return post_path_list
 
@@ -141,6 +146,11 @@ class MakeFiles:
 
     FILE_EXTENSION = settings.FILE_EXTENSION
     DIR_STRUCTURE = settings.DIR_STRUCTURE
+    OS = settings.OS
+    if OS == "mac":
+        SLASH = "/"
+    elif OS == "windows":
+        SLASH = "\ ".replace(" ", "")
 
 
     def __init__(self):
@@ -160,7 +170,7 @@ class MakeFiles:
         for product in product_list:
             path = first_path
             for dir_name, num in zip(dir_name_list, product):
-                path += dir_name + "=" + str(num) + "/"
+                path += dir_name + "=" + str(num) + self.SLASH
             path_list.append(path)
         return path_list
 
@@ -178,7 +188,7 @@ class MakeFiles:
             for product in product_list:
                 path = first_path
                 for dir_name, num in zip(dir_name_list, product):
-                    path += dir_name + "=" + str(num) + "/"
+                    path += dir_name + "=" + str(num) + self.SLASH
                 path_list.append(path)
             path_list_all += path_list
         return path_list_all
@@ -212,7 +222,7 @@ class MakeFiles:
                     if self.kind == os.path.splitext(files)[1][1:]:
                         make_permission = False # 既存ファイルがある場合にファイルを作成しなくなる．
                     if self.make_file_all_path:
-                        if self.DIR_STRUCTURE[self.first_path][-1][0] != files.split("/")[-2].split("=")[0]:
+                        if self.DIR_STRUCTURE[self.first_path][-1][0] != files.split(self.SLASH)[-2].split("=")[0]:
                             make_permission = False
                 if make_permission:
                     pathlib.Path(path + "damy_file.{}".format(self.kind)).touch()
@@ -265,7 +275,7 @@ class WriteAnsysFile(MakeFiles):
 
     def get_replace_word_dict(self, path):
         # パスから変換キーワードと数値を抽出し，辞書型を作成する．
-        replace_word_dict = dict([tuple(key_word.split("=")) for key_word in path.split("/")[:-1] if len(key_word.split("="))==2])
+        replace_word_dict = dict([tuple(key_word.split("=")) for key_word in path.split(self.SLASH)[:-1] if len(key_word.split("="))==2])
         return replace_word_dict
 
 
@@ -293,7 +303,7 @@ class WriteAnsysFile(MakeFiles):
                     if self.kind == os.path.splitext(files)[1][1:]:
                         make_permission = False # 既存ファイルがある場合にファイルを作成しなくなる．
                     if self.make_file_all_path:
-                        if self.DIR_STRUCTURE[self.first_path][-1][0] != files.split("/")[-2].split("=")[0]:
+                        if self.DIR_STRUCTURE[self.first_path][-1][0] != files.split(self.SLASH)[-2].split("=")[0]:
                             make_permission = False
                 if make_permission:
                     if self.kind == self.WRITE_EXTENSION: # 指定ファイルのみ
@@ -317,6 +327,12 @@ class WriteAnsysFile(MakeFiles):
 
 
 def refresh_main():
+    OS = settings.OS
+    if OS == "mac":
+        SLASH = "/"
+    elif OS == "windows":
+        SLASH = "\ ".replace(" ", "")
+        
     print("\n!!!　必ず事前にgitでコミットしておいてください　!!!")
     completion = input("完了: 0, 未完了: 1　：")
     if completion != "0":
@@ -329,7 +345,7 @@ def refresh_main():
         print("やり直してください．")
         sys.exit()
     else:
-        first_path += "/"
+        first_path += SLASH
 
     a = Refresh(first_path)
     a.refresh()
