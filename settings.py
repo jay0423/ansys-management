@@ -56,7 +56,7 @@ OMISSION = [
 
 DIR_STRUCTURE = {
     '2/': [
-        ('CFRP2_lap', [10, 20, 30]),
+        ('CFRP2_lap', [10, 20, 30, 40]),
         ('thickness', [0.5, 1.0, 1.5, 2.0]),
     ]
 }
