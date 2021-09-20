@@ -6,14 +6,12 @@ OS = "mac"
 
 
 
-
 ### Refresh
 # ファイル名をルール通りに作成する対象ファイルの拡張子
 FILE_EXTENSION = [
     "ansys",
     "csv"
 ]
-
 
 
 # ディレクトリ名の略称の定義
@@ -41,12 +39,10 @@ ABBREVIATION = {
 }
 
 
-
 # ファイル名を変更しないファイルリスト
 OMISSION = [
     'base.ansys'
 ]
-
 
 
 

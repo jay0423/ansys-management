@@ -280,11 +280,11 @@ class WriteAnsysFile(MakeFiles):
 
     def write(self, output_path):
         # base.ansysの変数部分に値を入力したファイルを出力する．
-        with open(self.BASE_PATH) as f: # 読み取り
+        with open(self.BASE_PATH, encoding="utf-8_sig") as f: # 読み取り
             data_lines = f.readlines()
         replace_word_dict = self.get_replace_word_dict(output_path)
         data_lines = self.replace_word(data_lines=data_lines, replace_word_dict=replace_word_dict)
-        with open(output_path, mode="w") as f: # 書き込み
+        with open(output_path, mode="w", encoding="utf-8_sig") as f: # 書き込み
             f.writelines(data_lines)
 
 
