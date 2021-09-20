@@ -14,42 +14,47 @@ import pandas as pd
 import numpy as np
 import sys
 import openpyxl as px
-
 import get_path
-import settings
-
 
 
 
 
 class MakeStressStrain:
 
-    OS = settings.OS
+    path_df = ""
+    path_s = ""
+
+    FIRST_PATH = ""
+    KEY_WORD_LIST = ""
+    REMOVE_WORD_LIST = []
+    FILE_NAME_LIST = []
+    EXCEL_FILE_NAME = ""
+    POSITIVE_NEGATIVE = ""
+
+    SPEED = 0
+    LENGTH = 0
+    CROSS_SECTIONAL_AREA = 0
 
 
-    def __init__(self):
-        if self.OS == "mac":
-            self.slash = "/"
-        elif self.OS == "windows":
-            self.slash = "\ ".replace(" ", "")
+    def __init__(self) -> None:
+        pass
 
-
-
-    def make_stress_strain(self):
+    
+    def make_df(self):
         # path.xlsxから情報を取得
         try:
-            path_df = pd.read_excel("path.xlsx")
-            path_df = path_df.fillna("")
-            path_df = path_df[path_df["finished"] == ""]
-            path_df.reset_index(inplace=True, drop=True)
-            path_s = path_df.iloc[0,:]
+            self.path_df = pd.read_excel("path.xlsx")
+            self.path_df = self.path_df.fillna("")
+            self.path_df = self.path_df[self.path_df["finished"] == ""]
+            self.path_df.reset_index(inplace=True, drop=True)
+            self.path_s = self.path_df.iloc[0,:]
         except:
             print("path.xlsxで指定されていません．")
             sys.exit()
-        if len(path_df) > 1: # 複数入力されている時
+        if len(self.path_df) > 1: # 複数入力されている時
             while True:
                 print("\n＜＜　pathの選択肢が複数あります．　＞＞")
-                for i, p in enumerate(path_df["output_file_name"]):
+                for i, p in enumerate(self.path_df["output_file_name"]):
                     print("{}： {}".format(i, p))
                 try:
                     path_num = int(input("\n数字で選択してください："))
@@ -58,46 +63,50 @@ class MakeStressStrain:
                     print("\n不明な入力\n")
                     continue
             try:
-                path_df = path_df[path_df.index == path_num]
+                path_df = self.path_df[self.path_df.index == path_num]
             except:
                 print("初めからやり直してください．\n")
                 sys.exit()
 
-        path_s = path_df.iloc[0,:]
+        self.path_s = path_df.iloc[0,:]
 
 
+    def setting(self):
         # 入力値
-        FIRST_PATH = path_s["path"]
-        KEY_WORD_LIST = path_s["key_word"].replace(" ", "").split(",") # csvファイルのキーワード
-        REMOVE_WORD_LIST = path_s["remove_word"].replace(" ", "").split(",") # 除外のキーワード
-        if FIRST_PATH[-1] == self.slash:
-            FIRST_PATH = FIRST_PATH[:-1]
-        FILE_NAME_LIST = get_path.get_list(FIRST_PATH, kind="csv") #CSVファイルリスト
-        FILE_NAME_LIST = [FILE_NAME for FILE_NAME in FILE_NAME_LIST for KEY_WORD in KEY_WORD_LIST if KEY_WORD in FILE_NAME] # KEY_WORDが含まれるファイル名だけ抽出
-        if REMOVE_WORD_LIST != ['']:
-            FILE_NAME_LIST = [FILE_NAME for FILE_NAME in FILE_NAME_LIST for REMOVE_WORD in REMOVE_WORD_LIST if REMOVE_WORD not in FILE_NAME] # KEY_WORDが含まれるファイル名だけ抽出
-        FILE_NAME_LIST = sorted(FILE_NAME_LIST) # 並び替え．まだ不完全
-        EXCEL_FILE_NAME = path_s["output_file_name"] # 出力ファイル名
-        EXCEL_FILE_NAME = EXCEL_FILE_NAME.replace(".xlsx","")
-        EXCEL_FILE_NAME = "{}{}{}.xlsx".format(FIRST_PATH, self.slash, EXCEL_FILE_NAME) # 出力先のpathをくっつける
-        POSITIVE_NEGATIVE = int(path_s["plus"]) # プラスマイナス
-        if POSITIVE_NEGATIVE == 0:
-            POSITIVE_NEGATIVE = 1
+        self.FIRST_PATH = self.path_s["path"]
+        self.KEY_WORD_LIST = self.path_s["key_word"].replace(" ", "").split(",") # csvファイルのキーワード
+        self.REMOVE_WORD_LIST = self.path_s["remove_word"].replace(" ", "").split(",") # 除外のキーワード
+        if self.FIRST_PATH[-1] == "/":
+            self.FIRST_PATH = self.FIRST_PATH[:-1]
+        self.FILE_NAME_LIST = get_path.get_list(self.FIRST_PATH, kind="csv") #CSVファイルリスト
+        self.FILE_NAME_LIST = [FILE_NAME for FILE_NAME in self.FILE_NAME_LIST for KEY_WORD in self.KEY_WORD_LIST if KEY_WORD in FILE_NAME] # KEY_WORDが含まれるファイル名だけ抽出
+        if self.REMOVE_WORD_LIST != ['']:
+            self.FILE_NAME_LIST = [FILE_NAME for FILE_NAME in self.FILE_NAME_LIST for REMOVE_WORD in self.REMOVE_WORD_LIST if REMOVE_WORD not in FILE_NAME] # KEY_WORDが含まれるファイル名だけ抽出
+        self.FILE_NAME_LIST = sorted(self.FILE_NAME_LIST) # 並び替え．まだ不完全
+        self.EXCEL_FILE_NAME = self.path_s["output_file_name"] # 出力ファイル名
+        self.EXCEL_FILE_NAME = self.EXCEL_FILE_NAME.replace(".xlsx","")
+        self.EXCEL_FILE_NAME = "{}/{}.xlsx".format(self.FIRST_PATH,self.EXCEL_FILE_NAME) # 出力先のpathをくっつける
+        self.POSITIVE_NEGATIVE = int(self.path_s["plus"]) # プラスマイナス
+        if self.POSITIVE_NEGATIVE == 0:
+            self.POSITIVE_NEGATIVE = 1
         else:
-            POSITIVE_NEGATIVE = -1
-        SPEED = float(path_s["speed[mm/s]"])/1000 # 引張速度
-        LENGTH = float(path_s["length[mm]"]/1000) # 試験片長さ（歪み算出用）
-        CROSS_SECTIONAL_AREA = path_s["cross_section_area[mm2]"] # 断面積（応力算出用）
+            self.POSITIVE_NEGATIVE = -1
+        self.SPEED = float(self.path_s["speed[mm/s]"])/1000 # 引張速度
+        self.LENGTH = float(self.path_s["length[mm]"]/1000) # 試験片長さ（歪み算出用）
+        self.CROSS_SECTIONAL_AREA = self.path_s["cross_section_area[mm2]"] # 断面積（応力算出用）
+
+
+
+    def make_stress_strain(self):
 
         # 出力エクセルファイルの作成
-        path_df.to_excel(EXCEL_FILE_NAME, index=False)
+        self.path_df.to_excel(self.EXCEL_FILE_NAME, index=False)
 
         sheet_name_list = []
         tensile_strength_list = []
         young_modulus_list = []
 
-
-        for FILE_NAME in FILE_NAME_LIST:
+        for FILE_NAME in self.FILE_NAME_LIST:
 
             # csvファイルの取得
             try:
@@ -121,15 +130,16 @@ class MakeStressStrain:
             df.loc[:,"FX"] = df.loc[:,"FX"].map(clean)
             df = df.dropna(how="any")
 
-            df["strain"] = df.loc[:,"TIME"] * SPEED / LENGTH # 歪みの追加
-            df["FX"] = df.loc[:,"FX"] * POSITIVE_NEGATIVE # 荷重の変換
-            df["stress"] = df.loc[:,"FX"] / CROSS_SECTIONAL_AREA # 応力の追加
+            df["strain"] = df.loc[:,"TIME"] * self.SPEED / self.LENGTH # 歪みの追加
+            df["FX"] = df.loc[:,"FX"] * self.POSITIVE_NEGATIVE # 荷重の変換
+            df["stress"] = df.loc[:,"FX"] / self.CROSS_SECTIONAL_AREA # 応力の追加
             MAX_ROW = len(df)
             
             # ヤング率の算出
             x_ = df["strain"][:int((MAX_ROW-1)*0.1)]
             y_ = df["stress"][:int((MAX_ROW-1)*0.1)]
             a, b = np.polyfit(x_,y_,1)
+            # print("ヤング率： {}".format(a))
             young_modulus_list.append(a)
 
             # 最大応力の算出
@@ -137,12 +147,12 @@ class MakeStressStrain:
             tensile_strength_list.append(max_stress)
 
 
-            sheet_name = FILE_NAME.split(self.slash)[-1].replace(".csv", "")
+            sheet_name = FILE_NAME.split("/")[-1].replace(".csv", "")
             sheet_name_list.append(sheet_name)
             # エクセルファイルへ詳細を記載する．
-            with pd.ExcelWriter(EXCEL_FILE_NAME, engine="openpyxl", mode='a') as writer:
+            with pd.ExcelWriter(self.EXCEL_FILE_NAME, engine="openpyxl", mode='a') as writer:
                 df.to_excel(writer, sheet_name=sheet_name, index=False)
-            book = px.load_workbook(EXCEL_FILE_NAME)
+            book = px.load_workbook(self.EXCEL_FILE_NAME)
             sheet = book[sheet_name]
             # セルへ書き込む
             sheet['F1'] = '最大応力'
@@ -190,7 +200,7 @@ class MakeStressStrain:
 
             print("Success: {}".format(FILE_NAME))
             # 保存する
-            book.save(EXCEL_FILE_NAME)
+            book.save(self.EXCEL_FILE_NAME)
 
 
 
@@ -200,7 +210,7 @@ class MakeStressStrain:
         df["tensile_strength"] = tensile_strength_list
         df["young's_modulus"] = young_modulus_list
         # エクセルファイルへ詳細を記載する．
-        with pd.ExcelWriter(EXCEL_FILE_NAME, engine="openpyxl", mode='a') as writer:
+        with pd.ExcelWriter(self.EXCEL_FILE_NAME, engine="openpyxl", mode='a') as writer:
             df.to_excel(writer, sheet_name="まとめ", index=False)
 
 

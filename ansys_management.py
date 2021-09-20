@@ -24,7 +24,6 @@ import glob
 import settings
 import get_path
 import path_multiple_stress_strain
-import win_path_multiple_stress_strain
 
 
 
@@ -350,11 +349,8 @@ def write_ansys_file_main():
 
 
 def path_multiple_stress_strain_main():
-    if settings.OS == "mac":
-        path_multiple_stress_strain.make_stress_strain()
-    elif settings.OS == "windows":
-        win_path_multiple_stress_strain.make_stress_strain()
-
+    a = path_multiple_stress_strain.MakeStressStrain()
+    a.make_stress_strain()
 
 
 
