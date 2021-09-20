@@ -1,6 +1,14 @@
 
+### OS
+# mac または windows
+OS = "mac"
+
+
+
+
+
 ### Refresh
-# 対象のファイル拡張子
+# ファイル名をルール通りに作成する対象ファイルの拡張子
 FILE_EXTENSION = [
     "ansys",
     "csv"

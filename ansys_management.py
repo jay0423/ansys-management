@@ -23,6 +23,8 @@ import glob
 
 import settings
 import get_path
+import path_multiple_stress_strain
+import win_path_multiple_stress_strain
 
 
 
@@ -347,21 +349,29 @@ def write_ansys_file_main():
 
 
 
+def path_multiple_stress_strain_main():
+    if settings.OS == "mac":
+        path_multiple_stress_strain.make_stress_strain()
+    elif settings.OS == "windows":
+        win_path_multiple_stress_strain.make_stress_strain()
+
 
 
 
 
 if __name__ == '__main__':
-    print("\n0： refresh（ファイル名をルール通りに更新する．）")
-    print("1： make files（ファイルを自動的に作成する．）")
-    print("2： write ansys（ファイルを自動的に作成し，さらにansysファイルを自動的に穴埋めし自動生成する．）\n")
+    print("\n0： ファイル名の更新")
+    print("1： ファイルの自動生成")
+    print("2： 応力ひずみ線図の作成")
+    print()
+    # print("2： write ansys（ファイルを自動的に作成し，さらにansysファイルを自動的に穴埋めし自動生成する．）\n")
     a = input("入力してください：")
     if a == "0":
         refresh_main()
     elif a == "1":
-        make_files_main()
-    elif a == "2":
         write_ansys_file_main()
+    elif a == "2":
+        path_multiple_stress_strain_main()
     else:
         print("やり直してください．")
         sys.exit()
