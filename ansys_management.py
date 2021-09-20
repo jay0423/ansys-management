@@ -50,10 +50,10 @@ def path_multiple_stress_strain_main():
 
 
 if __name__ == '__main__':
-    print("\n0： ファイル名の更新")
+    print("\n!!!　実行する作業の選択　!!!")
+    print("0： ファイル名の更新")
     print("1： ファイルの自動生成")
     print("2： 応力ひずみ線図の作成")
-    print()
     a = input("入力してください：")
     if a == "0":
         refresh_main()

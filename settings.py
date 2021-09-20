@@ -5,6 +5,11 @@ OS = "mac"
 
 
 
+### make_stress_strain.MakeStressStrain
+PATH_FILE_NAME = "path.xlsx"
+
+
+
 
 ### Refresh
 # ファイル名をルール通りに作成する対象ファイルの拡張子
@@ -54,7 +59,11 @@ DIR_STRUCTURE = {
     '2/': [
         ('CFRP2_lap', [10, 20, 30, 40]),
         ('thickness', [0.5, 1.0, 1.5, 2.0]),
-    ]
+    ],
+    '3/': [
+        ('CFRP2_lap', [10, 20, 30]),
+        ('thickness', [0.5, 1.0, 1.5, 2.0]),
+    ],
 }
 
 
@@ -62,9 +71,12 @@ DIR_STRUCTURE = {
 
 ### WriteAnsysFile
 
-# 書き込み対象のファイル
-BASE_PATH = "2/base.ansys"
+# 書き込みの元の対象ファイル
+# DIR_STRUCTURE直下に常に置く場合は，""に設定しておく．
+BASE_PATH = ""
 
+# デフォルトの書き込みの元の対象ファイル名（BASE_PATH==""の時），特に変更する必要はない．
+BASE_FILE_NAME = "base"
 
 # 書き込み対象の拡張子
 WRITE_EXTENSION = "ansys"

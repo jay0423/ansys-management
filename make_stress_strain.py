@@ -25,6 +25,7 @@ import settings
 class MakeStressStrain:
 
     OS = settings.OS
+    PATH_FILE_NAME = settings.PATH_FILE_NAME
 
 
     def __init__(self):
@@ -38,13 +39,13 @@ class MakeStressStrain:
     def make_stress_strain(self):
         # path.xlsxから情報を取得
         try:
-            path_df = pd.read_excel("path.xlsx")
+            path_df = pd.read_excel(self.PATH_FILE_NAME)
             path_df = path_df.fillna("")
             path_df = path_df[path_df["finished"] == ""]
             path_df.reset_index(inplace=True, drop=True)
             path_s = path_df.iloc[0,:]
         except:
-            print("path.xlsxで指定されていません．")
+            print("{}で指定されていません．".format(self.PATH_FILE_NAME))
             sys.exit()
         if len(path_df) > 1: # 複数入力されている時
             while True:

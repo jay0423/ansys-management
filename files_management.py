@@ -79,7 +79,7 @@ class Refresh:
                         new_file_name += "_" + self.ABBREVIATION[path] # 略称からファイル名を取得する．
                 except:
                     print("ディレクトリ名がまちがえています．やり直してください．")
-                    print("/".join(pre_path))
+                    print(self.SLASH.join(pre_path))
                     sys.exit()
             new_file_name = self.SLASH.join(pre_path[:-1]) + self.SLASH + new_file_name[1:] + ".{}".format(self.kind)
             post_path_list.append(new_file_name)
@@ -153,8 +153,8 @@ class MakeFiles:
 
 
     def __init__(self):
-        self.kind = "ansys"
-        self.first_path = "2/"
+        self.kind = ""
+        self.first_path = ""
         self.all = True # パスを作成する際，全ての部分でパスを作成するのかを選択することができる．
         self.make_file_all_path = True # 全てのファイルを作成する．
 
@@ -238,7 +238,18 @@ class MakeFiles:
         a.refresh_force(print_permissoin=True)
 
 
+    def find_first_path(self):
+        # 初期ディレクトリのパスを選択する．
+        print("\n初期パスの選択")
+        key_list = list(self.DIR_STRUCTURE.keys())
+        for i, key in enumerate(key_list):
+            print("{}： {}".format(i, key))
+        j = int(input("入力してください："))
+        self.first_path = key_list[j]
+
+
     def make_files(self):
+        self.find_first_path()
         for k in self.FILE_EXTENSION:
             self.kind = k
             self.make_damy_files()
@@ -280,6 +291,8 @@ class WriteAnsysFile(MakeFiles):
 
     def write(self, output_path):
         # base.ansysの変数部分に値を入力したファイルを出力する．
+        if self.BASE_PATH == "":
+            self.BASE_PATH = self.first_path + "{}.{}".format(settings.BASE_FILE_NAME, self.WRITE_EXTENSION)
         with open(self.BASE_PATH, encoding="utf-8_sig") as f: # 読み取り
             data_lines = f.readlines()
         replace_word_dict = self.get_replace_word_dict(output_path)
