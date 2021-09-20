@@ -53,6 +53,7 @@ OMISSION = [
 
 
 
+### WriteAnsysFile
 ### MakeFiles
 
 DIR_STRUCTURE = {
@@ -66,11 +67,7 @@ DIR_STRUCTURE = {
     ],
 }
 
-
-
-
-### WriteAnsysFile
-
+# WriteAnsysFile
 # 書き込みの元の対象ファイル
 # DIR_STRUCTURE直下に常に置く場合は，""に設定しておく．
 BASE_PATH = ""

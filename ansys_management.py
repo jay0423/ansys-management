@@ -1,6 +1,7 @@
 import sys
 
 import settings
+import settings_check
 from files_management import Refresh, WriteAnsysFile
 from make_stress_strain import MakeStressStrain
 
@@ -50,6 +51,8 @@ def path_multiple_stress_strain_main():
 
 
 if __name__ == '__main__':
+    settings_check.check_all()
+
     print("\n!!!　実行する作業の選択　!!!")
     print("0： ファイル名の更新")
     print("1： ファイルの自動生成")
