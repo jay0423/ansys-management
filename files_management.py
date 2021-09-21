@@ -55,7 +55,7 @@ class Refresh:
         self.only_word = ""
 
 
-    def get_pre_path(self):
+    def _get_pre_path(self):
         # 変更前のパスを取得し，変更後のパスを作成する．
         pre_path_list = get_path.get_list(self.first_path, kind=self.kind) #ファイルリスト
         if self.omission:
@@ -65,7 +65,7 @@ class Refresh:
         return pre_path_list
 
 
-    def get_post_path(self, pre_path_list):
+    def _get_post_path(self, pre_path_list):
         # 変更前のパスを受け取り，変更後のパスを作成する．
         pre_path_list_list = [pre_path.split(self.SLASH) for pre_path in pre_path_list]
         post_path_list = []
@@ -92,8 +92,8 @@ class Refresh:
         post_path_list = []
         for k in self.FILE_EXTENSION:
             self.kind = k
-            pre_path_list_ = self.get_pre_path()
-            post_path_list_ = self.get_post_path(pre_path_list_)
+            pre_path_list_ = self._get_pre_path()
+            post_path_list_ = self._get_post_path(pre_path_list_)
             pre_path_list += pre_path_list_
             post_path_list += post_path_list_
 
@@ -123,8 +123,8 @@ class Refresh:
         post_path_list = []
         for k in self.FILE_EXTENSION:
             self.kind = k
-            pre_path_list_ = self.get_pre_path()
-            post_path_list_ = self.get_post_path(pre_path_list_)
+            pre_path_list_ = self._get_pre_path()
+            post_path_list_ = self._get_post_path(pre_path_list_)
             pre_path_list += pre_path_list_
             post_path_list += post_path_list_
         for pre_path, post_path in zip(pre_path_list, post_path_list):
@@ -159,7 +159,7 @@ class MakeFiles:
         self.make_file_all_path = True # 全てのファイルを作成する．
 
 
-    def make_path(self):
+    def _make_path(self):
         # DIR_STRUCTUREをもとにパスを作成する．
         first_path = self.first_path
         dir_list_list = [dir_list[1] for dir_list in self.DIR_STRUCTURE[first_path]]
@@ -174,7 +174,7 @@ class MakeFiles:
         return path_list
 
 
-    def make_path_all(self):
+    def _make_path_all(self):
         # 全てのパスを作成する
         first_path = self.first_path
         path_list_all = []
@@ -194,12 +194,12 @@ class MakeFiles:
 
 
 
-    def make_dir(self):
+    def _make_dir(self):
         # ディレクトリを自動的に生成する．
         if self.all:
-            path_list = self.make_path_all()
+            path_list = self._make_path_all()
         else:
-            path_list = self.make_path()
+            path_list = self._make_path()
         for path in path_list:
             try:
                 os.mkdir(path)
@@ -207,13 +207,13 @@ class MakeFiles:
                 continue
 
 
-    def make_damy_files(self):
+    def _make_damy_files(self):
         # ダミーファイルを作成する．
-        self.make_dir()
+        self._make_dir()
         if self.all:
-            path_list = self.make_path_all()
+            path_list = self._make_path_all()
         else:
-            path_list = self.make_path()
+            path_list = self._make_path()
         for path in path_list:
             try:
                 make_permission = True
@@ -231,14 +231,14 @@ class MakeFiles:
                 continue
 
 
-    def change_damy_files(self):
+    def _change_damy_files(self):
         # damy_fileを変換する．
         a = Refresh(self.first_path)
         a.only_word = "damy_file.{}".format(self.kind)
         a.refresh_force(print_permissoin=True)
 
 
-    def find_first_path(self):
+    def _find_first_path(self):
         # 初期ディレクトリのパスを選択する．
         print("\n初期パスの選択")
         key_list = list(self.DIR_STRUCTURE.keys())
@@ -249,11 +249,11 @@ class MakeFiles:
 
 
     def make_files(self):
-        self.find_first_path()
+        self._find_first_path()
         for k in self.FILE_EXTENSION:
             self.kind = k
-            self.make_damy_files()
-            self.change_damy_files()
+            self._make_damy_files()
+            self._change_damy_files()
 
 
 
@@ -269,7 +269,7 @@ class WriteAnsysFile(MakeFiles):
     DEFAOLUT_REPLACE_WORD_DICT = settings.DEFAOLUT_REPLACE_WORD_DICT
 
 
-    def replace_word(self, data_lines, replace_word_dict):
+    def _replace_word(self, data_lines, replace_word_dict):
         # 変換して返す
         for search_key_word in self.SEARCH_WORDS:
             search_word = "{% " + search_key_word + " %}"
@@ -283,7 +283,7 @@ class WriteAnsysFile(MakeFiles):
         return data_lines
 
 
-    def get_replace_word_dict(self, path):
+    def _get_replace_word_dict(self, path):
         # パスから変換キーワードと数値を抽出し，辞書型を作成する．
         replace_word_dict = dict([tuple(key_word.split("=")) for key_word in path.split(self.SLASH)[:-1] if len(key_word.split("="))==2])
         return replace_word_dict
@@ -295,19 +295,19 @@ class WriteAnsysFile(MakeFiles):
             self.BASE_PATH = self.first_path + "{}.{}".format(settings.BASE_FILE_NAME, self.WRITE_EXTENSION)
         with open(self.BASE_PATH, encoding="utf-8_sig") as f: # 読み取り
             data_lines = f.readlines()
-        replace_word_dict = self.get_replace_word_dict(output_path)
-        data_lines = self.replace_word(data_lines=data_lines, replace_word_dict=replace_word_dict)
+        replace_word_dict = self._get_replace_word_dict(output_path)
+        data_lines = self._replace_word(data_lines=data_lines, replace_word_dict=replace_word_dict)
         with open(output_path, mode="w", encoding="utf-8_sig") as f: # 書き込み
             f.writelines(data_lines)
 
 
-    def make_damy_files(self):
+    def _make_damy_files(self):
         # ダミーファイルを作成する．
-        self.make_dir()
+        self._make_dir()
         if self.all:
-            path_list = self.make_path_all()
+            path_list = self._make_path_all()
         else:
-            path_list = self.make_path()
+            path_list = self._make_path()
         for path in path_list:
             make_permission = True
             for files in glob.glob(path + "*"):

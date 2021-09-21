@@ -25,14 +25,15 @@ import settings
 class MakeStressStrain:
 
     OS = settings.OS
+    if OS == "mac":
+        SLASH = "/"
+    elif OS == "windows":
+        SLASH = "\ ".replace(" ", "")
     PATH_FILE_NAME = settings.PATH_FILE_NAME
 
 
-    def __init__(self):
-        if self.OS == "mac":
-            self.slash = "/"
-        elif self.OS == "windows":
-            self.slash = "\ ".replace(" ", "")
+    def __init__(self) -> None:
+        pass
 
 
 
@@ -71,7 +72,7 @@ class MakeStressStrain:
         FIRST_PATH = path_s["path"]
         KEY_WORD_LIST = path_s["key_word"].replace(" ", "").split(",") # csvファイルのキーワード
         REMOVE_WORD_LIST = path_s["remove_word"].replace(" ", "").split(",") # 除外のキーワード
-        if FIRST_PATH[-1] == self.slash:
+        if FIRST_PATH[-1] == self.SLASH:
             FIRST_PATH = FIRST_PATH[:-1]
         FILE_NAME_LIST = get_path.get_list(FIRST_PATH, kind="csv") #CSVファイルリスト
         FILE_NAME_LIST = [FILE_NAME for FILE_NAME in FILE_NAME_LIST for KEY_WORD in KEY_WORD_LIST if KEY_WORD in FILE_NAME] # KEY_WORDが含まれるファイル名だけ抽出
@@ -80,7 +81,7 @@ class MakeStressStrain:
         FILE_NAME_LIST = sorted(FILE_NAME_LIST) # 並び替え．まだ不完全
         EXCEL_FILE_NAME = path_s["output_file_name"] # 出力ファイル名
         EXCEL_FILE_NAME = EXCEL_FILE_NAME.replace(".xlsx","")
-        EXCEL_FILE_NAME = "{}{}{}.xlsx".format(FIRST_PATH, self.slash, EXCEL_FILE_NAME) # 出力先のpathをくっつける
+        EXCEL_FILE_NAME = "{}{}{}.xlsx".format(FIRST_PATH, self.SLASH, EXCEL_FILE_NAME) # 出力先のpathをくっつける
         POSITIVE_NEGATIVE = int(path_s["plus"]) # プラスマイナス
         if POSITIVE_NEGATIVE == 0:
             POSITIVE_NEGATIVE = 1
@@ -138,7 +139,7 @@ class MakeStressStrain:
             tensile_strength_list.append(max_stress)
 
 
-            sheet_name = FILE_NAME.split(self.slash)[-1].replace(".csv", "")
+            sheet_name = FILE_NAME.split(self.SLASH)[-1].replace(".csv", "")
             sheet_name_list.append(sheet_name)
             # エクセルファイルへ詳細を記載する．
             with pd.ExcelWriter(EXCEL_FILE_NAME, engine="openpyxl", mode='a') as writer:

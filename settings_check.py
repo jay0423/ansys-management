@@ -11,6 +11,9 @@ def os():
         pprint.pprint(settings.OS)
         sys.exit()
 
+def dir_ignore():
+    pass
+
 
 def path_file_name():
     pass

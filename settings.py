@@ -1,8 +1,14 @@
 
 ### OS
 # mac または windows
-OS = "mac"
+OS = 'mac'
 
+# 無視するディレクトリリスト
+DIR_IGNORE = [
+    'etc',
+    '__pycache__',
+    '.git'
+]
 
 
 ### make_stress_strain.MakeStressStrain
@@ -64,6 +70,9 @@ DIR_STRUCTURE = {
     '3/': [
         ('CFRP2_lap', [10, 20, 30]),
         ('thickness', [0.5, 1.0, 1.5, 2.0]),
+    ],
+    '3/CFRP2_lap=10/thickness=0.5/': [
+        ('kasa', [1, 2, 3])
     ],
 }
 

@@ -1,4 +1,5 @@
 import sys
+import os
 
 import settings
 import settings_check
@@ -8,12 +9,6 @@ from make_stress_strain import MakeStressStrain
 
 
 def refresh_main():
-    OS = settings.OS
-    if OS == "mac":
-        SLASH = "/"
-    elif OS == "windows":
-        SLASH = "\ ".replace(" ", "")
-
 
     print("\n!!!　必ず事前にgitでコミットしておいてください　!!!")
     completion = input("完了: 0, 未完了: 1　：")
@@ -22,12 +17,16 @@ def refresh_main():
         sys.exit()
 
     # ファーストパスの選択
-    first_path = input("ファーストパス　1, 2：")
-    if first_path != "1" and first_path != "2":
+    files_dir = [f for f in os.listdir() if os.path.isdir(os.path.join(f))]
+    files_dir = [f for f in sorted(files_dir) if f not in settings.DIR_IGNORE]
+    for i, l in enumerate(files_dir):
+        print("{}： {}".format(i, l))
+    first_path = int(input("入力してください："))
+    try:
+        first_path = files_dir[first_path]
+    except:
         print("やり直してください．")
         sys.exit()
-    else:
-        first_path += SLASH
 
     a = Refresh(first_path)
     a.refresh()
