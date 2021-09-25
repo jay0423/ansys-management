@@ -42,7 +42,7 @@ Y4 = 0.1E-3 ! CFRPの厚さ
 Z3 = Y4
 
 DIV1=2.0E-3  !分割数1 エポキシ樹脂・PLA
-DIV2=0.8E-3 !分割数2 CFRP
+DIV2=2.0E-3 !分割数2 CFRP
 DIV3=0.4E-3
 DIV4=0.2E-3
 DIV5=0.2E-3
