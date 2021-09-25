@@ -25,7 +25,7 @@ class AutoAnalysis:
 
     def __init__(self, first_path):
         self.cwd_path = r"C:\Users\matlab\ansys_kajimoto\ ".replace(" ", "")
-        self.project = "test"
+        self.dir_name = "test"
 
         self.first_path = first_path
         self.input_path = ""
@@ -37,9 +37,9 @@ class AutoAnalysis:
         
         self.mapdl = launch_mapdl()
         time.sleep(1)
-        print("データ保存パス：{}".format(self.cwd_path+self.project))
-        self.mapdl.cwd(self.cwd_path+self.project)
-        filname = self.input_path.split(self.SLASH)[-1].split(".")[0]
+        print("データ保存パス：{}".format(self.cwd_path+self.dir_name))
+        self.mapdl.cwd(self.cwd_path+self.dir_name)
+        filname = "".join(self.input_path.split(self.SLASH)[-1].split(".")[:-1])
         print("プロジェクト名：{}".format(filname))
         self.mapdl.filname(filname, key=1)
 
