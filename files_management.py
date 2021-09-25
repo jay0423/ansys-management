@@ -22,7 +22,7 @@ import itertools
 import glob
 
 import settings
-import get_path
+from get_path import GetPath
 
 
 
@@ -57,7 +57,7 @@ class Refresh:
 
     def _get_pre_path(self):
         # 変更前のパスを取得し，変更後のパスを作成する．
-        pre_path_list = get_path.get_list(self.first_path, kind=self.kind) #ファイルリスト
+        pre_path_list = GetPath(first_path=self.first_path, slash=self.SLASH).get_list(kind=self.kind) #ファイルリスト
         if self.omission:
             pre_path_list = [pre_path for pre_path in pre_path_list if pre_path.split(self.SLASH)[-1] not in self.OMISSION] # 除外ファイルをなくす処理
         if self.only_word != "":

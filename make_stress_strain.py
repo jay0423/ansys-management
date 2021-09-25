@@ -15,7 +15,7 @@ import numpy as np
 import sys
 import openpyxl as px
 
-import get_path
+from get_path import GetPath
 import settings
 
 
@@ -74,7 +74,7 @@ class MakeStressStrain:
         REMOVE_WORD_LIST = path_s["remove_word"].replace(" ", "").split(",") # 除外のキーワード
         if FIRST_PATH[-1] == self.SLASH:
             FIRST_PATH = FIRST_PATH[:-1]
-        FILE_NAME_LIST = get_path.get_list(FIRST_PATH, kind="csv") #CSVファイルリスト
+        FILE_NAME_LIST = GetPath(first_path=FIRST_PATH, slash=self.SLASH).get_list(kind="csv") #CSVファイルリスト
         FILE_NAME_LIST = [FILE_NAME for FILE_NAME in FILE_NAME_LIST for KEY_WORD in KEY_WORD_LIST if KEY_WORD in FILE_NAME] # KEY_WORDが含まれるファイル名だけ抽出
         if REMOVE_WORD_LIST != ['']:
             FILE_NAME_LIST = [FILE_NAME for FILE_NAME in FILE_NAME_LIST for REMOVE_WORD in REMOVE_WORD_LIST if REMOVE_WORD not in FILE_NAME] # KEY_WORDが含まれるファイル名だけ抽出
