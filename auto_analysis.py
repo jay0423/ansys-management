@@ -34,10 +34,13 @@ class AutoAnalysis:
 
     def _setup(self):
         # ansysの立ち上げとデータの保存先とプロジェクト名の決定
-        self.mapdl = launch_mapdl(self.cwd_path+self.project)
+        
+        self.mapdl = launch_mapdl()
         time.sleep(1)
-        self.mapdl.cwd()
+        print("データ保存パス：{}".format(self.cwd_path+self.project))
+        self.mapdl.cwd(self.cwd_path+self.project)
         filname = self.input_path.split(self.SLASH)[-1].split(".")[0]
+        print("プロジェクト名：{}".format(filname))
         self.mapdl.filname(filname, key=1)
 
     
