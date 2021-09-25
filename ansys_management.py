@@ -48,8 +48,10 @@ def path_multiple_stress_strain_main():
 
 
 def auto_analysis():
-    a = AutoAnalysis()
-    a.main()
+    first_path = "sample/"
+    a = AutoAnalysis(first_path=first_path)
+    a.project = "sample1"
+    a.multiple_auto_analysis()
 
 
 

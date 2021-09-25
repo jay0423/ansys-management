@@ -37,8 +37,9 @@ class GetPath:
 
 
 
-    def get_pair_list(self, path_list):
+    def get_pair_list(self, path_list, omission_files=["base.ansys"]):
         path_list = sorted(path_list)
+        path_list = [path for path in path_list if path.split(self.slash)[-1] not in omission_files] 
         pair_list = []
         for i in range(len(path_list)):
             try:
