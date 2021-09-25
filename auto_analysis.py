@@ -1,22 +1,30 @@
+import time
 from ansys.mapdl.core import launch_mapdl
 
 
 class AutoAnalysis:
 
-    mapdl = launch_mapdl()
+    mapdl = None
 
     def __init__(self) -> None:
         pass
 
 
     def setup(self):
-        self.mapdl.cwd(r"C:\Users\matlab\ansys_kajimoto\test")
+        self.mapdl = launch_mapdl()
+        time.spleep(1)
+        self.mapdl.cwd(r"C:\Users\matlab\ansys_kajimoto\test1")
         self.mapdl.filname("tset1", key=1)
 
     
     def analysis(self):
-        path = "C:\Users\matlab\Documents\ansys-management\2\CFRP2_lap=20\thickness=2.0\C2_l20_th2.0.ansys"
+        path = r"C:\Users\matlab\Documents\ansys-management\etc\sample_test\test1.ansys"
         self.mapdl.input(path)
+        time.sleep(5)
+        print("解析スタート")
+        self.mapdl.solve()
+        self.mapdl.finish()
+        print("finish")
 
 
     
