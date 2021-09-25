@@ -5,7 +5,7 @@ import settings
 import settings_check
 from files_management import Refresh, WriteAnsysFile
 from make_stress_strain import MakeStressStrain
-
+from auto_analysis import AutoAnalysis
 
 
 def refresh_main():
@@ -47,6 +47,10 @@ def path_multiple_stress_strain_main():
     a.make_stress_strain()
 
 
+def auto_analysis():
+    a = AutoAnalysis()
+    a.main()
+
 
 
 if __name__ == '__main__':
@@ -56,6 +60,7 @@ if __name__ == '__main__':
     print("0： ファイル名の更新")
     print("1： ファイルの自動生成")
     print("2： 応力ひずみ線図の作成")
+    print("3： 自動解析")
     a = input("入力してください：")
     if a == "0":
         refresh_main()
@@ -63,6 +68,8 @@ if __name__ == '__main__':
         write_ansys_file_main()
     elif a == "2":
         path_multiple_stress_strain_main()
+    elif a == "3":
+        auto_analysis()
     else:
         print("やり直してください．")
         sys.exit()
