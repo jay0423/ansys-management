@@ -11,6 +11,17 @@ def os():
         pprint.pprint(settings.OS)
         sys.exit()
 
+def py_dir_path():
+    if settings.PY_DIR_PATH[-1] == "/" or settings.PY_DIR_PATH[-1] == "\ ".replace(" ", ""):
+        pass
+    elif settings.PY_DIR_PATH == "":
+        pass
+    else:
+        print("error: settings.PY_DIR_PATH -> パスの最後にスラッシュをつけてください．")
+        pprint.pprint(settings.OS)
+        sys.exit()
+
+
 def dir_ignore():
     pass
 

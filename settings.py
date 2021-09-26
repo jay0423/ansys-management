@@ -3,6 +3,9 @@
 # mac または windows
 OS = 'mac'
 
+# 実行ディレクトリパス
+PY_DIR_PATH = ""
+
 # 無視するディレクトリリスト
 DIR_IGNORE = [
     'etc',

@@ -19,6 +19,7 @@ class AutoAnalysis:
         SLASH = "/"
     elif OS == "windows":
         SLASH = "\ ".replace(" ", "")
+    PY_DIR_PATH = settings.PY_DIR_PATH # パスの初め
     mapdl = None
     N = 3
 
@@ -28,8 +29,8 @@ class AutoAnalysis:
         self.dir_name = "test"
 
         self.first_path = first_path
-        self.input_path = ""
-        self.output_path = ""
+        self.input_path = self.PY_DIR_PATH
+        self.output_path = self.PY_DIR_PATH
 
 
     def _setup(self):
@@ -37,10 +38,10 @@ class AutoAnalysis:
         
         self.mapdl = launch_mapdl()
         time.sleep(1)
-        print("データ保存パス：{}".format(self.cwd_path+self.dir_name))
+        # print("データ保存パス：{}".format(self.cwd_path+self.dir_name))
         self.mapdl.cwd(self.cwd_path+self.dir_name)
         filname = "".join(self.input_path.split(self.SLASH)[-1].split(".")[:-1])
-        print("プロジェクト名：{}".format(filname))
+        # print("プロジェクト名：{}".format(filname))
         self.mapdl.filname(filname, key=1)
 
     
@@ -64,8 +65,8 @@ class AutoAnalysis:
     
 
     def single_auto_analysis(self, input_path, output_path):
-        self.input_path = input_path
-        self.output_path = output_path
+        self.input_path += input_path
+        self.output_path += output_path
         self._setup()
         self._analysis()
         self._csv_output()

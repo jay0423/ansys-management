@@ -1,6 +1,6 @@
 !/input,c:\ansys\test-line,txt
-finish
-/clear,start
+! finish
+! /clear,start
 /NOPR
 
 !-タイトル--------------------------------------------------
