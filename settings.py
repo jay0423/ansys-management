@@ -4,7 +4,7 @@
 OS = 'mac'
 
 # 実行ディレクトリパス
-PY_DIR_PATH = ""
+PY_DIR_PATH = "C:\\Users\\matlab\\Documents\\ansys-management\\"
 
 # 無視するディレクトリリスト
 DIR_IGNORE = [

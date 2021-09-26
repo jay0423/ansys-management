@@ -19,18 +19,17 @@ class AutoAnalysis:
         SLASH = "/"
     elif OS == "windows":
         SLASH = "\ ".replace(" ", "")
-    PY_DIR_PATH = settings.PY_DIR_PATH # パスの初め
     mapdl = None
     N = 3
 
 
     def __init__(self, first_path):
-        self.cwd_path = r"C:\Users\matlab\ansys_kajimoto\ ".replace(" ", "")
+        self.cwd_path = settings.PY_DIR_PATH # パスの初め
         self.dir_name = "test"
 
         self.first_path = first_path
-        self.input_path = self.PY_DIR_PATH
-        self.output_path = self.PY_DIR_PATH
+        self.input_path = ""
+        self.output_path = ""
 
 
     def _setup(self):
@@ -65,8 +64,8 @@ class AutoAnalysis:
     
 
     def single_auto_analysis(self, input_path, output_path):
-        self.input_path += input_path
-        self.output_path += output_path
+        self.input_path = self.cwd_path + input_path
+        self.output_path = self.cwd_path + output_path
         self._setup()
         self._analysis()
         self._csv_output()
@@ -80,11 +79,11 @@ class AutoAnalysis:
         path_list = a.get_pair_list(path_list, omission_files=settings.OMISSION)
         for pair_path in path_list:
             if ".ansys" in pair_path[0].split(self.SLASH)[-1]:
-                self.input_path = pair_path[0]
-                self.output_path = pair_path[1]
+                self.input_path = self.cwd_path + pair_path[0]
+                self.output_path = self.cwd_path + pair_path[1]
             else:
-                self.input_path = pair_path[1]
-                self.output_path = pair_path[0]
+                self.input_path = self.cwd_path + pair_path[1]
+                self.output_path = self.cwd_path + pair_path[0]
             self._setup()
             self._analysis()
             self._csv_output()
