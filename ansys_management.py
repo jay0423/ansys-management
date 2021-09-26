@@ -50,7 +50,7 @@ def path_multiple_stress_strain_main():
 def auto_analysis():
     first_path = "sample/"
     a = AutoAnalysis(first_path=first_path)
-    a.dir_name = "sample1"
+    a.dir_name = input("プロジェクト名を入力：")
     a.multiple_auto_analysis()
 
 

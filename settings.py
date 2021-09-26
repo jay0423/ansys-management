@@ -6,6 +6,9 @@ OS = 'mac'
 # 実行ディレクトリパス
 PY_DIR_PATH = "C:\\Users\\matlab\\Documents\\ansys-management\\"
 
+# データの保存先のディレクトリ
+CWD_PATH = "C:\\Users\\matlab\\ansys_kajimoto\\"
+
 # 無視するディレクトリリスト
 DIR_IGNORE = [
     'etc',
