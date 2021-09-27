@@ -82,7 +82,7 @@ def auto_analysis():
     b = AutoAnalysis(first_path=first_path)
     b.dir_name = dir_name
     t1 = time.time()
-    b.multiple_auto_analysis()
+    b.multiple_auto_analysis(path_list)
     t2 = time.time()
     elapsed_time = t2-t1
     print(f"経過時間：{elapsed_time}")
