@@ -67,12 +67,10 @@ def auto_analysis():
     first_path = os.path.normcase(first_path + SLASH)
 
     dir_name = input("\nプロジェクト名を入力：")
-    a = AutoAnalysis(first_path=first_path)
-    a.dir_name = dir_name
     # 実行ファイルのパスを取得
-    b = GetPath(first_path=first_path, slash=SLASH)
-    path_list = b.get_list_multiple(kind_list=["csv", "ansys"])
-    path_list = b.get_pair_list(path_list, omission_files=settings.OMISSION)
+    a = GetPath(first_path=first_path, slash=SLASH)
+    path_list = a.get_list_multiple(kind_list=["csv", "ansys"])
+    path_list = a.get_pair_list(path_list, omission_files=settings.OMISSION)
     print("\n実行ファイルの確認")
     for path in path_list:
         print(path[0])
@@ -81,8 +79,10 @@ def auto_analysis():
         print("やり直してください．")
         sys.exit()
 
+    b = AutoAnalysis(first_path=first_path)
+    b.dir_name = dir_name
     t1 = time.time()
-    a.multiple_auto_analysis()
+    b.multiple_auto_analysis()
     t2 = time.time()
     elapsed_time = t2-t1
     print(f"経過時間：{elapsed_time}")
