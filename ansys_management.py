@@ -4,6 +4,7 @@ import time
 
 import settings
 import settings_check
+from get_path import GetPath
 from files_management import Refresh, WriteAnsysFile
 from make_stress_strain import MakeStressStrain
 from auto_analysis import AutoAnalysis
@@ -49,11 +50,37 @@ def path_multiple_stress_strain_main():
 
 
 def auto_analysis():
+    SLASH = os.path.normcase("a/")[-1]
 
-    first_path = "sample/"
-    dir_name = input("プロジェクト名を入力：")
+    # ファーストパスの選択
+    files_dir = [f for f in os.listdir() if os.path.isdir(os.path.join(f))]
+    files_dir = [f for f in sorted(files_dir) if f not in settings.DIR_IGNORE]
+    print("\nディレクトリの選択")
+    for i, l in enumerate(files_dir):
+        print("{}： {}{}".format(i, l, SLASH))
+    first_path = int(input("入力してください："))
+    try:
+        first_path = files_dir[first_path]
+    except:
+        print("やり直してください．")
+        sys.exit()
+    first_path = os.path.normcase(first_path + SLASH)
+    print(first_path)
+
+    dir_name = input("\nプロジェクト名を入力：")
     a = AutoAnalysis(first_path=first_path)
     a.dir_name = dir_name
+    # 実行ファイルのパスを取得
+    a = GetPath(first_path=first_path, slash=SLASH)
+    path_list = a.get_list_multiple(kind_list=["csv", "ansys"])
+    path_list = a.get_pair_list(path_list, omission_files=settings.OMISSION)
+    print("\n実行ファイルの確認")
+    for path in path_list:
+        print(path)
+    completion = input("0: 実行, 1: やりなおす\n入力してください：")
+    if completion != "0":
+        print("やり直してください．")
+        sys.exit()
 
     t1 = time.time()
     a.multiple_auto_analysis()

@@ -74,10 +74,7 @@ class AutoAnalysis:
         time.sleep(5)
 
 
-    def multiple_auto_analysis(self):
-        a = GetPath(first_path=self.first_path, slash=self.SLASH)
-        path_list = a.get_list_multiple(kind_list=["csv", "ansys"])
-        path_list = a.get_pair_list(path_list, omission_files=settings.OMISSION)
+    def multiple_auto_analysis(self, path_list):
         for pair_path in path_list:
             if ".ansys" in pair_path[0].split(self.SLASH)[-1]:
                 self.input_path = self.PY_DIR_PATH + pair_path[0]
