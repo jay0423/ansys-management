@@ -65,18 +65,17 @@ def auto_analysis():
         print("やり直してください．")
         sys.exit()
     first_path = os.path.normcase(first_path + SLASH)
-    print(first_path)
 
     dir_name = input("\nプロジェクト名を入力：")
     a = AutoAnalysis(first_path=first_path)
     a.dir_name = dir_name
     # 実行ファイルのパスを取得
-    a = GetPath(first_path=first_path, slash=SLASH)
-    path_list = a.get_list_multiple(kind_list=["csv", "ansys"])
-    path_list = a.get_pair_list(path_list, omission_files=settings.OMISSION)
+    b = GetPath(first_path=first_path, slash=SLASH)
+    path_list = b.get_list_multiple(kind_list=["csv", "ansys"])
+    path_list = b.get_pair_list(path_list, omission_files=settings.OMISSION)
     print("\n実行ファイルの確認")
     for path in path_list:
-        print(path)
+        print(path[0])
     completion = input("0: 実行, 1: やりなおす\n入力してください：")
     if completion != "0":
         print("やり直してください．")
