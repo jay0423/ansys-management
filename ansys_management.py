@@ -1,5 +1,6 @@
 import sys
 import os
+import time
 
 import settings
 import settings_check
@@ -48,10 +49,17 @@ def path_multiple_stress_strain_main():
 
 
 def auto_analysis():
+
     first_path = "sample/"
+    dir_name = input("プロジェクト名を入力：")
     a = AutoAnalysis(first_path=first_path)
-    a.dir_name = input("プロジェクト名を入力：")
+    a.dir_name = dir_name
+
+    t1 = time.time()
     a.multiple_auto_analysis()
+    t2 = time.time()
+    elapsed_time = t2-t1
+    print(f"経過時間：{elapsed_time}")
 
 
 
