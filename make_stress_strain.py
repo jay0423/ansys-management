@@ -75,27 +75,6 @@ class MakeStressStrain:
         return path_df
 
 
-    def _make_df_force(self):
-        # path.xlsxから情報を取得
-        try:
-            path_df = pd.read_excel(self.PATH_FILE_NAME)
-            path_df = path_df.fillna("")
-            path_df = path_df[path_df["finished"] == ""]
-            path_df.reset_index(inplace=True, drop=True)
-            path_s = path_df.iloc[0,:]
-        except:
-            print("{}で指定されていません．".format(self.PATH_FILE_NAME))
-            sys.exit()
-        if len(path_df) > 1: # 複数入力されている時
-            path_num = int(input("\n数字で選択してください："))
-            try:
-                path_df = path_df[path_df.index == path_num]
-            except:
-                print("やり直してください．\n")
-                sys.exit()
-        return path_df
-
-
     def _make_path_s(self, path_df):
         path_s = path_df.iloc[0,:]
         return path_s
@@ -131,6 +110,30 @@ class MakeStressStrain:
         path_df.to_excel(self.EXCEL_FILE_NAME, index=False)
 
 
+    def _csv_to_df(self, file_name):
+        # csvファイルの取得
+        try:
+            df = pd.read_csv(file_name, usecols=[0])
+        except:
+            return None
+
+        # dataframeの整理
+        df = df.iloc[:,0].apply(lambda x: pd.Series(x.split()))
+        df = df.iloc[2:,:2]
+        df.columns = ["TIME", "FX"]
+
+        # 数値の文字型を小数型に変換し，文字をnanに変換し削除する．
+        def clean(x): # map用の関数を定義
+            try:
+                return float(x)
+            except:
+                return None
+        df.loc[:,"TIME"] = df.loc[:,"TIME"].map(clean)
+        df.loc[:,"FX"] = df.loc[:,"FX"].map(clean)
+        df = df.dropna(how="any")
+        return df
+
+
     def write_excel(self):
 
         sheet_name_list = []
@@ -140,31 +143,14 @@ class MakeStressStrain:
 
         for FILE_NAME in self.FILE_NAME_LIST:
 
-            # csvファイルの取得
-            try:
-                df = pd.read_csv(FILE_NAME)
-            except:
+            df = self._csv_to_df(FILE_NAME)
+            if df is None:
                 print("Failed: {}".format(FILE_NAME))
                 continue
-
-            # dataframeの整理
-            df = df.iloc[:,0].apply(lambda x: pd.Series(x.split()))
-            df = df.iloc[2:,:2]
-            df.columns = ["TIME", "FX"]
-
-            # 数値の文字型を小数型に変換し，文字をnanに変換し削除する．
-            def clean(x): # map用の関数を定義
-                try:
-                    return float(x)
-                except:
-                    return None
-            df.loc[:,"TIME"] = df.loc[:,"TIME"].map(clean)
-            df.loc[:,"FX"] = df.loc[:,"FX"].map(clean)
-            df = df.dropna(how="any")
-
             df["strain"] = df.loc[:,"TIME"] * self.SPEED / self.LENGTH # 歪みの追加
             df["FX"] = df.loc[:,"FX"] * self.POSITIVE_NEGATIVE # 荷重の変換
             df["stress"] = df.loc[:,"FX"] / self.CROSS_SECTIONAL_AREA # 応力の追加
+
             MAX_ROW = len(df)
             
             # ヤング率の算出
@@ -254,11 +240,9 @@ class MakeStressStrain:
         self.write_excel()
     
     
-    def make_stress_strain_force(self):
-        path_df = self._make_df_force()
-        path_s = self._make_path_s(path_df)
-        self._get_inputs(path_s)
-        self._make_excel_file(path_df)
-        self.write_excel()
 
+class MakeStressStrain2(MakeStressStrain):
+    # csvファイル形式の変更
 
+    def _csv_to_df(self, file_name):
+        return super()._csv_to_df(file_name)

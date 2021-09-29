@@ -111,16 +111,24 @@ def all():
 
     a = WriteAnsysFile(first_path)
     a.make_files()
+    print("ファイル作成完了\n")
 
     # 実行ファイルのパスを取得
+    print("解析開始\n")
     b = GetPath(first_path=first_path, slash=SLASH)
     path_list = b.get_list_multiple(kind_list=["csv", "ansys"])
     path_list = b.get_pair_list(path_list, omission_files=settings.OMISSION)
     c = AutoAnalysis(first_path=first_path)
     c.dir_name = dir_name
+    t1 = time.time()
     c.multiple_auto_analysis(path_list)
+    t2 = time.time()
+    elapsed_time = t2-t1
+    print(f"総解析時間：{elapsed_time}")
+    print("解析完了\n")
 
     path_multiple_stress_strain_main()
+    print("完了")
 
 
 
