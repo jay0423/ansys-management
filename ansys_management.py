@@ -82,6 +82,7 @@ def auto_analysis():
     first_path = os.path.normcase(first_path + SLASH)
 
     dir_name = input("\nプロジェクト名（ansysファイル格納ディレクトリ名）を入力：")
+    os.mkdir(settings.CWD_PATH + SLASH + dir_name)
     # 実行ファイルのパスを取得
     a = GetPath(first_path=first_path, slash=SLASH)
     path_list = a.get_list_multiple(kind_list=["csv", "ansys"])
@@ -107,7 +108,8 @@ def all():
     # ファイルの自動生成，自動解析，応力ひずみ線図の生成
     SLASH = os.path.normcase("a/")[-1]
     first_path = _find_first_path()
-    dir_name = input("\nプロジェクト名を入力：")
+    dir_name = input("\nプロジェクト名（ansysファイル格納ディレクトリ名）を入力：")
+    os.mkdir(settings.CWD_PATH + SLASH + dir_name)
 
     a = WriteAnsysFile(first_path)
     a.make_files()
