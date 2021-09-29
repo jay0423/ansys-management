@@ -11,7 +11,7 @@ from auto_analysis import AutoAnalysis
 
 
 def refresh_main():
-
+    # ファイル名の修正
     print("\n!!!　必ず事前にgitでコミットしておいてください　!!!")
     completion = input("完了: 0, 未完了: 1　：")
     if completion != "0":
@@ -39,17 +39,32 @@ def refresh_main():
 #     a.make_files()
 
 
+def _find_first_path():
+    # 初期ディレクトリのパスを選択する．
+    print("\n初期パスの選択")
+    key_list = list(settings.DIR_STRUCTURE.keys())
+    for i, key in enumerate(key_list):
+        print("{}： {}".format(i, key))
+    j = int(input("入力してください："))
+    first_path = key_list[j]
+    return first_path
+
+
 def write_ansys_file_main():
-    a = WriteAnsysFile()
+    # ファイルの自動生成とbase.ansysの書き込み
+    first_path = _find_first_path()
+    a = WriteAnsysFile(first_path)
     a.make_files()
 
 
 def path_multiple_stress_strain_main():
+    # 応力ひずみ線図の生成
     a = MakeStressStrain()
     a.make_stress_strain()
 
 
 def auto_analysis():
+    # 自動解析の実行
     SLASH = os.path.normcase("a/")[-1]
 
     # ファーストパスの選択
@@ -88,6 +103,27 @@ def auto_analysis():
     print(f"経過時間：{elapsed_time}")
 
 
+def all():
+    # ファイルの自動生成，自動解析，応力ひずみ線図の生成
+    SLASH = os.path.normcase("a/")[-1]
+    first_path = _find_first_path()
+    dir_name = input("\nプロジェクト名を入力：")
+
+    a = WriteAnsysFile(first_path)
+    a.make_files()
+
+    # 実行ファイルのパスを取得
+    b = GetPath(first_path=first_path, slash=SLASH)
+    path_list = b.get_list_multiple(kind_list=["csv", "ansys"])
+    path_list = b.get_pair_list(path_list, omission_files=settings.OMISSION)
+    c = AutoAnalysis(first_path=first_path)
+    c.dir_name = dir_name
+    c.multiple_auto_analysis(path_list)
+
+    path_multiple_stress_strain_main()
+
+
+
 
 if __name__ == '__main__':
     settings_check.check_all()
@@ -97,6 +133,7 @@ if __name__ == '__main__':
     print("1： ファイルの自動生成")
     print("2： 応力ひずみ線図の作成")
     print("3： 自動解析")
+    print("4： all")
     a = input("入力してください：")
     if a == "0":
         refresh_main()
@@ -106,6 +143,8 @@ if __name__ == '__main__':
         path_multiple_stress_strain_main()
     elif a == "3":
         auto_analysis()
+    elif a == "4":
+        all()
     else:
         print("やり直してください．")
         sys.exit()

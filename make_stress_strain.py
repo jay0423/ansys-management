@@ -52,7 +52,7 @@ class MakeStressStrain:
             path_df = path_df.fillna("")
             path_df = path_df[path_df["finished"] == ""]
             path_df.reset_index(inplace=True, drop=True)
-            path_s = path_df.iloc[0,:]
+            path_s = path_df.iloc[0,:] # バグ発生用
         except:
             print("{}で指定されていません．".format(self.PATH_FILE_NAME))
             sys.exit()
@@ -87,7 +87,7 @@ class MakeStressStrain:
             print("{}で指定されていません．".format(self.PATH_FILE_NAME))
             sys.exit()
         if len(path_df) > 1: # 複数入力されている時
-                path_num = int(input("\n数字で選択してください："))
+            path_num = int(input("\n数字で選択してください："))
             try:
                 path_df = path_df[path_df.index == path_num]
             except:
@@ -131,7 +131,7 @@ class MakeStressStrain:
         path_df.to_excel(self.EXCEL_FILE_NAME, index=False)
 
 
-    def make_stress_strain(self):
+    def write_excel(self):
 
         sheet_name_list = []
         tensile_strength_list = []
@@ -246,19 +246,19 @@ class MakeStressStrain:
 
 
 
-    def main(self):
+    def make_stress_strain(self):
         path_df = self._make_df()
         path_s = self._make_path_s(path_df)
         self._get_inputs(path_s)
         self._make_excel_file(path_df)
-        self.make_stress_strain()
+        self.write_excel()
     
     
-    def main_force(self):
+    def make_stress_strain_force(self):
         path_df = self._make_df_force()
         path_s = self._make_path_s(path_df)
         self._get_inputs(path_s)
         self._make_excel_file(path_df)
-        self.make_stress_strain()
+        self.write_excel()
 
 

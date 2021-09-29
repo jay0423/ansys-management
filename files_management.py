@@ -152,9 +152,9 @@ class MakeFiles:
         SLASH = "\ ".replace(" ", "")
 
 
-    def __init__(self):
+    def __init__(self, first_path):
         self.kind = ""
-        self.first_path = ""
+        self.first_path = first_path
         self.all = True # パスを作成する際，全ての部分でパスを作成するのかを選択することができる．
         self.make_file_all_path = True # 全てのファイルを作成する．
 
@@ -238,18 +238,7 @@ class MakeFiles:
         a.refresh_force(print_permissoin=True)
 
 
-    def _find_first_path(self):
-        # 初期ディレクトリのパスを選択する．
-        print("\n初期パスの選択")
-        key_list = list(self.DIR_STRUCTURE.keys())
-        for i, key in enumerate(key_list):
-            print("{}： {}".format(i, key))
-        j = int(input("入力してください："))
-        self.first_path = key_list[j]
-
-
     def make_files(self):
-        self._find_first_path()
         for k in self.FILE_EXTENSION:
             self.kind = k
             self._make_damy_files()
