@@ -2,6 +2,7 @@
 Ansys Mapdl
 """
 
+import os
 import sys
 import time
 
@@ -14,11 +15,7 @@ from get_path import GetPath
 
 class AutoAnalysis:
 
-    OS = settings.OS
-    if OS == "mac":
-        SLASH = "/"
-    elif OS == "windows":
-        SLASH = "\ ".replace(" ", "")
+    SLASH = os.path.normcase("a/")[-1]
     PY_DIR_PATH = settings.PY_DIR_PATH # パスの初め
     CWD_PATH = settings.CWD_PATH
     mapdl = None

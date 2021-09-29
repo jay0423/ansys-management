@@ -41,11 +41,7 @@ class Refresh:
     ABBREVIATION = settings.ABBREVIATION
     OMISSION = settings.OMISSION
     FILE_EXTENSION = settings.FILE_EXTENSION
-    OS = settings.OS
-    if OS == "mac":
-        SLASH = "/"
-    elif OS == "windows":
-        SLASH = "\ ".replace(" ", "")
+    SLASH = os.path.normcase("a/")[-1]
 
 
     def __init__(self, first_path):
@@ -145,11 +141,7 @@ class MakeFiles:
 
     FILE_EXTENSION = settings.FILE_EXTENSION
     DIR_STRUCTURE = settings.DIR_STRUCTURE
-    OS = settings.OS
-    if OS == "mac":
-        SLASH = "/"
-    elif OS == "windows":
-        SLASH = "\ ".replace(" ", "")
+    SLASH = os.path.normcase("a/")[-1]
 
 
     def __init__(self, first_path):

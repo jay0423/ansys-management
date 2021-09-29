@@ -81,7 +81,7 @@ def auto_analysis():
         sys.exit()
     first_path = os.path.normcase(first_path + SLASH)
 
-    dir_name = input("\nプロジェクト名を入力：")
+    dir_name = input("\nプロジェクト名（ansysファイル格納ディレクトリ名）を入力：")
     # 実行ファイルのパスを取得
     a = GetPath(first_path=first_path, slash=SLASH)
     path_list = a.get_list_multiple(kind_list=["csv", "ansys"])
@@ -114,7 +114,7 @@ def all():
     print("ファイル作成完了\n")
 
     # 実行ファイルのパスを取得
-    print("解析開始\n")
+    print("解析開始")
     b = GetPath(first_path=first_path, slash=SLASH)
     path_list = b.get_list_multiple(kind_list=["csv", "ansys"])
     path_list = b.get_pair_list(path_list, omission_files=settings.OMISSION)
@@ -128,7 +128,7 @@ def all():
     print("解析完了\n")
 
     path_multiple_stress_strain_main()
-    print("完了")
+    print("応力ひずみ線図作成の完了")
 
 
 

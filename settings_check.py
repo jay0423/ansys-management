@@ -3,13 +3,13 @@ import sys
 import pprint
 
 
-def os():
-    if settings.OS == "mac" or settings.OS == "windows":
-        pass
-    else:
-        print("error: settings.OS -> OS名が間違っています．")
-        pprint.pprint(settings.OS)
-        sys.exit()
+# def os():
+#     if settings.OS == "mac" or settings.OS == "windows":
+#         pass
+#     else:
+#         print("error: settings.OS -> OS名が間違っています．")
+#         pprint.pprint(settings.OS)
+#         sys.exit()
 
 
 def py_dir_path():
@@ -64,7 +64,7 @@ def default_replace_word_dict():
 
 
 def check_all():
-    os()
+    # os()
     py_dir_path()
     path_file_name()
     file_extension()

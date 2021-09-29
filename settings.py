@@ -1,7 +1,5 @@
 
 ### OS
-# mac または windows
-OS = 'mac'
 
 # 実行ディレクトリパス
 PY_DIR_PATH = "C:\\Users\\matlab\\Documents\\ansys-management\\"
