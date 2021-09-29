@@ -45,11 +45,19 @@ class AutoAnalysis:
     def _analysis(self):
         # 解析条件ファイルを実行
         # path = r"C:\Users\matlab\Documents\ansys-management\etc\sample_test\test1.ansys"
+        t1 = time.time()
         self.mapdl.input(self.input_path)
         time.sleep(5)
-        self.mapdl.solve()
+        try:
+            self.mapdl.solve()
+        except:
+            print("Warning")
+            pass
         self.mapdl.finish()
-        print("finish：{}".format(self.input_path))
+        t2 = time.time()
+        elapsed_time = t2-t1
+        print(f"解析時間：{elapsed_time}s")
+        print("finish：{}，Time：{}s".format(self.input_path, elapsed_time))
 
 
     def _csv_output(self):
@@ -83,4 +91,4 @@ class AutoAnalysis:
             self._analysis()
             self._csv_output()
             self.mapdl.exit()
-            time.sleep(5)
+            time.sleep(10)
