@@ -129,7 +129,6 @@ def all():
     elapsed_time = t2-t1
     print(f"総解析時間：{elapsed_time}")
     print("解析完了\n")
-    time.sleep(1)
 
     path_multiple_stress_strain_main()
     print("応力ひずみ線図作成の完了")

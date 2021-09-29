@@ -26,11 +26,12 @@ FILE_EXTENSION = [
 """
 「=」がない場合はそのまま，ある場合は「=」より左側を入力する．
 略称は他と被っては行けない．
+大文字禁止
 """
 ABBREVIATION = {
-    'CFRP0': 'C0', # CFRPなし
-    'CFRP1': 'C1', # CFRP1本
-    'CFRP2_lap': 'C2_l', # CFRP2本，重ね継ぎ手長さ
+    'cfrp0': 'c0', # CFRPなし
+    'cfrp1': 'c1', # CFRP1本
+    'cfrp2_lap': 'c2_l', # CFRP2本，重ね継ぎ手長さ
     'thickness': 'th', # CFRPの太さ
     'gap': 'g', # CFRP間の距離
     'div': 'd', # メッシュ分割の細かさ
@@ -44,9 +45,9 @@ ABBREVIATION = {
     'cfrp_tensile': 'cfr', # CFRPの強度
     'epo_tensile': 'epo', # epoxyの強度
     'super': 'sup', # その他改良
-    'CFRP': 'CFRP',
+    'cfrp': 'cfrp',
     'epoxy': 'epoxy',
-    'PLA': 'PLA',
+    'pla': 'pla',
 }
 
 
@@ -75,18 +76,18 @@ OMISSION = [
 """
 DIR_STRUCTURE = {
     '2/': [
-        ('CFRP2_lap', [10, 20, 30, 40]),
+        ('cfrp2_lap', [10, 20, 30, 40]),
         ('thickness', [0.5, 1.0, 1.5, 2.0]),
     ],
     '3/': [
-        ('CFRP2_lap', [10, 20, 30]),
+        ('cfrp2_lap', [10, 20, 30]),
         ('thickness', [0.5, 1.0, 1.5, 2.0]),
     ],
-    '3/CFRP2_lap=10/thickness=0.5/': [
+    '3/cfrp2_lap=10/thickness=0.5/': [
         ('kasa', [1, 2, 3])
     ],
     'sample/': [
-        ('CFRP2_lap', [10, 20]),
+        ('cfrp2_lap', [10, 20]),
         ('thickness', [0.5, 1.0, 1.5]),
     ],
 }
@@ -109,7 +110,7 @@ base.ansysに埋め込む値がなかった場合，以下の値を入力する�
 キーは，ABBREVIATION内に含まれていなければならない．
 """
 DEFAOLUT_REPLACE_WORD_DICT = {
-    'CFRP2_lap': '20', # CFRP2本，重ね継ぎ手長さ
+    'cfrp2_lap': '20', # CFRP2本，重ね継ぎ手長さ
     'thickness': '2.0', # CFRPの太さ
     'gap': '0.5', # CFRP間の距離
     'div': '1.0', # メッシュ分割の細かさ

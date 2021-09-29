@@ -1,6 +1,6 @@
-!/input,c:\ansys\test-line,txt
-finish
-/clear,start
+﻿!/input,c:\ansys\test-line,txt
+! finish
+! /clear,start
 /NOPR
 
 !-タイトル--------------------------------------------------
@@ -35,16 +35,16 @@ Y2 = 8E-3 !エポキシ部の長さ
 Y3 = 10E-3 !PLA横の長さ
 Z2 = 3E-3 !エポキシ部の厚さ
 
-CF_lap = {% cfrp2_lap %}E-3 ! CFRPの重ね継ぎ手長さ
+CF_lap = 20E-3 ! CFRPの重ね継ぎ手長さ
 X2 = (X1 + CF_lap) / 2 !CFRP長さ
-Z3 = {% thickness %}E-3 !CFRPの厚さ
+Z3 = 1.5E-3 !CFRPの厚さ
 Y_CFRP = Z3 !CFRPの横長さ(正方形)
-CF_gap = {% gap %}E-3 ! CFRP間の距離
+CF_gap = 0.5E-3 ! CFRP間の距離
 Y4 = Y3/2 - CF_gap/2 - Y_CFRP !CFRP1の初期位置
 Y5 = Y3/2 + CF_gap/2 !CFRP2の初期位置
 
-DIV1=2E-3  !分割数1
-DIV2=1E-3 !分割数2
+DIV1=3E-3  !分割数1
+DIV2=3E-3 !分割数2
 ! DIV3=0.4E-3
 ! DIV4=0.2E-3
 ! DIV5=0.2E-3
@@ -449,29 +449,3 @@ OUTRES,MISC,1    !エレメントのその他のデータ（ETABLEコマンド�
 
 
 SAVE
-SOLVE   
-
-
-
-FINISH  
-
-
-/POST26
-
-RFORCE, 2, NNUM, F, X, FX
-prvar,2, !変数2をリストに表示
-
-
-
-
-
-
-!-XYせん断応力コンター表示-----------------------------------------------------
-/POST1  
-SET,LAST
-
-
-WPLANE, 1, 0, 0, Z1/2, 0, Y3, Z1/2, X1, 0, Z1/2
-/CPLANE, 1
-/TYPE,1,8
-

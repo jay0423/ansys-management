@@ -290,6 +290,7 @@ class WriteAnsysFile(MakeFiles):
         else:
             path_list = self._make_path()
         for path in path_list:
+            path = os.path.normcase(path) # パスのバグの修正
             make_permission = True
             for files in glob.glob(path + "*"):
                 if self.kind == os.path.splitext(files)[1][1:]:

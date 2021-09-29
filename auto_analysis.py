@@ -56,7 +56,6 @@ class AutoAnalysis:
         self.mapdl.finish()
         t2 = time.time()
         elapsed_time = t2-t1
-        print(f"解析時間：{elapsed_time}s")
         print("finish：{}，Time：{}s".format(self.input_path, elapsed_time))
 
 
