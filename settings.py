@@ -1,18 +1,11 @@
-
-### OS
-
-# 実行ディレクトリパス
-PY_DIR_PATH = "C:\\Users\\matlab\\Documents\\ansys-management\\"
-
-# データの保存先のディレクトリ
-CWD_PATH = "C:\\Users\\matlab\\ansys_kajimoto\\"
-
 # 無視するディレクトリリスト
 DIR_IGNORE = [
     'etc',
     '__pycache__',
     '.git'
 ]
+
+
 
 
 ### make_stress_strain.MakeStressStrain
@@ -30,7 +23,10 @@ FILE_EXTENSION = [
 
 
 # ディレクトリ名の略称の定義
-# 「=」がない場合はそのまま，ある場合は「=」より左側を入力
+"""
+「=」がない場合はそのまま，ある場合は「=」より左側を入力する．
+略称は他と被っては行けない．
+"""
 ABBREVIATION = {
     'CFRP0': 'C0', # CFRPなし
     'CFRP1': 'C1', # CFRP1本
@@ -65,7 +61,18 @@ OMISSION = [
 
 ### WriteAnsysFile
 ### MakeFiles
+"""
+ディレクトリ構成．
+'パス':[
+    ('変更部分の名前', [数字, 数字, 数字]),
+    ('変更部分の名前', [数字, 数字, 数字]),
+    ('変更部分の名前', [数字, 数字, 数字]),
+]
 
+注意：
+パス名はスラッシュをつける．
+「変更部分の名前」は，ABBREVIATION内に含まれていなければならない．
+"""
 DIR_STRUCTURE = {
     '2/': [
         ('CFRP2_lap', [10, 20, 30, 40]),
@@ -97,9 +104,22 @@ WRITE_EXTENSION = "ansys"
 
 
 # デフォルト値
+"""
+base.ansysに埋め込む値がなかった場合，以下の値を入力する．
+キーは，ABBREVIATION内に含まれていなければならない．
+"""
 DEFAOLUT_REPLACE_WORD_DICT = {
     'CFRP2_lap': '20', # CFRP2本，重ね継ぎ手長さ
     'thickness': '2.0', # CFRPの太さ
     'gap': '0.5', # CFRP間の距離
     'div': '1.0', # メッシュ分割の細かさ
 }
+
+
+
+### auto_analysis
+# 実行ディレクトリパス
+PY_DIR_PATH = "C:\\Users\\matlab\\Documents\\ansys-management\\"
+
+# ansysデータの保存先のディレクトリ(windows)
+CWD_PATH = "C:\\Users\\matlab\\ansys_kajimoto\\"

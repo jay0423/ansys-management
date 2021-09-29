@@ -3,25 +3,6 @@ import sys
 import pprint
 
 
-# def os():
-#     if settings.OS == "mac" or settings.OS == "windows":
-#         pass
-#     else:
-#         print("error: settings.OS -> OS名が間違っています．")
-#         pprint.pprint(settings.OS)
-#         sys.exit()
-
-
-def py_dir_path():
-    if settings.PY_DIR_PATH[-1] == "/" or settings.PY_DIR_PATH[-1] == "\ ".replace(" ", ""):
-        pass
-    elif settings.PY_DIR_PATH == "":
-        pass
-    else:
-        print("error: settings.PY_DIR_PATH -> パスの最後にスラッシュをつけてください．")
-        pprint.pprint(settings.PY_DIR_PATH)
-        sys.exit()
-
 
 def dir_ignore():
     pass
@@ -63,9 +44,18 @@ def default_replace_word_dict():
     pass
 
 
+def py_dir_path():
+    if settings.PY_DIR_PATH[-1] == "/" or settings.PY_DIR_PATH[-1] == "\ ".replace(" ", ""):
+        pass
+    elif settings.PY_DIR_PATH == "":
+        pass
+    else:
+        print("error: settings.PY_DIR_PATH -> パスの最後にスラッシュをつけてください．")
+        pprint.pprint(settings.PY_DIR_PATH)
+        sys.exit()
+
+
 def check_all():
-    # os()
-    py_dir_path()
     path_file_name()
     file_extension()
     abbrebiation()
@@ -75,3 +65,4 @@ def check_all():
     base_file_name()
     write_extension()
     default_replace_word_dict()
+    py_dir_path()

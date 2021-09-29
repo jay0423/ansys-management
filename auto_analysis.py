@@ -84,4 +84,3 @@ class AutoAnalysis:
             self._csv_output()
             self.mapdl.exit()
             time.sleep(5)
-        print("完了")
