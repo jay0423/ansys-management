@@ -43,8 +43,8 @@ CF_gap = {% gap %}E-3 ! CFRP間の距離
 Y4 = Y3/2 - CF_gap/2 - Y_CFRP !CFRP1の初期位置
 Y5 = Y3/2 + CF_gap/2 !CFRP2の初期位置
 
-DIV1=3E-3  !分割数1
-DIV2=3E-3 !分割数2
+DIV1=2E-3  !分割数1
+DIV2=1E-3 !分割数2
 ! DIV3=0.4E-3
 ! DIV4=0.2E-3
 ! DIV5=0.2E-3
