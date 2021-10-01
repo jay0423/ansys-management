@@ -45,7 +45,7 @@ class Refresh:
 
 
     def __init__(self, first_path):
-        self.first_path = first_path
+        self.first_path = os.path.normcase(first_path)
         self.kind = ""
         self.omission = True # ファイル無視をするかの選択
         self.only_word = ""
