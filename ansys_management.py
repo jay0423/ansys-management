@@ -2,13 +2,52 @@ import sys
 import os
 import time
 
-from py import settings_check
-from py import settings
-from py.get_path import GetPath
-from py.files_management import Refresh, WriteAnsysFile
-from py.make_stress_strain import MakeStressStrain
-from py.auto_analysis import AutoAnalysis
+# ファイル自動作成または自動解析が実行されたとき，py/のsettings.pyへsettings_child.pyとpy/settings/settings_core.pyをコピペする．
+with open(os.path.normcase("py/settings/settings_core.py"), encoding="utf-8_sig") as f: # 読み取り
+    data_lines_core = f.readlines()
+with open(os.path.normcase("settings_child.py"), encoding="utf-8_sig") as f: # 読み取り
+    data_lines_child = f.readlines()
+with open(os.path.normcase("py/settings/settings.py"), mode="w", encoding="utf-8_sig") as f: # 書き込み
+    f.writelines(data_lines_child + data_lines_core)
 
+from py.settings import settings_check
+from py.settings import settings
+from py.core.get_path import GetPath
+from py.core.files_management import Refresh, WriteAnsysFile
+from py.core.make_stress_strain import MakeStressStrain
+from py.core.auto_analysis import AutoAnalysis
+
+
+
+
+
+################ 設定の管理 ###################
+
+def settings_copy_to_child():
+    """
+    ファイル自動作成または自動解析が終了したとき，settings_child.pyへ
+    py/settings/settings_copy_base.pyをコピペする．
+    """
+    with open(os.path.normcase("py/settings/settings_copy_base.py"), encoding="utf-8_sig") as f: # 読み取り
+        data_lines_copy_base = f.readlines()
+    with open(os.path.normcase("settings_child.py"), mode="w", encoding="utf-8_sig") as f: # 書き込み
+        f.writelines(data_lines_copy_base)
+
+
+def settings_memo(first_path):
+    with open(os.path.normcase("py/settings/settings_core.py"), encoding="utf-8_sig") as f: # 読み取り
+        data_lines_core = f.readlines()
+    with open(os.path.normcase("settings_child.py"), encoding="utf-8_sig") as f: # 読み取り
+        data_lines_child = f.readlines()
+    with open(os.path.normcase(first_path + "settings_memo.py"), mode="w", encoding="utf-8_sig") as f: # 書き込み
+        f.writelines(data_lines_child + data_lines_core)
+
+
+
+
+
+
+################ 更新・自動生成・応力ひずみ線図・自動解析 ###################
 
 def refresh_main():
     # ファイル名の修正
@@ -53,10 +92,12 @@ def _find_first_path():
 def write_ansys_file_main():
     # ファイルの自動生成とbase.ansysの書き込み
     first_path = _find_first_path()
+    settings_memo(first_path)
     settings_check.base_path(first_path)
     settings_check.find_solve(first_path)
     a = WriteAnsysFile(first_path)
     a.make_files()
+    settings_copy_to_child()
 
 
 def path_multiple_stress_strain_main():
@@ -104,6 +145,7 @@ def auto_analysis():
     t2 = time.time()
     elapsed_time = t2-t1
     print(f"経過時間：{elapsed_time}")
+    settings_copy_to_child()
 
 
 def all():
@@ -113,6 +155,7 @@ def all():
     dir_name = input("\nプロジェクト名（ansysファイル格納ディレクトリ名）を入力：")
     os.mkdir(settings.CWD_PATH + SLASH + dir_name)
 
+    settings_memo()
     settings_check.base_path(first_path)
     settings_check.find_solve(first_path)
     a = WriteAnsysFile(first_path)
@@ -136,6 +179,8 @@ def all():
 
     path_multiple_stress_strain_main()
     print("応力ひずみ線図作成の完了")
+
+    settings_copy_to_child()
 
 
 

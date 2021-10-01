@@ -21,6 +21,8 @@ def file_extension():
 def abbrebiation():
     pass
 
+def dir_ignore():
+    pass
 
 def omission():
     pass
@@ -51,6 +53,11 @@ def py_dir_path():
         print("error: settings.PY_DIR_PATH -> パスの最後にスラッシュをつけてください．")
         pprint.pprint(settings.PY_DIR_PATH)
         sys.exit()
+
+
+def cwd_path():
+    pass
+
 
 ### 初期チェック
 def base_path(first_path):
@@ -91,13 +98,15 @@ def find_solve(first_path):
 
 
 def check_all():
+    abbrebiation()
+    dir_structure()
+    default_replace_word_dict()
+    # base_path()
+    dir_ignore()
     path_file_name()
     file_extension()
-    abbrebiation()
     omission()
-    dir_structure()
-    # base_path()
     base_file_name()
     write_extension()
-    default_replace_word_dict()
     py_dir_path()
+    cwd_path()

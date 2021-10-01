@@ -1,27 +1,4 @@
-# 無視するディレクトリリスト
-DIR_IGNORE = [
-    'etc',
-    '__pycache__',
-    '.git',
-    'py'
-]
-
-
-
-
-### make_stress_strain.MakeStressStrain
-PATH_FILE_NAME = "path.xlsx"
-
-
-
-
-### Refresh
-# ファイル名をルール通りに作成する対象ファイルの拡張子
-FILE_EXTENSION = [
-    "ansys",
-    "csv"
-]
-
+﻿################ settings_child.py ###################
 
 # ディレクトリ名の略称の定義
 """
@@ -52,14 +29,6 @@ ABBREVIATION = {
 }
 
 
-# ファイル名を変更しないファイルリスト
-OMISSION = [
-    'base.ansys'
-]
-
-
-
-
 
 ### WriteAnsysFile
 ### MakeFiles
@@ -72,11 +41,7 @@ DIR_STRUCTURE = {
         ('変更部分の名前', [数字, 数字, 数字]),
     ]
 }
-
-注意：
-パス名はスラッシュをつける．
-「変更部分の名前」は，ABBREVIATION内に含まれていなければならない．
-"""
+例）
 DIR_STRUCTURE = {
     '2/': [
         ('cfrp2_lap', [10, 20, 30, 40]),
@@ -95,22 +60,20 @@ DIR_STRUCTURE = {
     ],
 }
 
+注意：
+パス名はスラッシュをつける．
+「変更部分の名前」は，ABBREVIATION内に含まれていなければならない．
+"""
+DIR_STRUCTURE = {
+    '/': [
+        ('', []),
+    ],
+}
+
+
+
+
 # WriteAnsysFile
-"""
-書き込みの元の対象ファイル
-DIR_STRUCTURE直下に常に置く場合は，""に設定しておく．
-例）
-BASE_PATH = "sample/base.ansys"  <- 必ずしもbase.ansysでなくて良い．
-"""
-BASE_PATH = "3/base.ansys"
-
-# デフォルトの書き込みの元の対象ファイル名（BASE_PATH==""の時），特に変更する必要はない．
-BASE_FILE_NAME = "base"
-
-# 書き込み対象の拡張子
-WRITE_EXTENSION = "ansys"
-
-
 # デフォルト値
 """
 base.ansysに埋め込む値がなかった場合，以下の値を入力する．
@@ -122,6 +85,66 @@ DEFAOLUT_REPLACE_WORD_DICT = {
     'gap': '0.5', # CFRP間の距離
     'div': '1.0', # メッシュ分割の細かさ
 }
+
+
+
+
+"""
+書き込みの元の対象ファイル
+DIR_STRUCTURE直下に常に置く場合は，""に設定しておく．
+例）
+BASE_PATH = "sample/base.ansys"  <- 必ずしもbase.ansysでなくて良い．
+"""
+BASE_PATH = ""
+
+
+
+########### settings/settings_core.py ##############
+
+# 無視するディレクトリリスト
+DIR_IGNORE = [
+    'etc',
+    '__pycache__',
+    '.git',
+    'py'
+]
+
+
+
+
+### make_stress_strain.MakeStressStrain
+PATH_FILE_NAME = "path.xlsx"
+
+
+
+
+### Refresh
+# ファイル名をルール通りに作成する対象ファイルの拡張子
+FILE_EXTENSION = [
+    "ansys",
+    "csv"
+]
+
+
+
+# ファイル名を変更しないファイルリスト
+OMISSION = [
+    'base.ansys',
+    'sample.ansys'
+]
+
+
+
+
+
+# WriteAnsysFile
+# BASE_FILE_NAME + "." + WRITE_EXTENSION
+# デフォルトの書き込みの元の対象ファイル名（BASE_PATH==""の時），特に変更する必要はない．
+BASE_FILE_NAME = "base"
+
+# 書き込み対象の拡張子
+WRITE_EXTENSION = "ansys"
+
 
 
 
