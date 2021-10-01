@@ -447,31 +447,4 @@ OUTRES,RSOL,1    !節点反応荷重
 OUTRES,NLOAD,1    !要素の節点、入力拘束、および力の荷重（POST1コマンドのPRRFOR、NFORCE、FSUMでも使用され、反力の荷重を計算します）。
 OUTRES,MISC,1    !エレメントのその他のデータ（ETABLEコマンドのSMISCおよびNMISCアイテム）
 
-
 SAVE
-SOLVE   
-
-
-
-FINISH  
-
-
-/POST26
-
-RFORCE, 2, NNUM, F, X, FX
-prvar,2, !変数2をリストに表示
-
-
-
-
-
-
-!-XYせん断応力コンター表示-----------------------------------------------------
-/POST1  
-SET,LAST
-
-
-WPLANE, 1, 0, 0, Z1/2, 0, Y3, Z1/2, X1, 0, Z1/2
-/CPLANE, 1
-/TYPE,1,8
-
