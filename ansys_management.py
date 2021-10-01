@@ -53,6 +53,7 @@ def _find_first_path():
 def write_ansys_file_main():
     # ファイルの自動生成とbase.ansysの書き込み
     first_path = _find_first_path()
+    settings_check.base_path(first_path)
     a = WriteAnsysFile(first_path)
     a.make_files()
 

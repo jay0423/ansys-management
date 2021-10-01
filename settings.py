@@ -93,9 +93,13 @@ DIR_STRUCTURE = {
 }
 
 # WriteAnsysFile
-# 書き込みの元の対象ファイル
-# DIR_STRUCTURE直下に常に置く場合は，""に設定しておく．
-BASE_PATH = ""
+"""
+書き込みの元の対象ファイル
+DIR_STRUCTURE直下に常に置く場合は，""に設定しておく．
+例）
+BASE_PATH = "sample/base.ansys"  <- 必ずしもbase.ansysでなくて良い．
+"""
+BASE_PATH = "3/base.ansys"
 
 # デフォルトの書き込みの元の対象ファイル名（BASE_PATH==""の時），特に変更する必要はない．
 BASE_FILE_NAME = "base"
