@@ -16,8 +16,8 @@ import os
 import sys
 import openpyxl as px
 
-from get_path import GetPath
-import settings
+from .get_path import GetPath
+from . import settings
 
 
 

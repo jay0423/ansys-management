@@ -8,8 +8,8 @@ import time
 
 from ansys.mapdl.core import launch_mapdl
 
-import settings
-from get_path import GetPath
+from . import settings
+from .get_path import GetPath
 
 
 

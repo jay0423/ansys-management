@@ -2,12 +2,12 @@ import sys
 import os
 import time
 
-import settings
-import settings_check
-from get_path import GetPath
-from files_management import Refresh, WriteAnsysFile
-from make_stress_strain import MakeStressStrain
-from auto_analysis import AutoAnalysis
+from py import settings_check
+from py import settings
+from py.get_path import GetPath
+from py.files_management import Refresh, WriteAnsysFile
+from py.make_stress_strain import MakeStressStrain
+from py.auto_analysis import AutoAnalysis
 
 
 def refresh_main():

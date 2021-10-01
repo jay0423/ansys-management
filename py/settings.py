@@ -2,7 +2,8 @@
 DIR_IGNORE = [
     'etc',
     '__pycache__',
-    '.git'
+    '.git',
+    'py'
 ]
 
 

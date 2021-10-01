@@ -21,8 +21,8 @@ import pathlib
 import itertools
 import glob
 
-import settings
-from get_path import GetPath
+from . import settings
+from .get_path import GetPath
 
 
 
