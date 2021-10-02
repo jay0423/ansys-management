@@ -1,3 +1,4 @@
+from py.settings.settings_copy_base import DIR_STRUCTURE
 from . import settings
 import os
 import sys
@@ -29,7 +30,23 @@ def omission():
 
 
 def dir_structure():
-    pass
+    SLASH = os.path.normcase("a/")[-1]
+    DIR_STRUCTURE = settings.DIR_STRUCTURE
+    for dir in DIR_STRUCTURE:
+        if SLASH not in dir: # スラッシュがwindowsまたはmacに対応していない場合．
+            print("Settings error: DIR_STRUCTUREのスラッシュが'{}'になっていません．".format(SLASH))
+            sys.exit()
+        
+    if len(DIR_STRUCTURE) > 1:
+        # if DIR_STRUCTURE[0] != sorted(DIR_STRUCTURE)[0]: # 書き順
+        #     print("Settings error: DIR_STRUCTUREの順番を入れ替えてください．")
+        #     sys.exit()
+        
+        dir_0 = list(DIR_STRUCTURE.keys())[0].split(SLASH)[0]
+        for dir in DIR_STRUCTURE:
+            if dir.split(SLASH)[0] != dir_0:
+                print("Settings error: DIR_STRUCTUREの初期バスのディレクトリ名が一致していません．")
+                sys.exit()
 
 
 def base_file_name():
@@ -50,7 +67,7 @@ def py_dir_path():
     elif settings.PY_DIR_PATH == "":
         pass
     else:
-        print("error: settings.PY_DIR_PATH -> パスの最後にスラッシュをつけてください．")
+        print("Settings error: settings.PY_DIR_PATH -> パスの最後にスラッシュをつけてください．")
         pprint.pprint(settings.PY_DIR_PATH)
         sys.exit()
 
@@ -62,30 +79,32 @@ def cwd_path():
 ### 初期チェック
 def base_path(first_path):
     # BASE_PATHに入力されていない場合，そこにbase.ansysファイルがあるのかを検証．
-    BASE_PATH = settings.BASE_PATH
+    first_path = os.path.normcase(first_path)
+    BASE_PATH = os.path.normcase(settings.BASE_PATH)
     if BASE_PATH == "": # ファーストパス直下にある場合
-        BASE_PATH = os.path.normcase(first_path + "{}.{}".format(settings.BASE_FILE_NAME, settings.WRITE_EXTENSION))
+        BASE_PATH = first_path + "{}.{}".format(settings.BASE_FILE_NAME, settings.WRITE_EXTENSION)
         if os.path.isfile(BASE_PATH):
             pass
-        else:
+        else: # BASE_PATHにbase.ansysがある場合
             SLASH = os.path.normcase("a/")[-1]
-            BASE_PATH = os.path.normcase(first_path.split(SLASH)[0] + SLASH + settings.BASE_FILE_NAME + "." + settings.WRITE_EXTENSION) # 初期パスの最初のディレクトリにファイルがあるか確認する．
+            BASE_PATH = first_path.split(SLASH)[0] + SLASH + settings.BASE_FILE_NAME + "." + settings.WRITE_EXTENSION # 初期パスの最初のディレクトリにファイルがあるか確認する．
             if os.path.isfile(BASE_PATH):
                 pass
             else:
-                print("Error：{}が存在しません．settings.pyのBASE_PATHを正しく設定してください．".format(BASE_PATH))
+                print("Settings error：{}が存在しません．settings.pyのBASE_PATHを正しく設定してください．".format(BASE_PATH))
                 sys.exit()
-    else: # BASE_PATHにbase.ansysがある場合
+    else:
         if os.path.isfile(BASE_PATH):
             pass
         else:
-            print("Error：{}が存在しません．settings.pyのBASE_PATHを正しく設定してください．".format(first_path))
+            print("Settings error：{}が存在しません．settings.pyのBASE_PATHを正しく設定してください．".format(first_path))
             sys.exit()
 
 
 
 def find_solve(first_path):
-    BASE_PATH = settings.BASE_PATH
+    first_path = os.path.normcase(first_path)
+    BASE_PATH = os.path.normcase(settings.BASE_PATH)
     if BASE_PATH == "":
         BASE_PATH = first_path + "{}.{}".format(settings.BASE_FILE_NAME, settings.WRITE_EXTENSION)
     try:
