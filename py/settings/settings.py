@@ -65,10 +65,15 @@ DIR_STRUCTURE = {
 「変更部分の名前」は，ABBREVIATION内に含まれていなければならない．
 """
 DIR_STRUCTURE = {
-    '3/': [
-        ('cfrp2_lap', [10, 20]),
-        ('length', [80, 100, 120]),
-        ('thickness', [0.5, 1.0])
+    '4/': [
+        ('cfrp2_lap', [10, 20, 30]),
+        ('thickness', [0.5, 1.0, 1.5, 2.0]),
+    ],
+    '4/cfrp2_lap=10/thickness=0.5/': [
+        ('kasa', [1, 2, 3])
+    ],
+    '4/cfrp2_lap=20/thickness=0.5/': [
+        ('div', [0.5, 1.0, 2.0])
     ],
 }
 
@@ -132,7 +137,10 @@ FILE_EXTENSION = [
 # ファイル名を変更しないファイルリスト
 OMISSION = [
     'base.ansys',
-    'sample.ansys'
+    'sample.ansys',
+    'settings_memo.py',
+    'README.md',
+    'README.txt'
 ]
 
 

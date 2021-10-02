@@ -78,26 +78,35 @@ def refresh_main():
 #     a.make_files()
 
 
-def _find_first_path():
-    # 初期ディレクトリのパスを選択する．
-    print("\n初期パスの選択")
-    key_list = list(settings.DIR_STRUCTURE.keys())
-    for i, key in enumerate(key_list):
-        print("{}： {}".format(i, key))
-    j = int(input("入力してください："))
-    first_path = key_list[j]
-    return first_path
+# def _find_first_path():
+#     # 初期ディレクトリのパスを選択する．
+#     print("\n初期パスの選択")
+#     key_list = list(settings.DIR_STRUCTURE.keys())
+#     for i, key in enumerate(key_list):
+#         print("{}： {}".format(i, key))
+#     j = int(input("入力してください："))
+#     first_path = key_list[j]
+#     return first_path
 
 
 def write_ansys_file_main():
     # ファイルの自動生成とbase.ansysの書き込み
-    first_path = _find_first_path()
-    settings_memo(first_path)
-    settings_check.base_path(first_path)
-    settings_check.find_solve(first_path)
-    a = WriteAnsysFile(first_path)
-    a.make_files()
-    settings_copy_to_child()
+    key_list = list(settings.DIR_STRUCTURE.keys())
+    for i, first_path in enumerate(key_list):
+        if i == 0:
+            settings_memo(first_path)
+        settings_check.base_path(first_path)
+        settings_check.find_solve(first_path)
+        a = WriteAnsysFile(first_path)
+        if i != 0:
+            # 重複するファイルを削除する．
+            time.sleep(1)
+            a.delete_files()
+            time.sleep(1)
+        a.make_files()
+    permission = input("settings_child.pyを初期化しますか？\n0: はい\n1: いいえ\n入力してください：")
+    if permission == "0":
+        settings_copy_to_child()
 
 
 def path_multiple_stress_strain_main():
@@ -151,18 +160,27 @@ def auto_analysis():
 def all():
     # ファイルの自動生成，自動解析，応力ひずみ線図の生成
     SLASH = os.path.normcase("a/")[-1]
-    first_path = _find_first_path()
     dir_name = input("\nプロジェクト名（ansysファイル格納ディレクトリ名）を入力：")
     os.mkdir(settings.CWD_PATH + SLASH + dir_name)
 
-    settings_memo(first_path)
-    settings_check.base_path(first_path)
-    settings_check.find_solve(first_path)
-    a = WriteAnsysFile(first_path)
-    a.make_files()
+    # ファイルの自動生成とbase.ansysの書き込み
+    key_list = list(settings.DIR_STRUCTURE.keys())
+    for i, first_path in enumerate(key_list):
+        if i == 0:
+            settings_memo(first_path)
+        settings_check.base_path(first_path)
+        settings_check.find_solve(first_path)
+        a = WriteAnsysFile(first_path)
+        if i != 0:
+            # 重複するファイルを削除する．
+            time.sleep(1)
+            a.delete_files()
+            time.sleep(1)
+        a.make_files()
     print("ファイル作成完了\n")
     time.sleep(1)
 
+    first_path = key_list[0]
     # 実行ファイルのパスを取得
     print("解析開始")
     b = GetPath(first_path=first_path, slash=SLASH)
@@ -189,15 +207,17 @@ if __name__ == '__main__':
     settings_check.check_all()
 
     print("\n!!!　実行する作業の選択　!!!")
-    print("0： ファイル名の更新")
+    print("-----------------------------")
     print("1： ファイルの自動生成")
     print("2： 応力ひずみ線図の作成")
     print("3： 自動解析")
-    print("4： all")
+    print("4： All")
+    print("-----------------------------")
+    print("5： ファイル名の更新")
+    print("6： settings_childの初期化")
+    print("-----------------------------")
     a = input("入力してください：")
-    if a == "0":
-        refresh_main()
-    elif a == "1":
+    if a == "1":
         write_ansys_file_main()
     elif a == "2":
         path_multiple_stress_strain_main()
@@ -205,6 +225,10 @@ if __name__ == '__main__':
         auto_analysis()
     elif a == "4":
         all()
+    elif a == "5":
+        refresh_main()
+    elif a == "6":
+        settings_copy_to_child()
     else:
         print("やり直してください．")
         sys.exit()

@@ -68,8 +68,13 @@ def base_path(first_path):
         if os.path.isfile(BASE_PATH):
             pass
         else:
-            print("Error：{}が存在しません．settings.pyのBASE_PATHを正しく設定してください．".format(BASE_PATH))
-            sys.exit()
+            SLASH = os.path.normcase("a/")[-1]
+            BASE_PATH = first_path.split(SLASH)[0] + SLASH + settings.BASE_FILE_NAME + "." + settings.WRITE_EXTENSION # 初期パスの最初のディレクトリにファイルがあるか確認する．
+            if os.path.isfile(BASE_PATH):
+                pass
+            else:
+                print("Error：{}が存在しません．settings.pyのBASE_PATHを正しく設定してください．".format(BASE_PATH))
+                sys.exit()
     else: # BASE_PATHにbase.ansysがある場合
         if os.path.isfile(BASE_PATH):
             pass
@@ -83,8 +88,14 @@ def find_solve(first_path):
     BASE_PATH = settings.BASE_PATH
     if BASE_PATH == "":
         BASE_PATH = first_path + "{}.{}".format(settings.BASE_FILE_NAME, settings.WRITE_EXTENSION)
-    with open(BASE_PATH, encoding="utf-8_sig") as f: # 読み取り
-        data_lines = f.readlines()
+    try:
+        with open(BASE_PATH, encoding="utf-8_sig") as f: # 読み取り
+            data_lines = f.readlines()
+    except: # 2週目以降
+        SLASH = os.path.normcase("a/")[-1]
+        BASE_PATH = first_path.split(SLASH)[0] + SLASH + settings.BASE_FILE_NAME + "." + settings.WRITE_EXTENSION # 初期パスの最初のディレクトリにファイルがあるか確認する．
+        with open(BASE_PATH, encoding="utf-8_sig") as f: # 読み取り
+            data_lines = f.readlines()
 
     for line in data_lines:
         if "solve" in line.lower():

@@ -126,7 +126,7 @@ class Refresh:
         for pre_path, post_path in zip(pre_path_list, post_path_list):
             if pre_path != post_path:
                 if print_permissoin:
-                    print(post_path)
+                    print("create: {}".format(post_path))
                 os.rename(pre_path, post_path)
 
 
@@ -274,8 +274,13 @@ class WriteAnsysFile(MakeFiles):
         # base.ansysの変数部分に値を入力したファイルを出力する．
         if self.BASE_PATH == "":
             self.BASE_PATH = self.first_path + "{}.{}".format(settings.BASE_FILE_NAME, self.WRITE_EXTENSION)
-        with open(self.BASE_PATH, encoding="utf-8_sig") as f: # 読み取り
-            data_lines = f.readlines()
+        try:
+            with open(self.BASE_PATH, encoding="utf-8_sig") as f: # 読み取り
+                data_lines = f.readlines()
+        except: # 2週目以降
+            self.BASE_PATH = self.first_path.split(self.SLASH)[0] + self.SLASH + settings.BASE_FILE_NAME + "." + settings.WRITE_EXTENSION # 初期パスの最初のディレクトリにファイルがあるか確認する．
+            with open(self.BASE_PATH, encoding="utf-8_sig") as f: # 読み取り
+                data_lines = f.readlines()
         replace_word_dict = self._get_replace_word_dict(output_path)
         data_lines = self._replace_word(data_lines=data_lines, replace_word_dict=replace_word_dict)
         with open(output_path, mode="w", encoding="utf-8_sig") as f: # 書き込み
@@ -308,3 +313,13 @@ class WriteAnsysFile(MakeFiles):
                 continue
 
 
+    def delete_files(self):
+        # ファイルとディレクトリが重複するファイルをまとめて削除する．
+        path_list = os.listdir(self.first_path)
+        path_list = [path for path in path_list if os.path.isfile(os.path.join(self.first_path, path))] # ファイルだけに絞る
+        path_list = [path for path in path_list if os.path.splitext(path)[-1][1:] in settings.FILE_EXTENSION]  # 特定の拡張子に絞る
+        path_list = [path for path in path_list if path not in settings.OMISSION] # 特定のファイルを削除する．
+        path_list = [os.path.join(self.first_path, path) for path in path_list] # ファイル名にパスをつける
+        for path in path_list:
+            print("delete: {}".format(path))
+            os.remove(path)

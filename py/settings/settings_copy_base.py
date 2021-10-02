@@ -43,20 +43,15 @@ DIR_STRUCTURE = {
 }
 例）
 DIR_STRUCTURE = {
-    '2/': [
-        ('cfrp2_lap', [10, 20, 30, 40]),
-        ('thickness', [0.5, 1.0, 1.5, 2.0]),
-    ],
-    '3/': [
+    '4/': [
         ('cfrp2_lap', [10, 20, 30]),
         ('thickness', [0.5, 1.0, 1.5, 2.0]),
     ],
-    '3/cfrp2_lap=10/thickness=0.5/': [
+    '4/cfrp2_lap=10/thickness=0.5/': [
         ('kasa', [1, 2, 3])
     ],
-    'sample/': [
-        ('cfrp2_lap', [10, 20]),
-        ('thickness', [0.5, 1.0, 1.5]),
+    '4/cfrp2_lap=20/thickness=0.5/': [
+        ('div', [0.5, 1.0, 2.0])
     ],
 }
 

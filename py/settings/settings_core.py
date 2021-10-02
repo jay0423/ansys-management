@@ -29,7 +29,10 @@ FILE_EXTENSION = [
 # ファイル名を変更しないファイルリスト
 OMISSION = [
     'base.ansys',
-    'sample.ansys'
+    'sample.ansys',
+    'settings_memo.py',
+    'README.md',
+    'README.txt'
 ]
 
 
