@@ -14,7 +14,7 @@ from py.settings import settings_check
 from py.settings import settings
 from py.core.get_path import GetPath
 from py.core.files_management import Refresh, WriteAnsysFile
-from py.core.make_stress_strain import MakeStressStrain
+from py.core.make_stress_strain import MakeStressStrain, MakeStressStrainFromAnsysFile
 from py.core.auto_analysis import AutoAnalysis
 
 
@@ -198,7 +198,9 @@ def all():
     path_multiple_stress_strain_main()
     print("応力ひずみ線図作成の完了")
 
-    settings_copy_to_child()
+    # 応力ひずみ線図の生成
+    a = MakeStressStrainFromAnsysFile(first_path)
+    a.make_stress_strain()
 
 
 

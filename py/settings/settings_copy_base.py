@@ -83,6 +83,13 @@ DEFAOLUT_REPLACE_WORD_DICT = {
 
 
 
+### make_stress_strain.MakeStressStrainFromAnsysFile
+DISTANCE = "DISTANCE"
+TIME = "TIME1"
+LENGTH = "X1"
+CROSS_SECTIONAL_AREA = 50 # 数値
+
+
 
 """
 書き込みの元の対象ファイル

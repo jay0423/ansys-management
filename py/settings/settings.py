@@ -43,28 +43,6 @@ DIR_STRUCTURE = {
 }
 例）
 DIR_STRUCTURE = {
-    '2/': [
-        ('cfrp2_lap', [10, 20, 30, 40]),
-        ('thickness', [0.5, 1.0, 1.5, 2.0]),
-    ],
-    '3/': [
-        ('cfrp2_lap', [10, 20, 30]),
-        ('thickness', [0.5, 1.0, 1.5, 2.0]),
-    ],
-    '3/cfrp2_lap=10/thickness=0.5/': [
-        ('kasa', [1, 2, 3])
-    ],
-    'sample/': [
-        ('cfrp2_lap', [10, 20]),
-        ('thickness', [0.5, 1.0, 1.5]),
-    ],
-}
-
-注意：
-パス名はスラッシュをつける．
-「変更部分の名前」は，ABBREVIATION内に含まれていなければならない．
-"""
-DIR_STRUCTURE = {
     '4/': [
         ('cfrp2_lap', [10, 20, 30]),
         ('thickness', [0.5, 1.0, 1.5, 2.0]),
@@ -74,6 +52,16 @@ DIR_STRUCTURE = {
     ],
     '4/cfrp2_lap=20/thickness=0.5/': [
         ('div', [0.5, 1.0, 2.0])
+    ],
+}
+
+注意：
+パス名はスラッシュをつける．
+「変更部分の名前」は，ABBREVIATION内に含まれていなければならない．
+"""
+DIR_STRUCTURE = {
+    '/': [
+        ('', []),
     ],
 }
 
@@ -93,6 +81,13 @@ DEFAOLUT_REPLACE_WORD_DICT = {
     'div': '1.0', # メッシュ分割の細かさ
 }
 
+
+
+### make_stress_strain.MakeStressStrainFromAnsysFile
+DISTANCE = "DISTANCE"
+TIME = "TIME1"
+LENGTH = "X1"
+CROSS_SECTIONAL_AREA = 50 # 数値
 
 
 

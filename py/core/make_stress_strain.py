@@ -15,6 +15,7 @@ import numpy as np
 import os
 import sys
 import openpyxl as px
+import pprint
 
 from .get_path import GetPath
 from ..settings import settings
@@ -38,8 +39,8 @@ class MakeStressStrain:
 
 
 
-    def __init__(self) -> None:
-        pass
+    def __init__(self, first_path=""):
+        self.first_path = first_path # MakeStressStrainFromAnsysFileからデータを収集する用
     
 
     def _make_df(self):
@@ -131,6 +132,10 @@ class MakeStressStrain:
         return df
 
 
+    def _get_data_from_ansys(self, file_name):
+        return
+
+
     def write_excel(self):
 
         sheet_name_list = []
@@ -139,6 +144,8 @@ class MakeStressStrain:
 
 
         for FILE_NAME in self.FILE_NAME_LIST:
+
+            self._get_data_from_ansys(FILE_NAME) # ansysファイルからデータを収集する．
 
             df = self._csv_to_df(FILE_NAME)
             if df is None:
@@ -237,6 +244,52 @@ class MakeStressStrain:
         self.write_excel()
     
     
+
+
+class MakeStressStrainFromAnsysFile(MakeStressStrain):
+    # ansysファイルから情報を収集する
+
+    def _make_df(self):
+        return pd.DataFrame()
+
+
+    def _make_path_s(self, path_df):
+        return
+
+
+    def _get_inputs(self, path_s):
+        # 入力値
+        FILE_NAME_LIST = GetPath(first_path=self.first_path, slash=self.SLASH).get_list(kind="csv") #CSVファイルリスト
+        self.FILE_NAME_LIST = sorted(FILE_NAME_LIST) # 並び替え．まだ不完全
+        self.EXCEL_FILE_NAME = self.first_path + "summary.xlsx" # 出力先のpathをくっつける
+
+
+    def _get_data_from_ansys(self, file_name):
+        # ansysファイルからデータを収集する．
+        self.POSITIVE_NEGATIVE = 1
+        file_name = os.path.splitext(file_name)[0] + "." + settings.WRITE_EXTENSION
+
+        def find_data(word):
+            with open(file_name, encoding="utf-8_sig") as f: # 読み取り
+                data_lines = f.readlines()
+            for line in data_lines:
+                if word in line:
+                    try:
+                        data = line.replace(" ", "")
+                        data = data.split("=")[-1]
+                        data = float(data.split("!")[0])
+                        break
+                    except:
+                        pass
+            return data
+        DISTANCE = find_data(settings.DISTANCE)
+        TIME = find_data(settings.TIME)
+        self.SPEED = float(DISTANCE / TIME)
+        self.LENGTH = float(find_data(settings.LENGTH)) # 試験片長さ（歪み算出用）
+        self.CROSS_SECTIONAL_AREA = float(settings.CROSS_SECTIONAL_AREA/1000) # 断面積（応力算出用）
+
+
+
 
 class MakeStressStrain2(MakeStressStrain):
     # csvファイル形式の変更
