@@ -1,4 +1,4 @@
-!/input,c:\ansys\test-line,txt
+﻿!/input,c:\ansys\test-line,txt
 finish
 /clear,start
 /NOPR
@@ -29,15 +29,15 @@ KEYW,PR_CFD,0
 /GO 
 
 !-パラメータ定義--------------------------------------------
-X1 = {% length %}E-3 !試験片長さ
+X1 = 80E-3 !試験片長さ
 Z1 = 5E-3 !PLA厚さ
 Y2 = 8E-3 !エポキシ部の長さ
 Y3 = 10E-3 !PLA横の長さ
 Z2 = 3E-3 !エポキシ部の厚さ
 
-CF_lap = {% cfrp2_lap %}E-3 ! CFRPの重ね継ぎ手長さ
+CF_lap = 20E-3 ! CFRPの重ね継ぎ手長さ
 X2 = (X1 + CF_lap) / 2 !CFRP長さ
-Z3 = {% thickness %}E-3 !CFRPの厚さ
+Z3 = 1.0E-3 !CFRPの厚さ
 Y_CFRP = Z3 !CFRPの横長さ(正方形)
 CF_gap = 1E-3 ! CFRP間の距離
 Y4 = Y3/2 - CF_gap/2 - Y_CFRP !CFRP1の初期位置

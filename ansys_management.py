@@ -155,7 +155,7 @@ def all():
     dir_name = input("\nプロジェクト名（ansysファイル格納ディレクトリ名）を入力：")
     os.mkdir(settings.CWD_PATH + SLASH + dir_name)
 
-    settings_memo()
+    settings_memo(first_path)
     settings_check.base_path(first_path)
     settings_check.find_solve(first_path)
     a = WriteAnsysFile(first_path)
