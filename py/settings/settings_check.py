@@ -64,12 +64,12 @@ def base_path(first_path):
     # BASE_PATHに入力されていない場合，そこにbase.ansysファイルがあるのかを検証．
     BASE_PATH = settings.BASE_PATH
     if BASE_PATH == "": # ファーストパス直下にある場合
-        BASE_PATH = first_path + "{}.{}".format(settings.BASE_FILE_NAME, settings.WRITE_EXTENSION)
+        BASE_PATH = os.path.normcase(first_path + "{}.{}".format(settings.BASE_FILE_NAME, settings.WRITE_EXTENSION))
         if os.path.isfile(BASE_PATH):
             pass
         else:
             SLASH = os.path.normcase("a/")[-1]
-            BASE_PATH = first_path.split(SLASH)[0] + SLASH + settings.BASE_FILE_NAME + "." + settings.WRITE_EXTENSION # 初期パスの最初のディレクトリにファイルがあるか確認する．
+            BASE_PATH = os.path.normcase(first_path.split(SLASH)[0] + SLASH + settings.BASE_FILE_NAME + "." + settings.WRITE_EXTENSION) # 初期パスの最初のディレクトリにファイルがあるか確認する．
             if os.path.isfile(BASE_PATH):
                 pass
             else:
