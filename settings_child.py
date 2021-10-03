@@ -43,14 +43,14 @@ DIR_STRUCTURE = {
 }
 例）
 DIR_STRUCTURE = {
-    '4/': [
+    '4\\': [
         ('cfrp2_lap', [10, 20, 30]),
         ('thickness', [0.5, 1.0, 1.5, 2.0]),
     ],
-    '4/cfrp2_lap=10/thickness=0.5/': [
+    '4\\cfrp2_lap=10\\thickness=0.5\\': [
         ('kasa', [1, 2, 3])
     ],
-    '4/cfrp2_lap=20/thickness=0.5/': [
+    '4\\cfrp2_lap=20\\thickness=0.5\\': [
         ('div', [0.5, 1.0, 2.0])
     ],
 }
@@ -60,7 +60,7 @@ DIR_STRUCTURE = {
 「変更部分の名前」は，ABBREVIATION内に含まれていなければならない．
 """
 DIR_STRUCTURE = {
-    '/': [
+    '4/': [
         ('', []),
     ],
 }
@@ -85,7 +85,7 @@ DEFAOLUT_REPLACE_WORD_DICT = {
 
 ### make_stress_strain.MakeStressStrainFromAnsysFile
 DISTANCE = "DISTANCE"
-TIME = "TIME1"
+TIME = "TIE1"
 LENGTH = "X1"
 CROSS_SECTIONAL_AREA = 50 # 数値
 

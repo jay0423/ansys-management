@@ -162,7 +162,6 @@ def all():
     SLASH = os.path.normcase("a/")[-1]
     dir_name = input("\nプロジェクト名（ansysファイル格納ディレクトリ名）を入力：")
     os.mkdir(settings.CWD_PATH + SLASH + dir_name)
-
     # ファイルの自動生成とbase.ansysの書き込み
     key_list = list(settings.DIR_STRUCTURE.keys())
     for i, first_path in enumerate(key_list):
@@ -170,6 +169,7 @@ def all():
             settings_memo(first_path)
         settings_check.base_path(first_path)
         settings_check.find_solve(first_path)
+        settings_check.distance_time_length(first_path)
         a = WriteAnsysFile(first_path)
         if i != 0:
             # 重複するファイルを削除する．

@@ -1,7 +1,8 @@
-from py.settings.settings_copy_base import DIR_STRUCTURE
+from py.settings.settings_copy_base import BASE_PATH
 from . import settings
 import os
 import sys
+import platform
 import pprint
 
 
@@ -73,7 +74,10 @@ def py_dir_path():
 
 
 def cwd_path():
-    pass
+    if platform.system() == "windows": # windowsのみ確認する．
+        if not os.path.exists(settings.CWD_PATH):
+            print("Settings error: {}のパスが存在していません．CWD_PATHを設定し直してください．".format(settings.CWD_PATH))
+            sys.exit()
 
 
 ### 初期チェック
@@ -99,6 +103,49 @@ def base_path(first_path):
         else:
             print("Settings error：{}が存在しません．settings.pyのBASE_PATHを正しく設定してください．".format(first_path))
             sys.exit()
+
+
+def distance_time_length(first_path):
+    # DISTANCE, TIME, LENGTH
+    first_path = os.path.normcase(first_path)
+    BASE_PATH = os.path.normcase(settings.BASE_PATH)
+    if BASE_PATH == "": # ファーストパス直下にある場合
+        BASE_PATH = first_path + "{}.{}".format(settings.BASE_FILE_NAME, settings.WRITE_EXTENSION)
+        if os.path.isfile(BASE_PATH):
+            pass
+        else:
+            SLASH = os.path.normcase("a/")[-1]
+            BASE_PATH = first_path.split(SLASH)[0] + SLASH + settings.BASE_FILE_NAME + "." + settings.WRITE_EXTENSION # 初期パスの最初のディレクトリにファイルがあるか確認する．
+
+    def find_data(word):
+        with open(BASE_PATH, encoding="utf-8_sig") as f: # 読み取り
+            data_lines = f.readlines()
+        for line in data_lines:
+            if word in line:
+                try:
+                    data = line.replace(" ", "")
+                    data = data.split("=")[-1]
+                    data = float(data.split("!")[0])
+                    break
+                except:
+                    pass
+        return data
+
+    try:
+        DISTANCE = float(find_data(settings.DISTANCE))
+    except:
+        print("Settings error: DISTANCEが{}.{}に存在していません．".format(settings.BASE_PATH, settings.WRITE_EXTENSION))
+        sys.exit()
+    try:
+        TIME = float(find_data(settings.TIME))
+    except:
+        print("Settings error: TIMEが{}.{}に存在していません．".format(settings.BASE_PATH, settings.WRITE_EXTENSION))
+        sys.exit()
+    try:
+        LENGTH = float(find_data(settings.LENGTH))
+    except:
+        print("Settings error: LENGTHが{}.{}に存在していません．".format(settings.BASE_PATH, settings.WRITE_EXTENSION))
+        sys.exit()
 
 
 

@@ -261,7 +261,7 @@ class MakeStressStrainFromAnsysFile(MakeStressStrain):
         # 入力値
         FILE_NAME_LIST = GetPath(first_path=self.first_path, slash=self.SLASH).get_list(kind="csv") #CSVファイルリスト
         self.FILE_NAME_LIST = sorted(FILE_NAME_LIST) # 並び替え．まだ不完全
-        self.EXCEL_FILE_NAME = self.first_path + "summary.xlsx" # 出力先のpathをくっつける
+        self.EXCEL_FILE_NAME = self.first_path + "stress_strain.xlsx" # 出力先のpathをくっつける
 
 
     def _get_data_from_ansys(self, file_name):
