@@ -18,7 +18,7 @@ from py.core.make_stress_strain import MakeStressStrain, MakeStressStrainFromAns
 from py.core.auto_analysis import AutoAnalysis
 
 
-
+SLASH = os.path.normcase("a/")[-1]
 
 
 ################ 設定の管理 ###################
@@ -61,10 +61,10 @@ def refresh_main():
     files_dir = [f for f in os.listdir() if os.path.isdir(os.path.join(f))]
     files_dir = [f for f in sorted(files_dir) if f not in settings.DIR_IGNORE]
     for i, l in enumerate(files_dir):
-        print("{}： {}".format(i, l))
+        print("{}： {}{}".format(i+1, l, SLASH))
     first_path = int(input("入力してください："))
     try:
-        first_path = files_dir[first_path]
+        first_path = files_dir[first_path-1] + SLASH
     except:
         print("やり直してください．")
         sys.exit()
@@ -102,6 +102,7 @@ def write_ansys_file_main():
             # 重複するファイルを削除する．
             a.delete_files()
         a.make_files()
+        print(first_path)
     permission = input("settings_child.pyを初期化しますか？\n0: はい\n1: いいえ\n入力してください：")
     if permission == "0":
         settings_copy_to_child()
@@ -117,7 +118,6 @@ def path_multiple_stress_strain_main():
 
 def auto_analysis():
     # 自動解析の実行
-    SLASH = os.path.normcase("a/")[-1]
 
     # ファーストパスの選択
     files_dir = [f for f in os.listdir() if os.path.isdir(os.path.join(f))]
@@ -161,7 +161,6 @@ def auto_analysis():
 def all():
     # ファイルの自動生成，自動解析，応力ひずみ線図の生成
     # 初期設定
-    SLASH = os.path.normcase("a/")[-1]
     dir_name = input("\nプロジェクト名（ansysファイル格納ディレクトリ名）を入力：")
     # os.mkdir(settings.CWD_PATH + SLASH + dir_name)
 

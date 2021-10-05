@@ -74,16 +74,14 @@ class Refresh:
         post_path_list = []
         for pre_path in pre_path_list_list:
             new_file_name = ""
-            for path in pre_path[:-1]: # 最初のパスとファイル名を省いたものをループで回している．
+            for path in pre_path[:-1]: # ダミーファイル名を省いたものをループで回している．
                 try:
                     if "=" in path: # 名前に=が含まれていない場合
                         new_file_name += "_" + self.ABBREVIATION[path.split("=")[0]] + path.split("=")[-1] # 略称からファイル名を取得する．
                     else:
                         new_file_name += "_" + self.ABBREVIATION[path] # 略称からファイル名を取得する．
                 except:
-                    print("ディレクトリ名がまちがえています．やり直してください．")
-                    print(self.SLASH.join(pre_path))
-                    sys.exit()
+                    pass
             new_file_name = self.SLASH.join(pre_path[:-1]) + self.SLASH + new_file_name[1:] + ".{}".format(self.kind)
             post_path_list.append(new_file_name)
         post_path_list = [self.first_path + post_path for post_path in post_path_list]
@@ -150,6 +148,7 @@ class MakeFiles:
     FILE_EXTENSION = settings.FILE_EXTENSION
     DIR_STRUCTURE = settings.DIR_STRUCTURE
     SLASH = os.path.normcase("a/")[-1]
+    BASE_PATH = settings.BASE_PATH
 
 
     def __init__(self, first_path):
@@ -233,7 +232,11 @@ class MakeFiles:
 
     def _change_damy_files(self):
         # damy_fileを変換する．
-        a = Refresh(self.first_path)
+        if self.BASE_PATH != "":
+            path = os.path.split(self.BASE_PATH)[0] + self.SLASH
+        else:
+            path = self.first_path
+        a = Refresh(path)
         a.only_word = "damy_file.{}".format(self.kind)
         a.refresh_force(print_permissoin=True)
 
@@ -253,7 +256,6 @@ class WriteAnsysFile(MakeFiles):
 
 
     SEARCH_WORDS = list(settings.ABBREVIATION.keys())
-    BASE_PATH = settings.BASE_PATH
     WRITE_EXTENSION = settings.WRITE_EXTENSION
     DEFAOLUT_REPLACE_WORD_DICT = settings.DEFAOLUT_REPLACE_WORD_DICT
 
