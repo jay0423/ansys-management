@@ -1,4 +1,3 @@
-from py.settings.settings_copy_base import BASE_PATH
 from . import settings
 import os
 import sys
@@ -47,6 +46,16 @@ def dir_structure():
         for dir in DIR_STRUCTURE:
             if dir.split(SLASH)[0] != dir_0:
                 print("Settings error: DIR_STRUCTUREの初期バスのディレクトリ名が一致していません．")
+                sys.exit()
+
+    # DIR_STRUCTURE内のディレクトリ名がABBREVIATIONに含まれていない場合，エラーを発生させる．
+    for path in DIR_STRUCTURE:
+        for dir in path.split(SLASH)[1:]:
+            if dir == "":
+                continue
+            if dir not in settings.ABBREVIATION:
+                print("Settings error: DIR_STRUCTUREに含まれるディレクトリ名がABBREVIATIONに存在していません．ABBREVIATIONに追加してください．")
+                print(": {}".format(dir))
                 sys.exit()
 
 
