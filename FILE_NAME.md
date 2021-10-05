@@ -3,7 +3,7 @@
 
 ## ルール
   - フォルダ名の頭文字を繋げて作成する．
-  - settings_child.pyのABBREVIATIONで省略名を指定する．
+  - py/settings/settings_copy_base.pyのABBREVIATIONで省略名を指定する．
 
 ## 例
 cfrp2_lap=10/thickness=2.0/gap=2.0/ の結果csvファイル場合 → c2_l10_th2.0_g2.0.csv
