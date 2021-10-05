@@ -63,11 +63,18 @@ class Refresh:
 
     def _get_post_path(self, pre_path_list):
         # 変更前のパスを受け取り，変更後のパスを作成する．
-        pre_path_list_list = [pre_path.split(self.SLASH) for pre_path in pre_path_list]
+        pre_path_list_list = []
+        for pre_path in pre_path_list:
+            path_list = []
+            for dir in pre_path.split(self.SLASH):
+                if dir not in self.first_path.split(self.SLASH):
+                    path_list.append(dir)
+            pre_path_list_list.append(path_list)
+
         post_path_list = []
         for pre_path in pre_path_list_list:
             new_file_name = ""
-            for path in pre_path[1:-1]: # 最初のパスとファイル名を省いたものをループで回している．
+            for path in pre_path[:-1]: # 最初のパスとファイル名を省いたものをループで回している．
                 try:
                     if "=" in path: # 名前に=が含まれていない場合
                         new_file_name += "_" + self.ABBREVIATION[path.split("=")[0]] + path.split("=")[-1] # 略称からファイル名を取得する．
@@ -79,6 +86,7 @@ class Refresh:
                     sys.exit()
             new_file_name = self.SLASH.join(pre_path[:-1]) + self.SLASH + new_file_name[1:] + ".{}".format(self.kind)
             post_path_list.append(new_file_name)
+        post_path_list = [self.first_path + post_path for post_path in post_path_list]
         return post_path_list
 
 
