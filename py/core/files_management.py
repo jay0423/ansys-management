@@ -280,15 +280,18 @@ class WriteAnsysFile(MakeFiles):
 
     def write(self, output_path):
         # base.ansysの変数部分に値を入力したファイルを出力する．
+        def _get_new_base_path(first_path):
+            BASE_PATH = first_path + "{}.{}".format(settings.BASE_FILE_NAME, settings.WRITE_EXTENSION)
+            while True:
+                if os.path.isfile(BASE_PATH):
+                    break
+                l = BASE_PATH.split(self.SLASH)[:-2] + [BASE_PATH.split("/")[-1]]
+                BASE_PATH = os.path.join(*l) # base.ansysファイルの場所を一段下げる
+            return BASE_PATH
         if self.BASE_PATH == "":
-            self.BASE_PATH = self.first_path + "{}.{}".format(settings.BASE_FILE_NAME, self.WRITE_EXTENSION)
-        try:
-            with open(self.BASE_PATH, encoding="utf-8_sig") as f: # 読み取り
-                data_lines = f.readlines()
-        except: # 2週目以降
-            self.BASE_PATH = self.first_path.split(self.SLASH)[0] + self.SLASH + settings.BASE_FILE_NAME + "." + settings.WRITE_EXTENSION # 初期パスの最初のディレクトリにファイルがあるか確認する．
-            with open(self.BASE_PATH, encoding="utf-8_sig") as f: # 読み取り
-                data_lines = f.readlines()
+            self.BASE_PATH = _get_new_base_path(self.first_path)
+        with open(self.BASE_PATH, encoding="utf-8_sig") as f: # 読み取り
+            data_lines = f.readlines()
         replace_word_dict = self._get_replace_word_dict(output_path)
         data_lines = self._replace_word(data_lines=data_lines, replace_word_dict=replace_word_dict)
         with open(output_path, mode="w", encoding="utf-8_sig") as f: # 書き込み

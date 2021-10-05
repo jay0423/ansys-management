@@ -100,9 +100,7 @@ def write_ansys_file_main():
         a = WriteAnsysFile(first_path)
         if i != 0:
             # 重複するファイルを削除する．
-            time.sleep(1)
             a.delete_files()
-            time.sleep(1)
         a.make_files()
     permission = input("settings_child.pyを初期化しますか？\n0: はい\n1: いいえ\n入力してください：")
     if permission == "0":
@@ -176,11 +174,8 @@ def all():
         settings_check.find_solve(first_path)
         settings_check.distance_time_length(first_path)
         a = WriteAnsysFile(first_path)
-        if i != 0:
-            # 重複するファイルを削除する．
-            time.sleep(1)
-            a.delete_files()
-            time.sleep(1)
+        # 重複するファイルを削除する．
+        a.delete_files()
         a.make_files()
     print("ファイル作成完了\n")
     time.sleep(1)

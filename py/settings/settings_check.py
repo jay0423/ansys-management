@@ -5,6 +5,9 @@ import platform
 import pprint
 
 
+SLASH = os.path.normcase("a/")[-1]
+
+
 ### settings.pyのチェック
 
 def dir_ignore():
@@ -30,11 +33,13 @@ def omission():
 
 
 def dir_structure():
-    SLASH = os.path.normcase("a/")[-1]
     DIR_STRUCTURE = settings.DIR_STRUCTURE
     for dir in DIR_STRUCTURE:
         if SLASH not in dir: # スラッシュがwindowsまたはmacに対応していない場合．
             print("Settings error: DIR_STRUCTUREのスラッシュが'{}'になっていません．".format(SLASH))
+            sys.exit()
+        if dir[-1] != SLASH:
+            print("Settings error: DIR_STRUCTUREのパスの最後にスラッシュを入れてください．")
             sys.exit()
         
     if len(DIR_STRUCTURE) > 1:
@@ -88,26 +93,28 @@ def cwd_path():
 
 
 ### 初期チェック
+def _get_new_base_path(first_path):
+    BASE_PATH = first_path + "{}.{}".format(settings.BASE_FILE_NAME, settings.WRITE_EXTENSION)
+    while True:
+        if os.path.isfile(BASE_PATH):
+            break
+        l = BASE_PATH.split(SLASH)[:-2] + [BASE_PATH.split("/")[-1]]
+        BASE_PATH = os.path.join(*l) # base.ansysファイルの場所を一段下げる
+    return BASE_PATH
+
+
 def base_path(first_path):
     # BASE_PATHに入力されていない場合，そこにbase.ansysファイルがあるのかを検証．
     first_path = os.path.normcase(first_path)
     BASE_PATH = os.path.normcase(settings.BASE_PATH)
     if BASE_PATH == "": # ファーストパス直下にある場合
-        BASE_PATH = first_path + "{}.{}".format(settings.BASE_FILE_NAME, settings.WRITE_EXTENSION)
-        if os.path.isfile(BASE_PATH):
-            pass
-        else: # BASE_PATHにbase.ansysがある場合
-            SLASH = os.path.normcase("a/")[-1]
-            BASE_PATH = first_path.split(SLASH)[0] + SLASH + settings.BASE_FILE_NAME + "." + settings.WRITE_EXTENSION # 初期パスの最初のディレクトリにファイルがあるか確認する．
-            if os.path.isfile(BASE_PATH):
-                pass
-            else:
-                print("Settings error：{}が存在しません．settings.pyのBASE_PATHを正しく設定してください．".format(BASE_PATH))
-                sys.exit()
+        try:
+            BASE_PATH = _get_new_base_path(first_path)
+        except:
+            print("Settings error：{}が存在しません．settings.pyのBASE_PATHを正しく設定してください．".format(BASE_PATH))
+            sys.exit()
     else:
-        if os.path.isfile(BASE_PATH):
-            pass
-        else:
+        if not os.path.isfile(BASE_PATH):
             print("Settings error：{}が存在しません．settings.pyのBASE_PATHを正しく設定してください．".format(first_path))
             sys.exit()
 
@@ -117,12 +124,7 @@ def distance_time_length(first_path):
     first_path = os.path.normcase(first_path)
     BASE_PATH = os.path.normcase(settings.BASE_PATH)
     if BASE_PATH == "": # ファーストパス直下にある場合
-        BASE_PATH = first_path + "{}.{}".format(settings.BASE_FILE_NAME, settings.WRITE_EXTENSION)
-        if os.path.isfile(BASE_PATH):
-            pass
-        else:
-            SLASH = os.path.normcase("a/")[-1]
-            BASE_PATH = first_path.split(SLASH)[0] + SLASH + settings.BASE_FILE_NAME + "." + settings.WRITE_EXTENSION # 初期パスの最初のディレクトリにファイルがあるか確認する．
+        BASE_PATH = _get_new_base_path(first_path)
 
     def find_data(word):
         with open(BASE_PATH, encoding="utf-8_sig") as f: # 読み取り
@@ -161,19 +163,13 @@ def find_solve(first_path):
     first_path = os.path.normcase(first_path)
     BASE_PATH = os.path.normcase(settings.BASE_PATH)
     if BASE_PATH == "":
-        BASE_PATH = first_path + "{}.{}".format(settings.BASE_FILE_NAME, settings.WRITE_EXTENSION)
-    try:
-        with open(BASE_PATH, encoding="utf-8_sig") as f: # 読み取り
-            data_lines = f.readlines()
-    except: # 2週目以降
-        SLASH = os.path.normcase("a/")[-1]
-        BASE_PATH = first_path.split(SLASH)[0] + SLASH + settings.BASE_FILE_NAME + "." + settings.WRITE_EXTENSION # 初期パスの最初のディレクトリにファイルがあるか確認する．
-        with open(BASE_PATH, encoding="utf-8_sig") as f: # 読み取り
-            data_lines = f.readlines()
+        BASE_PATH = _get_new_base_path(first_path)
+    with open(BASE_PATH, encoding="utf-8_sig") as f: # 読み取り
+        data_lines = f.readlines()
 
     for line in data_lines:
         if "solve" in line.lower():
-            print("Warning：{}に'SOLVE'が含まれておりバグの原因となります．'SOLVE'以降のansysコードを削除して再度実行してください．".format(os.path.basename(BASE_PATH)))
+            print("Warning: {}に'SOLVE'が含まれておりバグの原因となります．'SOLVE'以降のansysコードを削除して再度実行してください．".format(os.path.basename(BASE_PATH)))
             a = input("0: やり直す(推奨)\n1: 警告を無視する\n入力：")
             if a == "0":
                 print("'SOLVE'以降を削除してください．")

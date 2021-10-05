@@ -64,7 +64,7 @@ DIR_STRUCTURE = {
         ('cfrp2_lap', [10, 20, 30]),
         ('thickness', [0.5, 1.0, 1.5, 2.0]),
     ],
-    '4/test1/cfrp2_lap=20/': [
+    '4/test1/cfrp2_lap=20/thickness=0.5/': [
         ('div', [0.5,1.0,1.5]),
     ],
     '4/test2/': [
