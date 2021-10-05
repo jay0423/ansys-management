@@ -50,12 +50,10 @@ def dir_structure():
 
     # DIR_STRUCTURE内のディレクトリ名がABBREVIATIONに含まれていない場合，エラーを発生させる．
     for path in DIR_STRUCTURE:
-        for dir in path.split(SLASH)[1:]:
-            if dir == "":
-                continue
-            if dir not in settings.ABBREVIATION:
-                print("Settings error: DIR_STRUCTUREに含まれるディレクトリ名がABBREVIATIONに存在していません．ABBREVIATIONに追加してください．")
-                print(": {}".format(dir))
+        for pair in DIR_STRUCTURE[path]:
+            if pair[0] not in settings.ABBREVIATION:
+                print("Settings error: DIR_STRUCTUREに含まれるディレクトリ名(変数)がABBREVIATIONに存在していません．ABBREVIATIONに追加してください．")
+                print(": {}".format(pair[0]))
                 sys.exit()
 
 
