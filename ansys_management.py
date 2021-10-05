@@ -109,10 +109,12 @@ def write_ansys_file_main():
         settings_copy_to_child()
 
 
+
 def path_multiple_stress_strain_main():
     # 応力ひずみ線図の生成
     a = MakeStressStrain()
     a.make_stress_strain()
+
 
 
 def auto_analysis():
@@ -153,18 +155,21 @@ def auto_analysis():
     b.multiple_auto_analysis(path_list)
     t2 = time.time()
     elapsed_time = t2-t1
-    print(f"経過時間：{elapsed_time}")
+    print(f"経過時間：{elapsed_time}s")
     settings_copy_to_child()
+
 
 
 def all():
     # ファイルの自動生成，自動解析，応力ひずみ線図の生成
+    # 初期設定
     SLASH = os.path.normcase("a/")[-1]
     dir_name = input("\nプロジェクト名（ansysファイル格納ディレクトリ名）を入力：")
-    os.mkdir(settings.CWD_PATH + SLASH + dir_name)
+    # os.mkdir(settings.CWD_PATH + SLASH + dir_name)
+
+
     # ファイルの自動生成とbase.ansysの書き込み
-    key_list = list(settings.DIR_STRUCTURE.keys())
-    for i, first_path in enumerate(key_list):
+    for i, first_path in enumerate(settings.DIR_STRUCTURE):
         if i == 0:
             settings_memo(first_path)
         settings_check.base_path(first_path)
@@ -180,28 +185,46 @@ def all():
     print("ファイル作成完了\n")
     time.sleep(1)
 
-    first_path = key_list[0]
+
+    # 自動解析
     # 実行ファイルのパスを取得
     print("解析開始")
-    b = GetPath(first_path=first_path, slash=SLASH)
-    path_list = b.get_list_multiple(kind_list=["csv", "ansys"])
-    path_list = b.get_pair_list(path_list, omission_files=settings.OMISSION)
-    c = AutoAnalysis(first_path=first_path)
-    c.dir_name = dir_name
-    t1 = time.time()
-    c.multiple_auto_analysis(path_list)
-    t2 = time.time()
-    elapsed_time = t2-t1
-    print(f"総解析時間：{elapsed_time}")
+    # all()の場合，settings.pyのDIR_STRUCTUREからパスを取得し，その部分のみの解析を行う．
+    def get_first_path_list():
+        # パスのリストを取得する．
+        DIR_STRUCTURE = sorted(settings.DIR_STRUCTURE)
+        dir0 = DIR_STRUCTURE[0]
+        first_path_list = [dir0]
+        for dir in DIR_STRUCTURE[1:]:
+            if dir0 not in dir:
+                first_path_list.append(dir)
+        return first_path_list
+    first_path_list = get_first_path_list() # 解析するファーストパスのリストを取得する．
+    elapsed_time = 0
+    for first_path in first_path_list:
+        b = GetPath(first_path=first_path, slash=SLASH)
+        path_list = b.get_list_multiple(kind_list=["csv", "ansys"])
+        path_list = b.get_pair_list(path_list, omission_files=settings.OMISSION)
+        # 自動解析の実行
+        c = AutoAnalysis(first_path=first_path)
+        c.dir_name = dir_name
+        t1 = time.time()
+        c.multiple_auto_analysis(path_list)
+        t2 = time.time()
+        elapsed_time += t2-t1
+    print(f"総解析時間：{elapsed_time}s")
     print("解析完了\n")
 
-    path_multiple_stress_strain_main()
-    print("応力ひずみ線図作成の完了")
 
-    # 応力ひずみ線図の生成
+    # 応力ひずみ線図のエクセルファイルの生成
     a = MakeStressStrainFromAnsysFile(first_path)
     a.make_stress_strain()
+    print("応力ひずみ線図作成の完了")
 
+    # 最終処理
+    permission = input("settings_child.pyを初期化しますか？\n0: はい\n1: いいえ\n入力してください：")
+    if permission == "0":
+        settings_copy_to_child()
 
 
 

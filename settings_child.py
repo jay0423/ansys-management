@@ -60,7 +60,11 @@ DIR_STRUCTURE = {
 「変更部分の名前」は，ABBREVIATION内に含まれていなければならない．
 """
 DIR_STRUCTURE = {
-    '4/test1': [
+    '4/test1/': [
+        ('cfrp2_lap', [10, 20, 30]),
+        ('thickness', [0.5, 1.0, 1.5, 2.0]),
+    ],
+    '4/test2/': [
         ('cfrp2_lap', [10,20,30]),
         ('thickness', [0.5,1.0,1.5]),
     ],
@@ -86,7 +90,7 @@ DEFAOLUT_REPLACE_WORD_DICT = {
 
 ### make_stress_strain.MakeStressStrainFromAnsysFile
 DISTANCE = "DISTANCE"
-TIME = "TIE1"
+TIME = "TIME1"
 LENGTH = "X1"
 CROSS_SECTIONAL_AREA = 50 # 数値
 

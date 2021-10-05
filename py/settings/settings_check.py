@@ -157,6 +157,7 @@ def distance_time_length(first_path):
 
 
 def find_solve(first_path):
+    # 引数のパスにあるbase.ansys内にSOLVEがないことを確認し，ある場合はエラーを発生させる．
     first_path = os.path.normcase(first_path)
     BASE_PATH = os.path.normcase(settings.BASE_PATH)
     if BASE_PATH == "":
