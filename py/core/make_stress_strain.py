@@ -80,7 +80,7 @@ class MakeStressStrain:
 
     def _get_inputs(self, path_s):
         # 入力値
-        FIRST_PATH = path_s["path"]
+        FIRST_PATH = str(path_s["path"])
         KEY_WORD_LIST = path_s["key_word"].replace(" ", "").split(",") # csvファイルのキーワード
         REMOVE_WORD_LIST = path_s["remove_word"].replace(" ", "").split(",") # 除外のキーワード
         if FIRST_PATH[-1] == self.SLASH:
