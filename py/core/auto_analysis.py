@@ -22,12 +22,13 @@ class AutoAnalysis:
     N = 3
 
 
-    def __init__(self, first_path):
+    def __init__(self, first_path, output_csv=True):
         self.dir_name = "test"
 
         self.first_path = first_path
         self.input_path = self.PY_DIR_PATH
         self.output_path = self.PY_DIR_PATH
+        self.output_csv = output_csv
 
 
     def _setup(self):
@@ -47,7 +48,7 @@ class AutoAnalysis:
         # path = r"C:\Users\matlab\Documents\ansys-management\etc\sample_test\test1.ansys"
         t1 = time.time()
         self.mapdl.input(self.input_path)
-        time.sleep(5)
+        time.sleep(1)
         try:
             self.mapdl.solve()
         except:
@@ -75,7 +76,6 @@ class AutoAnalysis:
         self._analysis()
         self._csv_output()
         self.mapdl.exit()
-        time.sleep(5)
 
 
     def multiple_auto_analysis(self, path_list):
@@ -88,6 +88,7 @@ class AutoAnalysis:
                 self.output_path = self.PY_DIR_PATH + pair_path[0]
             self._setup()
             self._analysis()
-            self._csv_output()
+            if self.output_csv:
+                self._csv_output()
             self.mapdl.exit()
-            time.sleep(10)
+            time.sleep(3)
