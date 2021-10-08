@@ -124,19 +124,19 @@ def auto_analysis():
     files_dir = [f for f in sorted(files_dir) if f not in settings.DIR_IGNORE]
     print("\nディレクトリの選択")
     for i, l in enumerate(files_dir):
-        print("{}： {}{}".format(i, l, SLASH))
+        print("{}： {}{}".format(i+1, l, SLASH))
     first_path = int(input("入力してください："))
     try:
-        first_path = files_dir[first_path]
+        first_path = files_dir[first_path-1]
     except:
         print("やり直してください．")
         sys.exit()
     first_path = os.path.normcase(first_path + SLASH)
 
     dir_name = input("\nプロジェクト名（ansysファイル格納ディレクトリ名）を入力：")
-    # os.mkdir(settings.CWD_PATH + SLASH + dir_name)
+    os.mkdir(settings.CWD_PATH + SLASH + dir_name)
     # csvファイルへ時間と力の出力を実装するかの選択．
-    output_csv = input("\ncsvファイルへ出力しますか？\n0: yes\n1: no（ディレクトリ名を設定していない場合）\n入力してください：")
+    output_csv = input("\ncsvファイルへ出力しますか？\n0: はい\n1: いいえ（ディレクトリ名を設定していない場合）\n入力してください：")
     if output_csv == "0":
         output_csv = True
     elif output_csv == "1":
@@ -164,7 +164,11 @@ def auto_analysis():
     t2 = time.time()
     elapsed_time = t2-t1
     print(f"経過時間：{elapsed_time}s")
-    settings_copy_to_child()
+
+    # 最終処理
+    permission = input("settings_child.pyを初期化しますか？\n0: はい\n1: いいえ\n入力してください：")
+    if permission == "0":
+        settings_copy_to_child()
 
 
 
@@ -172,7 +176,7 @@ def all():
     # ファイルの自動生成，自動解析，応力ひずみ線図の生成
     # 初期設定
     dir_name = input("\nプロジェクト名（ansysファイル格納ディレクトリ名）を入力：")
-    # os.mkdir(settings.CWD_PATH + SLASH + dir_name)
+    os.mkdir(settings.CWD_PATH + SLASH + dir_name)
 
 
     # ファイルの自動生成とbase.ansysの書き込み
