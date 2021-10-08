@@ -2,6 +2,7 @@
 引数で渡される，first_pathより下にある指定ファイルのpathリストを返す．
 """
 
+import os
 import glob
 
 
@@ -16,13 +17,14 @@ class GetPath:
             self.first_path = first_path
 
     
-    def get_list(self, kind="csv"):
+    def get_list(self, kind="csv", omission_files=[]):
         path_list = []
         conma = self.slash + "*"
         for i in range(self.N):
             l = glob.glob("{}{}{}*.{}".format(self.first_path, conma*i, self.slash, kind), recursive=True)
             if l != []:
                 path_list += l
+        path_list = [path for path in path_list if path.split(self.slash)[-1] not in omission_files] 
             
         return path_list
 
@@ -50,11 +52,22 @@ class GetPath:
         return pair_list
 
 
+    def search_csv_files(self, base_path_list):
+        path_list = []
+        for base_path in base_path_list:
+            path = os.path.split(base_path)
+            files = os.listdir(path[0])
+            files_file = [f for f in files if os.path.isfile(os.path.join(path[0], f))]
+            files_file.remove(path[1])
+            if len(files_file) == 1 and ".csv" in files_file[0]:
+                path_list.append(path[0] + self.slash + files_file[0])
+
+        return path_list
 
 
 if __name__ == "__main__":
-    a = input("1: get_list\n2: get_list_multiple\n3: get_pair_list\n：")
-    first_path = "2/"
+    a = input("1: get_list\n2: get_list_multiple\n3: get_pair_list\n4: search_files\n：")
+    first_path = "sample/"
     g = GetPath(first_path)
     if a == "1":
         l = sorted(g.get_list())
@@ -63,5 +76,8 @@ if __name__ == "__main__":
     elif a == "3":
         path_list = g.get_list_multiple()
         l = g.get_pair_list(path_list)
+    elif a == "4":
+        base_path_list = g.get_list("ansys")
+        l = g.search_csv_files(base_path_list)
     for l_ in l:
         print(l_)

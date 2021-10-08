@@ -134,7 +134,7 @@ def auto_analysis():
     first_path = os.path.normcase(first_path + SLASH)
 
     dir_name = input("\nプロジェクト名（ansysファイル格納ディレクトリ名）を入力：")
-    os.mkdir(settings.CWD_PATH + SLASH + dir_name)
+    # os.mkdir(settings.CWD_PATH + SLASH + dir_name)
     # csvファイルへ時間と力の出力を実装するかの選択．
     output_csv = input("\ncsvファイルへ出力しますか？\n0: はい\n1: いいえ（ディレクトリ名を設定していない場合）\n入力してください：")
     if output_csv == "0":
@@ -146,11 +146,18 @@ def auto_analysis():
         sys.exit()
     # 実行ファイルのパスを取得
     a = GetPath(first_path=first_path, slash=SLASH)
-    path_list = a.get_list_multiple(kind_list=["csv", "ansys"])
-    path_list = a.get_pair_list(path_list, omission_files=settings.OMISSION)
+    ansys_path_list = a.get_list("ansys", omission_files=settings.OMISSION)
+    if output_csv: # csvに出力する場合
+        csv_path_list = a.search_csv_files(ansys_path_list)
+        path_list = [(ansys, csv) for ansys, csv in zip(ansys_path_list, csv_path_list)]
+    else:
+        path_list = [(ansys, csv) for ansys, csv in zip(ansys_path_list, [""]*len(ansys_path_list))]
+
+    print(ansys_path_list)
+    print(path_list)
     print("\n実行ファイルの確認")
-    for path in path_list:
-        print(path[0])
+    for path in ansys_path_list:
+        print(path)
     completion = input("0: 実行, 1: やりなおす\n入力してください：")
     if completion != "0":
         print("やり直してください．")
