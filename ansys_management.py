@@ -134,7 +134,7 @@ def auto_analysis():
     first_path = os.path.normcase(first_path + SLASH)
 
     dir_name = input("\nプロジェクト名（ansysファイル格納ディレクトリ名）を入力：")
-    # os.mkdir(settings.CWD_PATH + SLASH + dir_name)
+    os.mkdir(settings.CWD_PATH + SLASH + dir_name)
     # csvファイルへ時間と力の出力を実装するかの選択．
     output_csv = input("\ncsvファイルへ出力しますか？\n0: はい\n1: いいえ（ディレクトリ名を設定していない場合）\n入力してください：")
     if output_csv == "0":
@@ -153,8 +153,6 @@ def auto_analysis():
     else:
         path_list = [(ansys, csv) for ansys, csv in zip(ansys_path_list, [""]*len(ansys_path_list))]
 
-    print(ansys_path_list)
-    print(path_list)
     print("\n実行ファイルの確認")
     for path in ansys_path_list:
         print(path)

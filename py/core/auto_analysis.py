@@ -20,6 +20,7 @@ class AutoAnalysis:
     CWD_PATH = settings.CWD_PATH
     mapdl = None
     N = 3
+    file_record_list = []
 
 
     def __init__(self, first_path, output_csv=True):
@@ -39,8 +40,23 @@ class AutoAnalysis:
         # print("データ保存パス：{}".format(self.cwd_path+self.dir_name))
         self.mapdl.cwd(self.CWD_PATH+self.dir_name)
         filname = "".join(self.input_path.split(self.SLASH)[-1].split(".")[:-1])
+        # 以下，これまでのansysのfilnameと名前がかぶっている場合，名前の語尾に番号を振って見分けられるように実装している．
+        i = 0
+        while True:
+            i += 1
+            if filname in self.file_record_list:
+                filname_sub = filname + "_{}".format(i)
+            else:
+                break
+        try:
+            print("{} -> {}".format(self.input_path, filname_sub)) # 被っていない場合，ここでエラーが生じる
+            self.mapdl.filname(filname_sub, key=1)
+            self.file_record_list.append(filname_sub)
+        except:
+            self.mapdl.filname(filname, key=1)
+            self.file_record_list.append(filname)
         # print("プロジェクト名：{}".format(filname))
-        self.mapdl.filname(filname, key=1)
+
 
     
     def _analysis(self):
