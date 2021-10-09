@@ -56,22 +56,13 @@ class GetPath:
         path_list = []
         for base_path in base_path_list:
             path = os.path.split(base_path)
-            files = os.listdir(path[0])
-            files_file = [f for f in files if os.path.isfile(os.path.join(path[0], f))]
-            files_file = [f for f in files_file if ".csv" in f]
-            if len(files_file) == 1:
-                path_list.append(path[0] + self.slash + files_file[0])
-            elif len(files_file) == 0:
-                path_list.append(path[0] + self.slash + path[1].split(".")[0] + ".csv")
-            else:
-                path_list.append(path[0] + self.slash + path[1].split(".")[0] + ".csv")
-
+            path_list.append(path[0] + self.slash + path[1].split(".")[0] + ".csv")
         return path_list
 
 
 if __name__ == "__main__":
     a = input("1: get_list\n2: get_list_multiple\n3: get_pair_list\n4: search_files\n：")
-    first_path = "5/"
+    first_path = "1/"
     g = GetPath(first_path)
     if a == "1":
         l = sorted(g.get_list())
