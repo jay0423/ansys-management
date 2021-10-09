@@ -42,7 +42,7 @@ class AutoAnalysis:
         filname = "".join(self.input_path.split(self.SLASH)[-1].split(".")[:-1])
         # 以下，これまでのansysのfilnameと名前がかぶっている場合，名前の語尾に番号を振って見分けられるように実装している．
         i = 0
-        filname_sub = filname.copy()
+        filname_sub = filname
         while True:
             i += 1
             if filname in self.file_record_list:
