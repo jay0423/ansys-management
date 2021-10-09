@@ -93,6 +93,7 @@ def write_ansys_file_main():
     # ファイルの自動生成とbase.ansysの書き込み
     key_list = list(settings.DIR_STRUCTURE.keys())
     for i, first_path in enumerate(key_list):
+        print(first_path)
         if i == 0:
             settings_memo(first_path)
         settings_check.base_path(first_path)
@@ -102,7 +103,6 @@ def write_ansys_file_main():
             # 重複するファイルを削除する．
             a.delete_files()
         a.make_files()
-        print(first_path)
     permission = input("settings_child.pyを初期化しますか？\n0: はい\n1: いいえ\n入力してください：")
     if permission == "0":
         settings_copy_to_child()
@@ -120,18 +120,19 @@ def auto_analysis():
     # 自動解析の実行
 
     # ファーストパスの選択
-    files_dir = [f for f in os.listdir() if os.path.isdir(os.path.join(f))]
-    files_dir = [f for f in sorted(files_dir) if f not in settings.DIR_IGNORE]
-    print("\nディレクトリの選択")
-    for i, l in enumerate(files_dir):
-        print("{}： {}{}".format(i+1, l, SLASH))
-    first_path = int(input("入力してください："))
-    try:
-        first_path = files_dir[first_path-1]
-    except:
-        print("やり直してください．")
-        sys.exit()
-    first_path = os.path.normcase(first_path + SLASH)
+    if settings.ANALYSIS_PATH == []:
+        files_dir = [f for f in os.listdir() if os.path.isdir(os.path.join(f))]
+        files_dir = [f for f in sorted(files_dir) if f not in settings.DIR_IGNORE]
+        print("\nディレクトリの選択")
+        for i, l in enumerate(files_dir):
+            print("{}： {}{}".format(i+1, l, SLASH))
+        first_path = int(input("入力してください："))
+        try:
+            first_path = files_dir[first_path-1]
+        except:
+            print("やり直してください．")
+            sys.exit()
+        first_path = os.path.normcase(first_path + SLASH)
 
     dir_name = input("\nプロジェクト名（ansysファイル格納ディレクトリ名）を入力：")
     os.mkdir(settings.CWD_PATH + SLASH + dir_name)
@@ -144,25 +145,30 @@ def auto_analysis():
     else:
         print("やり直してください．")
         sys.exit()
+
     # 実行ファイルのパスを取得
-    a = GetPath(first_path=first_path, slash=SLASH)
-    ansys_path_list = a.get_list("ansys", omission_files=settings.OMISSION)
+    if settings.ANALYSIS_PATH == []:
+        a = GetPath(first_path=first_path, slash=SLASH)
+        ansys_path_list = a.get_list("ansys", omission_files=settings.OMISSION)
+    else:
+        ansys_path_list = []
+        for first_path in settings.ANALYSIS_PATH:
+            a = GetPath(first_path=first_path, slash=SLASH)
+            ansys_path_list += a.get_list("ansys", omission_files=settings.OMISSION)
     if output_csv: # csvに出力する場合
         csv_path_list = a.search_csv_files(ansys_path_list)
         path_list = [(ansys, csv) for ansys, csv in zip(ansys_path_list, csv_path_list)]
     else:
         path_list = [(ansys, csv) for ansys, csv in zip(ansys_path_list, [""]*len(ansys_path_list))]
-
     print("\n実行ファイルの確認")
-    for path in ansys_path_list:
-        print(path)
+    for path in path_list:
+        print(path[0])
     completion = input("0: 実行, 1: やりなおす\n入力してください：")
     if completion != "0":
         print("やり直してください．")
         sys.exit()
 
-
-    b = AutoAnalysis(first_path=first_path, output_csv=output_csv)
+    b = AutoAnalysis(output_csv=output_csv)
     b.dir_name = dir_name
     t1 = time.time()
     b.multiple_auto_analysis(path_list)

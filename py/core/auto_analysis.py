@@ -23,10 +23,10 @@ class AutoAnalysis:
     file_record_list = []
 
 
-    def __init__(self, first_path, output_csv=True):
+    def __init__(self, output_csv=True):
         self.dir_name = "test"
 
-        self.first_path = first_path
+        # self.first_path = first_path
         self.input_path = self.PY_DIR_PATH
         self.output_path = self.PY_DIR_PATH
         self.output_csv = output_csv
