@@ -60,16 +60,9 @@ DIR_STRUCTURE = {
 「変更部分の名前」は，ABBREVIATION内に含まれていなければならない．
 """
 DIR_STRUCTURE = {
-    '4/test1/': [
-        ('cfrp2_lap', [10, 20, 30]),
-        ('thickness', [0.5, 1.0, 1.5, 2.0]),
-    ],
-    '4/test1/cfrp2_lap=20/thickness=0.5/': [
-        ('div', [0.5,1.0,1.5]),
-    ],
-    '4/test2/': [
-        ('cfrp2_lap', [10,20,30]),
-        ('thickness', [0.5,1.0,1.5]),
+    '5/': [
+        ('cfrp2_lap', [10, 20]),
+        ('thickness', [1.5, 2.0]),
     ],
 }
 

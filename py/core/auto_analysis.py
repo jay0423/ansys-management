@@ -49,7 +49,7 @@ class AutoAnalysis:
                 filname = filname_sub + "_{}".format(i)
             else:
                 break
-        if filname == filname_sub:
+        if filname != filname_sub:
             print("{} -> {}".format(self.input_path, filname)) # 被っていない場合，ここでエラーが生じる
         self.mapdl.filname(filname, key=1)
         self.file_record_list.append(filname)
