@@ -8,6 +8,8 @@ import time
 
 from ansys.mapdl.core import launch_mapdl
 
+from py.settings.settings_check import path_file_name
+
 from ..settings import settings
 from .get_path import GetPath
 
@@ -92,7 +94,19 @@ class AutoAnalysis:
         self.mapdl.exit()
 
 
-    def multiple_auto_analysis(self, path_list):
+    def get_pair_list(self, ansys_path_list):
+        csv_path_list = []
+        for base_path in ansys_path_list:
+            path = os.path.split(base_path)
+            csv_path_list.append(path[0] + self.SLASH + os.path.splitext(path[1])[0] + ".csv")
+        path_list = [(ansys, csv) for ansys, csv in zip(ansys_path_list, csv_path_list)]
+        return path_list
+
+
+    def multiple_auto_analysis(self, ansys_path_list):
+        path_list = self.get_pair_list(ansys_path_list)
+        for i in path_list:
+            print(i)
         for pair_path in path_list:
             if ".ansys" in pair_path[0].split(self.SLASH)[-1]:
                 self.input_path = self.PY_DIR_PATH + pair_path[0]

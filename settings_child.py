@@ -122,7 +122,6 @@ ANALYSIS_PATH = [
 ]
 """
 ANALYSIS_PATH = [
-    "4/test1/",
 ]
 
 

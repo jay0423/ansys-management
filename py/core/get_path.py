@@ -16,7 +16,8 @@ class GetPath:
         else:
             self.first_path = first_path
 
-    
+
+
     def get_list(self, kind="csv", omission_files=[]):
         path_list = []
         conma = self.slash + "*"
@@ -39,25 +40,6 @@ class GetPath:
 
 
 
-    def get_pair_list(self, path_list, omission_files=["base.ansys"]):
-        path_list = sorted(path_list)
-        path_list = [path for path in path_list if path.split(self.slash)[-1] not in omission_files] 
-        pair_list = []
-        for i in range(len(path_list)):
-            try:
-                if path_list[i].split(self.slash)[:-1] == path_list[i+1].split(self.slash)[:-1]:
-                    pair_list.append(tuple([path_list[i], path_list[i+1]]))
-            except:
-                pass
-        return pair_list
-
-
-    def search_csv_files(self, base_path_list):
-        path_list = []
-        for base_path in base_path_list:
-            path = os.path.split(base_path)
-            path_list.append(path[0] + self.slash + path[1].split(".")[0] + ".csv")
-        return path_list
 
 
 if __name__ == "__main__":
@@ -68,11 +50,5 @@ if __name__ == "__main__":
         l = sorted(g.get_list())
     elif a == "2":
         l = sorted(g.get_list_multiple())
-    elif a == "3":
-        path_list = g.get_list_multiple()
-        l = g.get_pair_list(path_list)
-    elif a == "4":
-        base_path_list = g.get_list("ansys")
-        l = g.search_csv_files(base_path_list)
     for l_ in l:
         print(l_)
