@@ -3,9 +3,11 @@
 ファイル名の更新・ファイルの自動作成
     ・ABBREVIATION
     ・DIR_STRUCTURE
-    ・DEFAOLUT_REPLACE_WORD_DICT, DISTANCE, TIME, LENGTH, CROSS_SECTIONAL_AREA
     ・BASE_PATH
+応力ひずみ線図の作成
+    ・DEFAOLUT_REPLACE_WORD_DICT, DISTANCE, TIME, LENGTH, CROSS_SECTIONAL_AREA
 自動解析
+    ・ANALYSIS_PATH
 """
 
 
@@ -126,6 +128,20 @@ ANALYSIS_PATH = [
 
 
 ########### settings/settings_core.py ##############
+"""
+ファイル名の更新・ファイルの自動作成
+    ・DIR_IGNORE
+    ・FILE_EXTENSION
+    ・OMMISION
+    ・BBASE_FILE_NAME
+    ・WRITE_EXTENSION
+応力ひずみ線図の作成
+    ・PATH_FILE_NAME
+自動解析
+    ・PY_DIR_PATH
+    ・CWD_PATH
+"""
+
 
 # 無視するディレクトリリスト
 DIR_IGNORE = [

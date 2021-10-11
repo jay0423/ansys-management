@@ -15,7 +15,6 @@ ansys_management.py
 """
 
 
-
 import sys
 import os
 import time
@@ -108,9 +107,6 @@ def write_ansys_file_main():
             # 重複するファイルを削除する．
             a.delete_files()
         a.make_files()
-    permission = input("settings_child.pyを初期化しますか？\n0: はい\n1: いいえ\n入力してください：")
-    if permission == "0":
-        settings_copy_to_child()
 
 
 
@@ -178,11 +174,6 @@ def auto_analysis():
     elapsed_time = t2-t1
     print(f"経過時間：{elapsed_time}s")
 
-    # 最終処理
-    permission = input("settings_child.pyを初期化しますか？\n0: はい\n1: いいえ\n入力してください：")
-    if permission == "0":
-        settings_copy_to_child()
-
 
 
 
@@ -239,14 +230,10 @@ def all():
     print("解析完了\n")
 
     # 応力ひずみ線図のエクセルファイルの生成
-    a = MakeStressStrainFromAnsysFile(first_path)
-    a.make_stress_strain()
+    for first_path in first_path_list:
+        d = MakeStressStrainFromAnsysFile(first_path)
+        d.make_stress_strain()
     print("応力ひずみ線図作成の完了")
-
-    # 最終処理
-    permission = input("settings_child.pyを初期化しますか？\n0: はい\n1: いいえ\n入力してください：")
-    if permission == "0":
-        settings_copy_to_child()
 
 
 
@@ -272,14 +259,21 @@ if __name__ == '__main__':
         write_ansys_file_main()
     elif a == "2":
         path_multiple_stress_strain_main()
+        sys.exit()
     elif a == "3":
         auto_analysis()
     elif a == "4":
         all()
     elif a == "5":
         refresh_main()
+        sys.exit()
     elif a == "6":
         settings_copy_to_child()
+        sys.exit()
     else:
         print("やり直してください．")
         sys.exit()
+    # 最終処理
+    permission = input("settings_child.pyを初期化しますか？\n0: はい\n1: いいえ\n入力してください：")
+    if permission == "0":
+        settings_copy_to_child()
