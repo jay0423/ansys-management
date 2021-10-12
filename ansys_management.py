@@ -174,6 +174,12 @@ def auto_analysis():
     elapsed_time = t2-t1
     print(f"経過時間：{elapsed_time}s")
 
+    # 応力ひずみ線図のエクセルファイルの生成
+    if settings.ANALYSIS_PATH != [] and output_csv == True:
+        for first_path in settings.ANALYSIS_PATH:
+            d = MakeStressStrainFromAnsysFile(first_path)
+            d.make_stress_strain()
+        print("応力ひずみ線図作成の完了")
 
 
 
