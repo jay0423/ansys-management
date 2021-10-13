@@ -115,8 +115,21 @@ def write_ansys_file_main():
 
 def path_multiple_stress_strain_main():
     # 応力ひずみ線図の生成
-    a = MakeStressStrain()
-    a.make_stress_strain()
+    p = input("\n入力方法を選択\n0: path.xlsx\n1: settings.ANALYSIS_PATH\n入力してください：")    
+    if p == "0":
+        a = MakeStressStrain()
+        a.make_stress_strain()
+    elif p == "1":
+        if settings.ANALYSIS_PATH != []:
+            for first_path in settings.ANALYSIS_PATH:
+                d = MakeStressStrainFromAnsysFile(first_path)
+                d.make_stress_strain()
+        else:
+            print("settings_child.ANALYSIS_PATHにパスを入力してください．")
+            sys.exit()
+    else:
+        print("やり直してください．")
+        sys.exit()
 
 
 

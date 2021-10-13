@@ -65,6 +65,8 @@ class FIRST_CHECK:
         for path in DIR_STRUCTURE:
             for pair in DIR_STRUCTURE[path]:
                 if pair[0] not in settings.ABBREVIATION:
+                    if pair[0] == "":
+                        return
                     print("\nDIR_STRUCTUREに含まれるディレクトリ名(変数)がABBREVIATIONに存在していません．：{}".format(pair[0]))
                     a = input("新たに追加しますか？\n0: はい\n1: いいえ\n入力してください：")
                     if a == "0":
