@@ -66,7 +66,20 @@ WRITE_EXTENSION = "ansys"
 
 ### auto_analysis
 # 実行ディレクトリパス
-PY_DIR_PATH = "C:\\Users\\matlab\\Documents\\ansys-management\\"
+# PY_DIR_PATH = "C:\\Users\\matlab\\Documents\\ansys-management\\"
+PY_DIR_PATH = "/Users/jay0423/Documents/GitHub/ansys-management/"
 
 # ansysデータの保存先のディレクトリ(windows)
 CWD_PATH = "C:\\Users\\matlab\\ansys_kajimoto\\"
+
+
+
+# ディレクトリ名の略称の定義
+"""
+「=」がない場合はそのまま，ある場合は「=」より左側を入力する．
+略称は他と被っては行けない．
+大文字禁止
+"""
+import os
+import json
+ABBREVIATION = json.load(open(PY_DIR_PATH + os.path.join("py", "settings", "abbreviation.json"), "r"))["ABBREVIATION"]

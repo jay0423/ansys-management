@@ -12,36 +12,6 @@
 
 
 
-# ディレクトリ名の略称の定義
-"""
-「=」がない場合はそのまま，ある場合は「=」より左側を入力する．
-略称は他と被っては行けない．
-大文字禁止
-"""
-ABBREVIATION = {
-    'cfrp0': 'c0', # CFRPなし
-    'cfrp1': 'c1', # CFRP1本
-    'cfrp2_lap': 'c2_l', # CFRP2本，重ね継ぎ手長さ
-    'thickness': 'th', # CFRPの太さ
-    'gap': 'g', # CFRP間の距離
-    'div': 'd', # メッシュ分割の細かさ
-    'kasa': 'kasa', # 傘形状
-    ###########################################
-    'time_distance': 't', # 引張速度と引張距離
-    'correction': 'cor', # 修正バージョン
-    'length': 'len', # 試験片長さ
-    'solid185': 's185', # solid185
-    'solid186': 's186', # solid186
-    'cfrp_tensile': 'cfr', # CFRPの強度
-    'epo_tensile': 'epo', # epoxyの強度
-    'super': 'sup', # その他改良
-    'cfrp': 'cfrp',
-    'epoxy': 'epoxy',
-    'pla': 'pla',
-}
-
-
-
 ### ディレクトリ，ファイルの自動作成
 """
 ディレクトリ構成．
