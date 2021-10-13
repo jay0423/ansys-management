@@ -12,11 +12,12 @@
         "length": "len",
         "solid185": "s185",
         "solid186": "s186",
-        "cfrp_tensile": "cfr",
-        "epo_tensile": "epo",
+        "epo_tensile": "epot",
         "super": "sup",
         "cfrp": "cfrp",
-        "epoxy": "epoxy",
-        "pla": "pla"
+        "epoxy": "epo",
+        "pla": "pla",
+        "cf_tensile": "cft",
+        "cf_maina": "cfm"
     }
 }

@@ -27,7 +27,11 @@ with open(os.path.normcase("settings_child.py"), encoding="utf-8_sig") as f: # �
 with open(os.path.normcase("py/settings/settings.py"), mode="w", encoding="utf-8_sig") as f: # 書き込み
     f.writelines(data_lines_child + data_lines_core)
 
-from py.settings import settings_check
+# 初期チェック
+from py.settings.settings_check import FIRST_CHECK
+FIRST_CHECK().check_first_all()
+
+from py.settings.settings_check import FIRST_PATH_CHECK
 from py.settings import settings
 from py.core.get_path import GetPath
 from py.core.files_management import Refresh, WriteAnsysFile
@@ -99,9 +103,7 @@ def write_ansys_file_main():
         print(first_path)
         if i == 0:
             settings_memo(first_path)
-        settings_check.base_path(first_path)
-        settings_check.find_solve(first_path)
-        settings_check.distance_time_length(first_path)
+        FIRST_PATH_CHECK(first_path).check_write_ansys_file_main() # 設定の確認
         a = WriteAnsysFile(first_path)
         if i != 0:
             # 重複するファイルを削除する．
@@ -193,9 +195,7 @@ def all():
     for i, first_path in enumerate(settings.DIR_STRUCTURE):
         if i == 0:
             settings_memo(first_path)
-        settings_check.base_path(first_path)
-        settings_check.find_solve(first_path)
-        settings_check.distance_time_length(first_path)
+        FIRST_PATH_CHECK(first_path).check_write_ansys_file_main() # 設定の確認
         a = WriteAnsysFile(first_path)
         # 重複するファイルを削除する．
         a.delete_files()
@@ -248,8 +248,6 @@ def all():
 ################ 呼び出しの実行 ###################
 
 if __name__ == '__main__':
-    settings_check.check_all()
-
     print("\n!!!　実行する作業の選択　!!!")
     print("-----------------------------")
     print("1： ファイルの自動生成")

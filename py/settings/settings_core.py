@@ -82,4 +82,7 @@ CWD_PATH = "C:\\Users\\matlab\\ansys_kajimoto\\"
 """
 import os
 import json
-ABBREVIATION = json.load(open(PY_DIR_PATH + os.path.join("py", "settings", "abbreviation.json"), "r"))["ABBREVIATION"]
+ABBREVIATION_PATH = PY_DIR_PATH + os.path.join("py", "settings", "abbreviation.json")
+f = open(ABBREVIATION_PATH, "r")
+ABBREVIATION = json.load(f)["ABBREVIATION"]
+f.close()

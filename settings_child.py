@@ -42,7 +42,8 @@ DIR_STRUCTURE = {
 """
 DIR_STRUCTURE = {
     '4/': [
-        ('thickness', [0.5,1.0]),
+        ('cf_tensile', [100, 200]),
+        ('cf_maina', [0.5,1.0]),
     ],
 }
 
