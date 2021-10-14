@@ -232,7 +232,16 @@ class FIRST_PATH_CHECK:
                     print("生成したansysファイルには'SOLVE'が含まれています．")
 
 
+    def check_path_multiple_stress_strain_main(self):
+        self.distance_time_length()
+
+
     def check_write_ansys_file_main(self):
+        self.base_path()
+        self.find_solve()
+
+    
+    def check_all(self):
         self.base_path()
         self.find_solve()
         self.distance_time_length()

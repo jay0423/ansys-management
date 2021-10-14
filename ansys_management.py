@@ -122,6 +122,8 @@ def path_multiple_stress_strain_main():
     elif p == "1":
         if settings.ANALYSIS_PATH != []:
             for first_path in settings.ANALYSIS_PATH:
+                FIRST_PATH_CHECK(first_path).check_path_multiple_stress_strain_main()
+            for first_path in settings.ANALYSIS_PATH:
                 d = MakeStressStrainFromAnsysFile(first_path)
                 d.make_stress_strain()
         else:
@@ -208,7 +210,7 @@ def all():
     for i, first_path in enumerate(settings.DIR_STRUCTURE):
         if i == 0:
             settings_memo(first_path)
-        FIRST_PATH_CHECK(first_path).check_write_ansys_file_main() # 設定の確認
+        FIRST_PATH_CHECK(first_path).check_all() # 設定の確認
         a = WriteAnsysFile(first_path)
         # 重複するファイルを削除する．
         a.delete_files()

@@ -286,7 +286,7 @@ class MakeStressStrainFromAnsysFile(MakeStressStrain):
         TIME = find_data(settings.TIME)
         self.SPEED = float(DISTANCE / TIME)
         self.LENGTH = float(find_data(settings.LENGTH)) # 試験片長さ（歪み算出用）
-        self.CROSS_SECTIONAL_AREA = float(settings.CROSS_SECTIONAL_AREA/1000) # 断面積（応力算出用）
+        self.CROSS_SECTIONAL_AREA = float(settings.CROSS_SECTIONAL_AREA) # 断面積（応力算出用）
 
 
 
