@@ -6,6 +6,8 @@
     ・OMMISION
     ・BBASE_FILE_NAME
     ・WRITE_EXTENSION
+    ・ABBREVIATION
+    ・DEFAOLUT_REPLACE_WORD_DICT
 応力ひずみ線図の作成
     ・PATH_FILE_NAME
 自動解析
@@ -66,8 +68,8 @@ WRITE_EXTENSION = "ansys"
 
 ### auto_analysis
 # 実行ディレクトリパス
-# PY_DIR_PATH = "C:\\Users\\matlab\\Documents\\ansys-management\\"
-PY_DIR_PATH = "/Users/jay0423/Documents/GitHub/ansys-management/"
+# PY_DIR_PATH = "C:\\Users\\matlab\\Documents\\ansys-management\\" # 梶本windowsPC
+PY_DIR_PATH = "/Users/jay0423/Documents/GitHub/ansys-management/" # 梶本macPC
 
 # ansysデータの保存先のディレクトリ(windows)
 CWD_PATH = "C:\\Users\\matlab\\ansys_kajimoto\\"
@@ -85,4 +87,16 @@ import json
 ABBREVIATION_PATH = PY_DIR_PATH + os.path.join("py", "settings", "abbreviation.json")
 f = open(ABBREVIATION_PATH, "r")
 ABBREVIATION = json.load(f)["ABBREVIATION"]
+f.close()
+
+
+
+# ファイルの自動生成（Ansysファイルへの書き込み）
+"""
+デフォルト値
+base.ansysに埋め込む値がなかった場合，以下の値を入力する．
+キーは，ABBREVIATION内に含まれていなければならない．
+"""
+f = open(ABBREVIATION_PATH, "r")
+DEFAOLUT_REPLACE_WORD_DICT = json.load(f)["DEFAOLUT_REPLACE_WORD_DICT"]
 f.close()

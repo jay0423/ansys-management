@@ -1,20 +1,18 @@
 ﻿################ settings_child.py ###################
 """
 ファイル名の更新・ファイルの自動作成
-    ・ABBREVIATION
     ・DIR_STRUCTURE
     ・BASE_PATH
-応力ひずみ線図の作成
-    ・DEFAOLUT_REPLACE_WORD_DICT, DISTANCE, TIME, LENGTH, CROSS_SECTIONAL_AREA
-自動解析
+自動解析・応力ひずみ線図の作成
     ・ANALYSIS_PATH
+応力ひずみ線図の作成
+    ・DISTANCE, TIME, LENGTH, CROSS_SECTIONAL_AREA
 """
 
 
 
 ### ディレクトリ，ファイルの自動作成
 """
-ディレクトリ構成．
 DIR_STRUCTURE = {
     'パス':[
         ('変更部分の名前', [数字, 数字, 数字]),
@@ -39,7 +37,7 @@ DIR_STRUCTURE = {
 「変更部分の名前」は，ABBREVIATION内に含まれていなければならない．
 """
 DIR_STRUCTURE = {
-    '/': [
+    '\\': [
         ('', []),
     ],
 }
@@ -47,7 +45,8 @@ DIR_STRUCTURE = {
 
 # 応力ひずみ線図・自動解析
 """
-自動解析を行うパスの指定．複数可．
+・応力ひずみ線図の作成する際のパスの指定．
+・自動解析を行うパスの指定．複数可．
 例）
 ANALYSIS_PATH = [
     "4\\test1\\",
@@ -57,20 +56,6 @@ ANALYSIS_PATH = [
 ANALYSIS_PATH = [
 ]
 
-
-
-# ファイルの自動生成（Ansysファイルへの書き込み）
-"""
-デフォルト値
-base.ansysに埋め込む値がなかった場合，以下の値を入力する．
-キーは，ABBREVIATION内に含まれていなければならない．
-"""
-DEFAOLUT_REPLACE_WORD_DICT = {
-    'cfrp2_lap': '20', # CFRP2本，重ね継ぎ手長さ
-    'thickness': '2.0', # CFRPの太さ
-    'gap': '0.5', # CFRP間の距離
-    'div': '1.0', # メッシュ分割の細かさ
-}
 
 
 # ファイルの自動生成（Ansysファイルへの書き込み）
@@ -99,6 +84,8 @@ BASE_PATH = ""
     ・OMMISION
     ・BBASE_FILE_NAME
     ・WRITE_EXTENSION
+    ・ABBREVIATION
+    ・DEFAOLUT_REPLACE_WORD_DICT
 応力ひずみ線図の作成
     ・PATH_FILE_NAME
 自動解析
@@ -159,8 +146,8 @@ WRITE_EXTENSION = "ansys"
 
 ### auto_analysis
 # 実行ディレクトリパス
-# PY_DIR_PATH = "C:\\Users\\matlab\\Documents\\ansys-management\\"
-PY_DIR_PATH = "/Users/jay0423/Documents/GitHub/ansys-management/"
+# PY_DIR_PATH = "C:\\Users\\matlab\\Documents\\ansys-management\\" # 梶本windowsPC
+PY_DIR_PATH = "/Users/jay0423/Documents/GitHub/ansys-management/" # 梶本macPC
 
 # ansysデータの保存先のディレクトリ(windows)
 CWD_PATH = "C:\\Users\\matlab\\ansys_kajimoto\\"
@@ -178,4 +165,16 @@ import json
 ABBREVIATION_PATH = PY_DIR_PATH + os.path.join("py", "settings", "abbreviation.json")
 f = open(ABBREVIATION_PATH, "r")
 ABBREVIATION = json.load(f)["ABBREVIATION"]
+f.close()
+
+
+
+# ファイルの自動生成（Ansysファイルへの書き込み）
+"""
+デフォルト値
+base.ansysに埋め込む値がなかった場合，以下の値を入力する．
+キーは，ABBREVIATION内に含まれていなければならない．
+"""
+f = open(ABBREVIATION_PATH, "r")
+DEFAOLUT_REPLACE_WORD_DICT = json.load(f)["DEFAOLUT_REPLACE_WORD_DICT"]
 f.close()

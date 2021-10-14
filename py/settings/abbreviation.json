@@ -17,7 +17,16 @@
         "cfrp": "cfrp",
         "epoxy": "epo",
         "pla": "pla",
-        "cf_tensile": "cft",
-        "cf_maina": "cfm"
+        "cf_tensile": "cft"
+    },
+    "DEFAOLUT_REPLACE_WORD_DICT": {
+        "cfrp2_lap": "20",
+        "thickness": "1.8",
+        "gap": "1.0",
+        "div": "1.0",
+        "length": "100",
+        "solid185": "185",
+        "solid186": "186",
+        "cf_tensile": "500"
     }
 }
