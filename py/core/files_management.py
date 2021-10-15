@@ -80,8 +80,11 @@ class Refresh:
                         new_file_name += "_" + self.ABBREVIATION[path.split("=")[0]] + path.split("=")[-1] # 略称からファイル名を取得する．
                     else:
                         new_file_name += "_" + self.ABBREVIATION[path] # 略称からファイル名を取得する．
-                except:
-                    pass
+                except: # ABBREVIATIONに含まれていなかった場合，頭文字3文字を埋め込む
+                    if len(path) >= 3:
+                        new_file_name += "_" + path[:3]
+                    else:
+                        new_file_name += "_" + path
             new_file_name = self.SLASH.join(pre_path[:-1]) + self.SLASH + new_file_name[1:] + ".{}".format(self.kind)
             post_path_list.append(new_file_name)
         post_path_list = [self.first_path + post_path for post_path in post_path_list]
@@ -236,6 +239,7 @@ class MakeFiles:
             path = os.path.split(self.BASE_PATH)[0] + self.SLASH
         else:
             path = self.first_path
+        path = path.split(self.SLASH)[0] + self.SLASH
         a = Refresh(path)
         a.only_word = "damy_file.{}".format(self.kind)
         a.refresh_force(print_permissoin=True)
