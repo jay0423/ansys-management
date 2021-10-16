@@ -37,7 +37,7 @@ DIR_STRUCTURE = {
 「変更部分の名前」は，ABBREVIATION内に含まれていなければならない．
 """
 DIR_STRUCTURE = {
-    '\\': [
+    '/': [
         ('', []),
     ],
 }
@@ -54,6 +54,10 @@ ANALYSIS_PATH = [
 ]
 """
 ANALYSIS_PATH = [
+    "3/cfrp1/",
+    "3/cfrp2/",
+    "3/kasa/elastic/",
+    "3/kasa/plastic/",
 ]
 
 
@@ -62,7 +66,6 @@ ANALYSIS_PATH = [
 DISTANCE = "DISTANCE"
 TIME = "TIME1"
 LENGTH = "X1"
-CROSS_SECTIONAL_AREA = 50 # 数値
 
 
 

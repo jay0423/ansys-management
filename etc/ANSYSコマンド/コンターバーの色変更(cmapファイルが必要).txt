@@ -1,4 +1,0 @@
-/cmap,col,cmap
-/cont,,ncont
-/show,win32c,,,8 
-/contour,,128,auto 
