@@ -115,16 +115,18 @@ def write_ansys_file_main():
 
 def path_multiple_stress_strain_main():
     # 応力ひずみ線図の生成
-    p = input("\n入力方法を選択\n0: path.xlsx\n1: settings.ANALYSIS_PATH\n入力してください：")    
+    p = input("\n入力方法を選択\n0: path.xlsx\n1: settings.ANALYSIS_PATH\n入力してください：")
     if p == "0":
         a = MakeStressStrain()
         a.make_stress_strain()
     elif p == "1":
         if settings.ANALYSIS_PATH != []:
+            CROSS_SECTIONAL_AREA = float(input("\n断面積[mm2]を入力してください．\n入力してください："))
             for first_path in settings.ANALYSIS_PATH:
                 FIRST_PATH_CHECK(first_path).check_path_multiple_stress_strain_main()
             for first_path in settings.ANALYSIS_PATH:
                 d = MakeStressStrainFromAnsysFile(first_path)
+                d.CROSS_SECTIONAL_AREA = CROSS_SECTIONAL_AREA
                 d.make_stress_strain()
         else:
             print("settings_child.ANALYSIS_PATHにパスを入力してください．")
@@ -205,6 +207,7 @@ def all():
     # 初期設定
     dir_name = input("\nプロジェクト名（ansysファイル格納ディレクトリ名）を入力：")
     os.mkdir(settings.CWD_PATH + SLASH + dir_name)
+    CROSS_SECTIONAL_AREA = float(input("\n断面積[mm2]を入力してください．\n入力してください："))
 
     # ファイルの自動生成とbase.ansysの書き込み
     for i, first_path in enumerate(settings.DIR_STRUCTURE):
@@ -253,6 +256,7 @@ def all():
     # 応力ひずみ線図のエクセルファイルの生成
     for first_path in first_path_list:
         d = MakeStressStrainFromAnsysFile(first_path)
+        d.CROSS_SECTIONAL_AREA = CROSS_SECTIONAL_AREA
         d.make_stress_strain()
     print("応力ひずみ線図作成の完了")
 

@@ -35,12 +35,12 @@ class MakeStressStrain:
     POSITIVE_NEGATIVE = None
     SPEED = None
     LENGTH = None
-    CROSS_SECTIONAL_AREA = None
 
 
 
     def __init__(self, first_path=""):
         self.first_path = first_path # MakeStressStrainFromAnsysFileからデータを収集する用
+        CROSS_SECTIONAL_AREA = None
     
 
     def _make_df(self):
@@ -261,7 +261,8 @@ class MakeStressStrainFromAnsysFile(MakeStressStrain):
         # 入力値
         FILE_NAME_LIST = GetPath(first_path=self.first_path, slash=self.SLASH).get_list(kind="csv") #CSVファイルリスト
         self.FILE_NAME_LIST = sorted(FILE_NAME_LIST) # 並び替え．まだ不完全
-        self.EXCEL_FILE_NAME = self.first_path + "stress_strain.xlsx" # 出力先のpathをくっつける
+        l = [i for i in self.first_path.split(self.SLASH) if i != ""]
+        self.EXCEL_FILE_NAME = self.first_path + "{}_SS.xlsx".format("_".join(l)) # 出力先のpathをくっつける
 
 
     def _get_data_from_ansys(self, file_name):
@@ -286,7 +287,6 @@ class MakeStressStrainFromAnsysFile(MakeStressStrain):
         TIME = find_data(settings.TIME)
         self.SPEED = float(DISTANCE / TIME)
         self.LENGTH = float(find_data(settings.LENGTH)) # 試験片長さ（歪み算出用）
-        self.CROSS_SECTIONAL_AREA = float(settings.CROSS_SECTIONAL_AREA) # 断面積（応力算出用）
 
 
 

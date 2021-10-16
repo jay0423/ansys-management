@@ -3,6 +3,7 @@
         "cfrp0": "c0",
         "cfrp1": "c1",
         "cfrp2": "c2",
+        "lap": "l",
         "cfrp2_lap": "c2_l",
         "thickness": "th",
         "gap": "g",
@@ -18,7 +19,8 @@
         "cfrp": "cfrp",
         "epoxy": "epo",
         "pla": "pla",
-        "cf_tensile": "cft"
+        "cf_tensile": "cft",
+        "sita": "sita"
     },
     "DEFAOLUT_REPLACE_WORD_DICT": {
         "cfrp2_lap": "20",
