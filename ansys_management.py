@@ -168,6 +168,9 @@ def auto_analysis():
         print("やり直してください．")
         sys.exit()
 
+    if settings.ANALYSIS_PATH != [] and output_csv == True:
+        CROSS_SECTIONAL_AREA = float(input("\n断面積[mm2]を入力してください．\n入力してください："))
+
     # 実行ファイルのパスを取得
     if settings.ANALYSIS_PATH == []:
         a = GetPath(first_path=first_path, slash=SLASH)
@@ -197,8 +200,10 @@ def auto_analysis():
     if settings.ANALYSIS_PATH != [] and output_csv == True:
         for first_path in settings.ANALYSIS_PATH:
             d = MakeStressStrainFromAnsysFile(first_path)
+            d.CROSS_SECTIONAL_AREA = CROSS_SECTIONAL_AREA
+            print()
             d.make_stress_strain()
-        print("応力ひずみ線図作成の完了")
+        print("応力ひずみ線図作成の完了\n")
 
 
 

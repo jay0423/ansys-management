@@ -71,7 +71,7 @@ class AutoAnalysis:
         self.mapdl.finish()
         t2 = time.time()
         elapsed_time = round(t2-t1, 1)
-        print("finish：{}，Time：{}s".format(self.input_path, elapsed_time))
+        print("Successful analysis：{}，Time：{}s".format(self.input_path, elapsed_time))
 
 
     def _csv_output(self):
@@ -115,6 +115,9 @@ class AutoAnalysis:
             self._setup()
             self._analysis()
             if self.output_csv:
-                self._csv_output()
+                try:
+                    self._csv_output()
+                except: # 解析（input時点で）失敗したときようのエラー
+                    print("Error analysis：{}".format(self.input_path))
             self.mapdl.exit()
             time.sleep(3)
