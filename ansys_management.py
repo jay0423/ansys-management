@@ -66,6 +66,10 @@ def settings_memo(first_path):
         f.writelines(data_lines_child + data_lines_core)
 
 
+def _check_first_path(first_path):
+    if first_path[-1] != SLASH:
+        first_path += SLASH
+    return first_path
 
 
 ################ 更新・自動生成・応力ひずみ線図・自動解析 ###################
@@ -178,7 +182,7 @@ def auto_analysis():
     else:
         ansys_path_list = []
         for first_path in settings.ANALYSIS_PATH:
-            a = GetPath(first_path=first_path, slash=SLASH)
+            a = GetPath(first_path=_check_first_path(first_path), slash=SLASH)
             ansys_path_list += a.get_list("ansys", omission_files=settings.OMISSION)
     print("\n実行ファイルの確認")
     for path in ansys_path_list:
@@ -199,7 +203,7 @@ def auto_analysis():
     # 応力ひずみ線図のエクセルファイルの生成
     if settings.ANALYSIS_PATH != [] and output_csv == True:
         for first_path in settings.ANALYSIS_PATH:
-            d = MakeStressStrainFromAnsysFile(first_path)
+            d = MakeStressStrainFromAnsysFile(_check_first_path(first_path))
             d.CROSS_SECTIONAL_AREA = CROSS_SECTIONAL_AREA
             print()
             d.make_stress_strain()
@@ -260,7 +264,7 @@ def all():
 
     # 応力ひずみ線図のエクセルファイルの生成
     for first_path in first_path_list:
-        d = MakeStressStrainFromAnsysFile(first_path)
+        d = MakeStressStrainFromAnsysFile(_check_first_path(first_path))
         d.CROSS_SECTIONAL_AREA = CROSS_SECTIONAL_AREA
         d.make_stress_strain()
     print("応力ひずみ線図作成の完了")
