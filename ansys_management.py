@@ -119,7 +119,7 @@ def write_ansys_file_main():
 
 def path_multiple_stress_strain_main():
     # 応力ひずみ線図の生成
-    p = input("\n入力方法を選択\n0: path.xlsx\n1: settings.ANALYSIS_PATH\n入力してください：")
+    p = input("\n入力方法を選択\n0: path.xlsx\n1: settings_child.ANALYSIS_PATH\n入力してください：")
     if p == "0":
         a = MakeStressStrain()
         a.make_stress_strain()
@@ -147,18 +147,8 @@ def auto_analysis():
 
     # ファーストパスの選択
     if settings.ANALYSIS_PATH == []:
-        files_dir = [f for f in os.listdir() if os.path.isdir(os.path.join(f))]
-        files_dir = [f for f in sorted(files_dir) if f not in settings.DIR_IGNORE]
-        print("\nディレクトリの選択")
-        for i, l in enumerate(files_dir):
-            print("{}： {}{}".format(i+1, l, SLASH))
-        first_path = int(input("入力してください："))
-        try:
-            first_path = files_dir[first_path-1]
-        except:
-            print("やり直してください．")
-            sys.exit()
-        first_path = os.path.normcase(first_path + SLASH)
+        print("Error: 解析を行うパスが指定されていません．settings_child.pyのANALYSIIS_PATHでパスを指定してください．")
+        sys.exit()
 
     dir_name = input("\nプロジェクト名（ansysファイル格納ディレクトリ名）を入力：")
     os.mkdir(settings.CWD_PATH + SLASH + dir_name)
@@ -172,18 +162,20 @@ def auto_analysis():
         print("やり直してください．")
         sys.exit()
 
-    if settings.ANALYSIS_PATH != [] and output_csv == True:
-        CROSS_SECTIONAL_AREA = float(input("\n断面積[mm2]を入力してください．\n入力してください："))
+    if output_csv:
+        excel_perm = input("応力ひずみ線図のまとめエクセルファイルを作成しますか？（全ての解析モデルで断面積が同じ必要があります．）\n0: はい\n1: いいえ")
+        if excel_perm == "0":
+            excel_perm = True
+        else:
+            excel_perm = False
+        if excel_perm:
+            CROSS_SECTIONAL_AREA = float(input("\n断面積[mm2]を入力してください．\n入力してください："))
 
     # 実行ファイルのパスを取得
-    if settings.ANALYSIS_PATH == []:
-        a = GetPath(first_path=first_path, slash=SLASH)
-        ansys_path_list = a.get_list("ansys", omission_files=settings.OMISSION)
-    else:
-        ansys_path_list = []
-        for first_path in settings.ANALYSIS_PATH:
-            a = GetPath(first_path=_check_first_path(first_path), slash=SLASH)
-            ansys_path_list += a.get_list("ansys", omission_files=settings.OMISSION)
+    ansys_path_list = []
+    for first_path in settings.ANALYSIS_PATH:
+        a = GetPath(first_path=_check_first_path(first_path), slash=SLASH)
+        ansys_path_list += a.get_list("ansys", omission_files=settings.OMISSION)
     print("\n実行ファイルの確認")
     for path in ansys_path_list:
         print(path)
@@ -192,6 +184,7 @@ def auto_analysis():
         print("やり直してください．")
         sys.exit()
 
+    # 解析実行
     b = AutoAnalysis(output_csv=output_csv)
     b.dir_name = dir_name
     t1 = time.time()
@@ -201,7 +194,7 @@ def auto_analysis():
     print(f"経過時間：{elapsed_time}s")
 
     # 応力ひずみ線図のエクセルファイルの生成
-    if settings.ANALYSIS_PATH != [] and output_csv == True:
+    if excel_perm == True and output_csv == True:
         for first_path in settings.ANALYSIS_PATH:
             d = MakeStressStrainFromAnsysFile(_check_first_path(first_path))
             d.CROSS_SECTIONAL_AREA = CROSS_SECTIONAL_AREA

@@ -43,10 +43,12 @@ DIR_STRUCTURE = {
 }
 
 
+
 # 応力ひずみ線図・自動解析
 """
 ・応力ひずみ線図の作成する際のパスの指定．
 ・自動解析を行うパスの指定．複数可．
+・記入されたパス以降のansysファイルをもとに解析を行います．
 例）
 ANALYSIS_PATH = [
     "4\\test1\\",
@@ -58,11 +60,29 @@ ANALYSIS_PATH = [
 
 
 
-# ファイルの自動生成（Ansysファイルへの書き込み）
+
+# 応力ひずみ線図の作成
+"""
+引張時間・引張距離・解析モデルの長さをansysファイルから探し出し，応力ひずみ線図を作成します．
+全て変数が一致していることを確認してください．
+例）
+base.ansys
+    ~~~
+    X1 = 100E-3
+    ~~~
+    DISTANCE = 2.0E-3
+    ~~~
+    TIME1 = 2
+    ~~~
+↓
 DISTANCE = "DISTANCE"
 TIME = "TIME1"
 LENGTH = "X1"
-CROSS_SECTIONAL_AREA = 50 # 数値
+"""
+DISTANCE = "DISTANCE"
+TIME = "TIME1"
+LENGTH = "X1"
+
 
 
 
@@ -99,7 +119,8 @@ DIR_IGNORE = [
     'etc',
     '__pycache__',
     '.git',
-    'py'
+    'py',
+    '.VSCodeCounter'
 ]
 
 

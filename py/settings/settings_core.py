@@ -21,7 +21,8 @@ DIR_IGNORE = [
     'etc',
     '__pycache__',
     '.git',
-    'py'
+    'py',
+    '.VSCodeCounter'
 ]
 
 
@@ -71,7 +72,7 @@ WRITE_EXTENSION = "ansys"
 # PY_DIR_PATH = "C:\\Users\\matlab\\Documents\\ansys-management\\" # 梶本windowsPC
 PY_DIR_PATH = "/Users/jay0423/Documents/GitHub/ansys-management/" # 梶本macPC
 
-# ansysデータの保存先のディレクトリ(windows)
+# ansysデータの保存先のディレクトリ(windows)のパス
 CWD_PATH = "C:\\Users\\matlab\\ansys_kajimoto\\"
 
 
