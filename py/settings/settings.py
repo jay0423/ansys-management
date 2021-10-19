@@ -37,7 +37,7 @@ DIR_STRUCTURE = {
 「変更部分の名前」は，ABBREVIATION内に含まれていなければならない．
 """
 DIR_STRUCTURE = {
-    '4\\test1\\': [
+    '\\': [
         ('', []),
     ],
 }
@@ -51,13 +51,23 @@ DIR_STRUCTURE = {
 ・記入されたパス以降のansysファイルをもとに解析が行われる．
 例）
 ANALYSIS_PATH = [
-    "4\\",
+    "4\\test1\\",
+    "4\\test2\\"
 ]
 """
 ANALYSIS_PATH = [
-    "4\\"
 ]
 
+
+
+# 自動解析
+"""
+解析ファイルを削除するか．
+膨大な量の解析を行う場合はバソコンのハードディスクがいっぱいになってしまうため，解析が終われば削除する．
+DELETE_ANSYS_FILES = False（削除しない・推奨）
+DELETE_ANSYS_FILES = True（削除する）
+"""
+DELETE_ANSYS_FILES = False
 
 
 

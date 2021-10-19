@@ -60,6 +60,16 @@ ANALYSIS_PATH = [
 
 
 
+# 自動解析
+"""
+解析ファイルを削除するか．
+膨大な量の解析を行う場合はバソコンのハードディスクがいっぱいになってしまうため，解析が終われば削除する．
+DELETE_ANSYS_FILES = False（削除しない・推奨）
+DELETE_ANSYS_FILES = True（削除する）
+"""
+DELETE_ANSYS_FILES = False
+
+
 
 # 応力ひずみ線図の作成
 """

@@ -5,6 +5,7 @@ Ansys Mapdl
 import os
 import sys
 import time
+import shutil
 
 from ansys.mapdl.core import launch_mapdl
 
@@ -30,6 +31,8 @@ class AutoAnalysis:
         self.input_path = self.PY_DIR_PATH
         self.output_path = self.PY_DIR_PATH
         self.output_csv = output_csv
+
+        self.dir_name = None
 
 
     def _setup(self):
@@ -120,4 +123,10 @@ class AutoAnalysis:
                 except: # 解析（input時点で）失敗したときようのエラー
                     print("Error analysis：{}".format(self.input_path))
             self.mapdl.exit()
-            time.sleep(3)
+            time.sleep(1)
+
+            # ファイルの削除
+            if settings.DELETE_ANSYS_FILES:
+                shutil.rmtree(self.dir_name)
+                time.sleep(5)
+                os.mkdir(self.dir_name)

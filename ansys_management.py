@@ -160,6 +160,9 @@ def auto_analysis():
     else:
         print("やり直してください．")
         sys.exit()
+    if settings.DELETE_ANSYS_FILES == True and output_csv == False:
+        print("csvに出力しないのであれば，settings_child.pyのDELETE_ANSYS_FILESはFalseにしてください．")
+        sys.exit()
 
     if output_csv:
         excel_perm = input("\n応力ひずみ線図のエクセルファイルを作成しますか？（全ての解析モデルで断面積が同じ必要があります．）\n0: はい\n1: いいえ\n入力してください：")
@@ -183,9 +186,11 @@ def auto_analysis():
         print("やり直してください．")
         sys.exit()
 
+
     # 解析実行
     print("解析開始")
-    os.mkdir(settings.CWD_PATH + SLASH + dir_name)
+    dir_name = settings.CWD_PATH + SLASH + dir_name
+    os.mkdir(dir_name)
     b = AutoAnalysis(output_csv=output_csv)
     b.dir_name = dir_name
     t1 = time.time()
@@ -199,6 +204,7 @@ def auto_analysis():
         for first_path in settings.ANALYSIS_PATH:
             d = MakeStressStrainFromAnsysFile(_check_first_path(first_path))
             d.CROSS_SECTIONAL_AREA = CROSS_SECTIONAL_AREA
+            d.dir_name = dir_name
             print()
             d.make_stress_strain()
         print("応力ひずみ線図作成の完了\n")
