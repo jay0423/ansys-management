@@ -151,7 +151,6 @@ def auto_analysis():
         sys.exit()
 
     dir_name = input("\nプロジェクト名（ansysファイル格納ディレクトリ名）を入力：")
-    os.mkdir(settings.CWD_PATH + SLASH + dir_name)
     # csvファイルへ時間と力の出力を実装するかの選択．
     output_csv = input("\ncsvファイルへ出力しますか？\n0: はい\n1: いいえ（ディレクトリ名を設定していない場合）\n入力してください：")
     if output_csv == "0":
@@ -163,7 +162,7 @@ def auto_analysis():
         sys.exit()
 
     if output_csv:
-        excel_perm = input("応力ひずみ線図のまとめエクセルファイルを作成しますか？（全ての解析モデルで断面積が同じ必要があります．）\n0: はい\n1: いいえ")
+        excel_perm = input("\n応力ひずみ線図のエクセルファイルを作成しますか？（全ての解析モデルで断面積が同じ必要があります．）\n0: はい\n1: いいえ\n入力してください：")
         if excel_perm == "0":
             excel_perm = True
         else:
@@ -185,6 +184,8 @@ def auto_analysis():
         sys.exit()
 
     # 解析実行
+    print("解析開始")
+    os.mkdir(settings.CWD_PATH + SLASH + dir_name)
     b = AutoAnalysis(output_csv=output_csv)
     b.dir_name = dir_name
     t1 = time.time()
