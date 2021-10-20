@@ -76,12 +76,6 @@ def _check_first_path(first_path):
 
 def refresh_main():
     # ファイル名の修正
-    print("\n!!!　必ず事前にgitでコミットしておいてください　!!!")
-    completion = input("完了: 0, 未完了: 1　：")
-    if completion != "0":
-        print("やり直してください．")
-        sys.exit()
-
     # ファーストパスの選択
     files_dir = [f for f in os.listdir() if os.path.isdir(os.path.join(f))]
     files_dir = [f for f in sorted(files_dir) if f not in settings.DIR_IGNORE]
@@ -113,6 +107,7 @@ def write_ansys_file_main():
             # 重複するファイルを削除する．
             a.delete_files()
         a.make_files()
+    print("ファイルの作成完了．Ansysファイルに変数が埋め込まれているか必ず確認してください．")
 
 
 
@@ -144,6 +139,11 @@ def path_multiple_stress_strain_main():
 
 def auto_analysis():
     # 自動解析の実行
+    if settings.DELETE_ANSYS_FILES:
+        p = print("\nsettings_child.pyのDELETE_ANSYS_FILESがTrueとなっています．本当にAnsysデータベースファイルなどを削除しますか？\n0: はい\n1: いいえ（ディレクトリ名を設定していない場合）\n入力してください：")
+        if p != "0":
+            print("やり直してください．")
+            sys.exit()
 
     # ファーストパスの選択
     if settings.ANALYSIS_PATH == []:
@@ -181,11 +181,11 @@ def auto_analysis():
     print("\n実行ファイルの確認")
     for path in ansys_path_list:
         print(path)
+    print("解析ファイル数：{}".format(len(ansys_path_list)))
     completion = input("0: 解析実行, 1: やりなおす\n入力してください：")
     if completion != "0":
         print("やり直してください．")
         sys.exit()
-
 
     # 解析実行
     print("解析開始")
@@ -199,7 +199,8 @@ def auto_analysis():
     elapsed_time = t2-t1
     print(f"経過時間：{elapsed_time}s")
 
-    # 応力ひずみ線図のエクセルファイルの生成
+# 応力ひずみ線図のエクセルファイルの生成
+    print("\n応力ひずみ線図作成の開始")
     if excel_perm == True and output_csv == True:
         for first_path in settings.ANALYSIS_PATH:
             d = MakeStressStrainFromAnsysFile(_check_first_path(first_path))
@@ -279,8 +280,8 @@ if __name__ == '__main__':
     print("\n!!!　実行する作業の選択　!!!")
     print("-----------------------------")
     print("1： ファイルの自動生成")
-    print("2： 応力ひずみ線図の作成")
-    print("3： 自動解析")
+    print("2： 自動解析")
+    print("3： 応力ひずみ線図の作成")
     print("4： All")
     print("-----------------------------")
     print("5： ファイル名の更新")
@@ -290,10 +291,10 @@ if __name__ == '__main__':
     if a == "1":
         write_ansys_file_main()
     elif a == "2":
+        auto_analysis()
+    elif a == "3":
         path_multiple_stress_strain_main()
         sys.exit()
-    elif a == "3":
-        auto_analysis()
     elif a == "4":
         all()
     elif a == "5":

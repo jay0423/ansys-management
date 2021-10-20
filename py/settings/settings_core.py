@@ -27,10 +27,8 @@ DIR_IGNORE = [
 
 
 
-
 ### make_stress_strain.MakeStressStrain
 PATH_FILE_NAME = "path.xlsx"
-
 
 
 
@@ -51,8 +49,6 @@ OMISSION = [
     'README.md',
     'README.txt'
 ]
-
-
 
 
 
@@ -77,6 +73,12 @@ PY_DIR_PATH = "C:\\Users\\matlab\\Documents\\ansys-management\\" # 梶本windows
 # ansysデータの保存先のディレクトリ(windows)のパス
 # CWD_PATH = "C:\\Users\\matlab\\Documents\\ansys\\ansys_fujii\\" # 藤井windowsPC
 CWD_PATH = "C:\\Users\\matlab\\ansys_kajimoto\\" # 梶本windowsPC
+
+
+
+### auto_analysis
+# CPUのコア数
+NPROC = 4
 
 
 

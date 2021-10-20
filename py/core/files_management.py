@@ -49,6 +49,8 @@ class Refresh:
         self.kind = ""
         self.omission = True # ファイル無視をするかの選択
         self.only_word = ""
+        
+        self.add_first_path_head = True # True: ファイル名に初期パスを追加する． False: 初期パスは追加しない．
 
 
     def _get_pre_path(self):
@@ -67,8 +69,11 @@ class Refresh:
         for pre_path in pre_path_list:
             path_list = []
             for dir in pre_path.split(self.SLASH):
-                if dir not in self.first_path.split(self.SLASH):
+                if self.add_first_path_head:
                     path_list.append(dir)
+                else:
+                    if dir not in self.first_path.split(self.SLASH):
+                        path_list.append(dir)
             pre_path_list_list.append(path_list)
 
         post_path_list = []
@@ -76,18 +81,25 @@ class Refresh:
             new_file_name = ""
             for path in pre_path[:-1]: # ダミーファイル名を省いたものをループで回している．
                 try:
-                    if "=" in path: # 名前に=が含まれていない場合
+                    if "=" in path: # 名前に=が含まれている場合
                         new_file_name += "_" + self.ABBREVIATION[path.split("=")[0]] + path.split("=")[-1] # 略称からファイル名を取得する．
                     else:
                         new_file_name += "_" + self.ABBREVIATION[path] # 略称からファイル名を取得する．
                 except: # ABBREVIATIONに含まれていなかった場合，頭文字3文字を埋め込む
-                    if len(path) >= 3:
-                        new_file_name += "_" + path[:3]
+                    if "=" in path:
+                        if len(path.split("=")[0]) >= 3:
+                            new_file_name += "_" + path.split("=")[0][:3] + path.split("=")[-1] # 略称からファイル名を取得する．
+                        else:
+                            new_file_name += "_" + path.split("=")[0] + path.split("=")[-1] # 略称からファイル名を取得する．
                     else:
-                        new_file_name += "_" + path
+                        if len(path) >= 3:
+                            new_file_name += "_" + path[:3]
+                        else:
+                            new_file_name += "_" + path
             new_file_name = self.SLASH.join(pre_path[:-1]) + self.SLASH + new_file_name[1:] + ".{}".format(self.kind)
             post_path_list.append(new_file_name)
-        post_path_list = [self.first_path + post_path for post_path in post_path_list]
+        if not self.add_first_path_head:
+            post_path_list = [self.first_path + post_path for post_path in post_path_list]
         return post_path_list
 
 

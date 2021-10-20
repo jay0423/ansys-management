@@ -38,7 +38,7 @@ class AutoAnalysis:
     def _setup(self):
         # ansysの立ち上げとデータの保存先とプロジェクト名の決定
         
-        self.mapdl = launch_mapdl()
+        self.mapdl = launch_mapdl(nproc=settings.NPROC)
         time.sleep(1)
         # print("データ保存パス：{}".format(self.cwd_path+self.dir_name))
         self.mapdl.cwd(self.CWD_PATH+self.dir_name)
@@ -62,7 +62,6 @@ class AutoAnalysis:
     
     def _analysis(self):
         # 解析条件ファイルを実行
-        # path = r"C:\Users\matlab\Documents\ansys-management\etc\sample_test\test1.ansys"
         t1 = time.time()
         self.mapdl.input(self.input_path)
         time.sleep(1)
