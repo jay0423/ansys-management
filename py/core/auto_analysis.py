@@ -136,7 +136,7 @@ class AutoAnalysis:
             if settings.DELETE_ANSYS_FILES:
                 shutil.rmtree(self.dir_name)
                 time.sleep(5)
-                for dirname in glob("ansys_*"):
+                for dirname in glob("{}ansys_*".format(settings.TEMP_PATH)):
                     shutil.rmtree(dirname)
                 time.sleep(5)
                 os.mkdir(self.dir_name)
