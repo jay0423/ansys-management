@@ -59,21 +59,28 @@ class AutoAnalysis:
         # print("プロジェクト名：{}".format(filname))
 
 
-    
+
     def _analysis(self):
         # 解析条件ファイルを実行
         t1 = time.time()
         self.mapdl.input(self.input_path)
         time.sleep(1)
+        success = True
         try:
             self.mapdl.solve()
         except:
-            print("Warning")
+            print("Warning: SOLVE")
             pass
-        self.mapdl.finish()
+        try:
+            self.mapdl.finish()
+        except:
+            print("Warning: FINISH")
+            success = False
+            pass
         t2 = time.time()
         elapsed_time = round(t2-t1, 1)
-        print("Successful analysis：{}，Time：{}s".format(self.input_path, elapsed_time))
+        if success:
+            print("Successful analysis：{}，Time：{}s".format(self.input_path, elapsed_time))
 
 
     def _csv_output(self):

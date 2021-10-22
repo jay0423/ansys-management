@@ -179,11 +179,14 @@ def auto_analysis():
         a = GetPath(first_path=_check_first_path(first_path), slash=SLASH)
         ansys_path_list += a.get_list("ansys", omission_files=settings.OMISSION)
     print("\n実行ファイルの確認")
-    for path in ansys_path_list:
-        print(path)
-    print("解析ファイル数：{}".format(len(ansys_path_list)))
-    completion = input("0: 解析実行, 1: やりなおす\n入力してください：")
-    if completion != "0":
+    for i, path in enumerate(ansys_path_list):
+        print("{}: {}".format(i+1, path))
+    analysis_num = int(input("解析をしたい番号を入力．\n0: 全て解析実行\n1 - {}：これ以降の番号を解析\n入力してください：".format(len(ansys_path_list))))
+    if analysis_num == 0:
+        pass
+    elif analysis_num >= 1 and analysis_num <= len(ansys_path_list):
+        ansys_path_list = ansys_path_list[analysis_num-1:]
+    else:
         print("やり直してください．")
         sys.exit()
 
