@@ -5,6 +5,7 @@ Ansys Mapdl
 import os
 import sys
 import time
+from glob import glob
 import shutil
 
 from ansys.mapdl.core import launch_mapdl
@@ -90,7 +91,7 @@ class AutoAnalysis:
         text = self.mapdl.prvar(2)
         with open(self.output_path, 'w') as f:
             f.write(text)
-    
+
 
     def single_auto_analysis(self, input_path, output_path):
         self.input_path = self.PY_DIR_PATH + input_path
@@ -134,5 +135,8 @@ class AutoAnalysis:
             # ファイルの削除
             if settings.DELETE_ANSYS_FILES:
                 shutil.rmtree(self.dir_name)
+                time.sleep(5)
+                for dirname in glob("ansys_*"):
+                    shutil.rmtree(dirname)
                 time.sleep(5)
                 os.mkdir(self.dir_name)

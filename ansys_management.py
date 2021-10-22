@@ -140,7 +140,7 @@ def path_multiple_stress_strain_main():
 def auto_analysis():
     # 自動解析の実行
     if settings.DELETE_ANSYS_FILES:
-        p = print("\nsettings_child.pyのDELETE_ANSYS_FILESがTrueとなっています．本当にAnsysデータベースファイルなどを削除しますか？\n0: はい\n1: いいえ（ディレクトリ名を設定していない場合）\n入力してください：")
+        p = input("\nsettings_child.pyのDELETE_ANSYS_FILESがTrueとなっています．本当にAnsysデータベースファイルなどを削除しますか？\n0: はい\n1: いいえ（ディレクトリ名を設定していない場合）\n入力してください：")
         if p != "0":
             print("やり直してください．")
             sys.exit()

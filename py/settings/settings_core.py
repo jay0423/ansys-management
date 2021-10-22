@@ -75,6 +75,10 @@ PY_DIR_PATH = "C:\\Users\\matlab\\Documents\\ansys-management\\" # 梶本windows
 CWD_PATH = "C:\\Users\\matlab\\ansys_kajimoto\\" # 梶本windowsPC
 
 
+# TEMPのパス
+# TEMP_PATH = "C:\\Users\\matlab\\AppData\\Local\\Temp\\" # 藤井windowsPC
+TEMP_PATH = "C:\\Users\\matlab\\AppData\\Local\\Temp\\" # 梶本windowsPC
+
 
 ### auto_analysis
 # CPUのコア数
