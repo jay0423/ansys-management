@@ -135,8 +135,8 @@ class AutoAnalysis:
             # ファイルの削除
             if settings.DELETE_ANSYS_FILES:
                 shutil.rmtree(self.dir_name)
-                time.sleep(5)
+                time.sleep(30)
                 for dirname in glob("{}ansys_*".format(settings.TEMP_PATH)):
                     shutil.rmtree(dirname)
-                time.sleep(5)
+                time.sleep(15)
                 os.mkdir(self.dir_name)
