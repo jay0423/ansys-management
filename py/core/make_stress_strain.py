@@ -169,6 +169,11 @@ class MakeStressStrain:
 
 
             sheet_name = FILE_NAME.split(self.SLASH)[-1].replace(".csv", "")
+            # sheet_nameのチェック
+            if sheet_name in sheet_name_list:
+                sheet_name = sheet_name + "_"
+            if len(sheet_name) >= 32:
+                sheet_name = sheet_name[-31:]
             sheet_name_list.append(sheet_name)
             # エクセルファイルへ詳細を記載する．
             with pd.ExcelWriter(self.EXCEL_FILE_NAME, engine="openpyxl", mode='a') as writer:
@@ -176,10 +181,11 @@ class MakeStressStrain:
             book = px.load_workbook(self.EXCEL_FILE_NAME)
             sheet = book[sheet_name]
             # セルへ書き込む
-            sheet['F1'] = '最大応力'
-            sheet['G1'] = max_stress
-            sheet['F2'] = 'ヤング率'
-            sheet['G2'] = a
+            sheet['F1'] = FILE_NAME
+            sheet['F2'] = '最大応力'
+            sheet['G2'] = max_stress
+            sheet['F3'] = 'ヤング率'
+            sheet['G3'] = a
 
 
             # 散布図の追加
@@ -242,8 +248,8 @@ class MakeStressStrain:
         self._get_inputs(path_s)
         self._make_excel_file(path_df)
         self.write_excel()
-    
-    
+
+
 
 
 class MakeStressStrainFromAnsysFile(MakeStressStrain):

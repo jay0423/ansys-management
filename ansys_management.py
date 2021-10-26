@@ -102,7 +102,7 @@ def write_ansys_file_main():
         if i == 0:
             settings_memo(first_path)
         FIRST_PATH_CHECK(first_path).check_write_ansys_file_main() # 設定の確認
-        a = WriteAnsysFile(first_path)
+        a = WriteAnsysFile(_check_first_path(first_path))
         if i != 0:
             # 重複するファイルを削除する．
             a.delete_files()

@@ -116,7 +116,7 @@ class AutoAnalysis:
         for i in path_list:
             print(i)
         for pair_path in path_list:
-            if ".ansys" in pair_path[0].split(self.SLASH)[-1]:
+            if ".{}".format(settings.WRITE_EXTENSION) in pair_path[0].split(self.SLASH)[-1]:
                 self.input_path = self.PY_DIR_PATH + pair_path[0]
                 self.output_path = self.PY_DIR_PATH + pair_path[1]
             else:
@@ -134,6 +134,7 @@ class AutoAnalysis:
 
             # ファイルの削除
             if settings.DELETE_ANSYS_FILES:
+                time.sleep(10)
                 shutil.rmtree(self.dir_name)
                 time.sleep(30)
                 for dirname in glob("{}ansys_*".format(settings.TEMP_PATH)):
