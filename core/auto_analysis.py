@@ -26,8 +26,6 @@ class AutoAnalysis:
 
 
     def __init__(self, output_csv=True):
-        self.dir_name = "test"
-
         # self.first_path = first_path
         self.input_path = self.PY_DIR_PATH
         self.output_path = self.PY_DIR_PATH
@@ -42,7 +40,7 @@ class AutoAnalysis:
         self.mapdl = launch_mapdl(nproc=settings.NPROC)
         time.sleep(1)
         # print("データ保存パス：{}".format(self.cwd_path+self.dir_name))
-        self.mapdl.cwd(self.CWD_PATH+self.dir_name)
+        self.mapdl.cwd(self.dir_name)
         filname = "".join(self.input_path.split(self.SLASH)[-1].split(".")[:-1])
         # 以下，これまでのansysのfilnameと名前がかぶっている場合，名前の語尾に番号を振って見分けられるように実装している．
         i = 0
