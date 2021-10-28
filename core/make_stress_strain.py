@@ -239,7 +239,18 @@ class MakeStressStrain:
         # エクセルファイルへ詳細を記載する．
         with pd.ExcelWriter(self.EXCEL_FILE_NAME, engine="openpyxl", mode='a') as writer:
             df.to_excel(writer, sheet_name="まとめ", index=False)
-
+        wb = px.load_workbook(self.EXCEL_FILE_NAME)
+        i = 0
+        #ファイル内の全てのシートをループ
+        for ws in wb.worksheets:
+            i = i + 1
+            if "まとめ" in ws.title:
+                #先頭までの移動シート枚数
+                Top_Sheet = i - 1
+                #シート移動
+                wb.move_sheet(ws,offset=-Top_Sheet)
+        wb.move_sheet(ws,offset=1)
+        wb.save(self.EXCEL_FILE_NAME)
 
 
     def make_stress_strain(self):
