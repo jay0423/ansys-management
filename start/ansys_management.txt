@@ -280,15 +280,16 @@ def all():
 ################ 呼び出しの実行 ###################
 
 if __name__ == '__main__':
-    print("\n!!!　実行する作業の選択　!!!")
+    print("\n!!!　実行する作業の選択（半角数字で入力してください）　!!!")
     print("-----------------------------")
     print("1： ファイルの自動生成")
     print("2： 自動解析")
     print("3： 応力ひずみ線図の作成")
-    print("4： All")
+    # print("4： All")
     print("-----------------------------")
-    print("5： ファイル名の更新")
-    print("6： settings_childの初期化")
+    print("4： ファイル名の更新")
+    print("5： settings_childの初期化")
+    print("6： やり直す")
     print("-----------------------------")
     a = input("入力してください：")
     if a == "1":
@@ -298,12 +299,12 @@ if __name__ == '__main__':
     elif a == "3":
         path_multiple_stress_strain_main()
         sys.exit()
+    # elif a == "4":
+    #     all()
     elif a == "4":
-        all()
-    elif a == "5":
         refresh_main()
         sys.exit()
-    elif a == "6":
+    elif a == "5":
         settings_copy_to_child()
         sys.exit()
     else:
