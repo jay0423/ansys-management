@@ -289,8 +289,8 @@ if __name__ == '__main__':
     print("-----------------------------")
     print("4： ファイル名の更新")
     print("5： settings_childの初期化")
-    print("6： やり直す")
     print("-----------------------------")
+    print("6： やり直す")
     a = input("入力してください：")
     if a == "1":
         write_ansys_file_main()
