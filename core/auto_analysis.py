@@ -63,17 +63,23 @@ class AutoAnalysis:
         # 解析条件ファイルを実行
         t1 = time.time()
         self.mapdl.input(self.input_path)
-        time.sleep(1)
+        time.sleep(5)
         success = True
-        try:
-            self.mapdl.solve()
-        except:
-            print("Warning: SOLVE")
-            pass
+        for i in range(3):
+            try:
+                self.mapdl.solve()
+                break
+            except Exception as e:
+                time.sleep(20)
+                print("Warning: SOLVE {}回目".format(i))
+                if i == 2:
+                    print("Error: SOLVE")
+                    print(e)
         try:
             self.mapdl.finish()
-        except:
+        except Exception as e:
             print("Warning: FINISH")
+            print(e)
             success = False
             pass
         t2 = time.time()
