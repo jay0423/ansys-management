@@ -65,16 +65,11 @@ class AutoAnalysis:
         self.mapdl.input(self.input_path)
         time.sleep(5)
         success = True
-        for i in range(6):
-            try:
-                self.mapdl.solve()
-                break
-            except Exception as e:
-                time.sleep(20)
-                print("Warning: SOLVE {}回目".format(i+1))
-                if i == 5:
-                    print(e)
-                    print("\nError: 解析モデル，条件でエラーが生じている可能性があります．エラー文を読んでください．")
+        try:
+            self.mapdl.solve()
+        except Exception as e:
+            print("Warning: SOLVE")
+            print(e)
         try:
             self.mapdl.finish()
         except Exception as e:
