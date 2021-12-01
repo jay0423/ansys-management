@@ -36,10 +36,10 @@ class AutoAnalysis:
 
     def _setup(self):
         # ansysの立ち上げとデータの保存先とプロジェクト名の決定
-        
-        self.mapdl = launch_mapdl(nproc=settings.NPROC)
+        self.mapdl = launch_mapdl(run_location=self.dir_name, nproc=settings.NPROC)
         time.sleep(1)
         # print("データ保存パス：{}".format(self.cwd_path+self.dir_name))
+
         self.mapdl.cwd(self.dir_name)
         filname = "".join(self.input_path.split(self.SLASH)[-1].split(".")[:-1])
         # 以下，これまでのansysのfilnameと名前がかぶっている場合，名前の語尾に番号を振って見分けられるように実装している．
