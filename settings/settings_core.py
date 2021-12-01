@@ -66,8 +66,8 @@ WRITE_EXTENSION = "ansys"
 ### auto_analysis
 # 実行ディレクトリパス
 # PY_DIR_PATH = "C:\\Users\\matlab\\Documents\\ansys\\ansys-management-3dPrinter\\" # 藤井windowsPC
-PY_DIR_PATH = "C:\\Users\\matlab\\Documents\\ansys-management-3dPrinter\\" # 梶本windowsPC
-# PY_DIR_PATH = "/Users/jay0423/Documents/GitHub/ansys-management-3dPrinter/" # 梶本macPC
+# PY_DIR_PATH = "C:\\Users\\matlab\\Documents\\ansys-management-3dPrinter\\" # 梶本windowsPC
+PY_DIR_PATH = "/Users/jay0423/Documents/GitHub/ansys-management-3dPrinter/" # 梶本macPC
 
 
 # ansysデータの保存先のディレクトリ(windows)のパス
@@ -94,7 +94,7 @@ NPROC = 4
 """
 import os
 import json
-ABBREVIATION_PATH = PY_DIR_PATH + os.path.join("ansys_management", "settings", "abbreviation.json")
+ABBREVIATION_PATH = PY_DIR_PATH + os.path.join("abbreviation.json")
 f = open(ABBREVIATION_PATH, "r")
 ABBREVIATION = json.load(f)["ABBREVIATION"]
 f.close()
