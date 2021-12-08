@@ -69,12 +69,12 @@ class AutoAnalysis:
             self.mapdl.solve()
         except Exception as e:
             print("Warning: SOLVE")
-            print(e)
+            #print(e)
         try:
             self.mapdl.finish()
         except Exception as e:
             print("Warning: FINISH")
-            print(e)
+            #print(e)
             success = False
             pass
         t2 = time.time()
