@@ -36,7 +36,11 @@ class AutoAnalysis:
 
     def _setup(self):
         # ansysの立ち上げとデータの保存先とプロジェクト名の決定
-        self.mapdl = launch_mapdl(run_location=self.dir_name, nproc=settings.NPROC)
+        try:
+            self.mapdl = launch_mapdl(run_location=self.dir_name, nproc=settings.NPROC)
+        except:
+            print("retry")
+            self.mapdl = launch_mapdl(run_location=self.dir_name, nproc=settings.NPROC)
         time.sleep(1)
         # print("データ保存パス：{}".format(self.cwd_path+self.dir_name))
 
