@@ -103,6 +103,20 @@ class Refresh:
         return post_path_list
 
 
+    def _duplicate_rename(self, file_path):
+        if os.path.exists(file_path):
+            name, ext = os.path.splitext(file_path)
+            i = 1
+            while True:
+                # 数値を3桁などにしたい場合は({:0=3})とする
+                new_name = "{} ({}){}".format(name, i, ext)
+                if not os.path.exists(new_name):
+                    return new_name
+                i += 1
+        else:
+            return file_path
+
+
     def refresh(self):
         # ディレクトリ名の従ってファイル名を更新する．
         pre_path_list = []
@@ -130,6 +144,7 @@ class Refresh:
 
         for pre_path, post_path in zip(pre_path_list, post_path_list):
             if pre_path != post_path:
+                post_path = self._duplicate_rename(post_path)
                 os.rename(pre_path, post_path)
         print("\n完了．")
     
@@ -148,6 +163,7 @@ class Refresh:
             if pre_path != post_path:
                 if print_permissoin:
                     print("create: {}".format(post_path))
+                post_path = self._duplicate_rename(post_path)
                 os.rename(pre_path, post_path)
 
 
